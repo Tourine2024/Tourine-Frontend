@@ -5,18 +5,13 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <div>
     <header>
-      <img
-        alt="Tourine logo"
-        class="logo"
-        src="@/assets/icon/tourine_logo.svg"
-        width="125"
-        height="125"
-      />
+      <img alt="Tourine logo" class="logo" src="@/assets/icon/tourine_logo.svg" width="125" height="125" />
 
       <div class="wrapper">
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">About</RouterLink>
+          <RouterLink to="/trips">나의 여행</RouterLink>
         </nav>
       </div>
     </header>
