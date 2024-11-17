@@ -1,15 +1,22 @@
 <template>
   <div id="div-trips-top" class="my-5">
-    <h1>나의 여행</h1>
+    <!-- 제목 섹션 -->
+    <v-row align="center" justify="space-between" class="mx-5">
+      <h1 class="title">나의 여행</h1>
+      <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }"> 새 여행 만들기 </v-btn>
+    </v-row>
+
+    <!-- 여행 리스트 -->
     <template v-for="(trip, key) in trips" :key="key">
       <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
         <TripItem :trip="trip" />
       </RouterLink>
     </template>
+
+    <!-- 더 보기 버튼 -->
     <div id="div-more-btn">
       <v-btn class="my-3" rounded="xl" color="blue">Load more 100+</v-btn>
     </div>
-    <!-- footer -->
   </div>
 </template>
 
@@ -69,10 +76,10 @@ const trips = ref([
   border-radius: 16px;
 }
 
-h1 {
-  text-align: center;
-  padding: 20px;
+h1.title {
   font-weight: bold;
+  margin: 0;
+  padding: 20px 0;
 }
 
 #div-more-btn {
