@@ -54,7 +54,7 @@ const diaries = reactive([
     diaryTime: "00:00",
     diaryContent: "비행기를 타고 출발~",
     locationNo: 0,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 1,
@@ -63,7 +63,7 @@ const diaries = reactive([
     diaryTime: "09:00",
     diaryContent: "호이안에 도착했다. 한국은 추웠는데 여기는 무척이나 더웠다.",
     locationNo: 1,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 2,
@@ -72,7 +72,7 @@ const diaries = reactive([
     diaryTime: "15:00",
     diaryContent: "숙소가 아주 넓어서 좋았다. 수영장도 있었다.",
     locationNo: 2,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 3,
@@ -81,7 +81,7 @@ const diaries = reactive([
     diaryTime: "18:00",
     diaryContent: "쌀국수가 맛있었다.",
     locationNo: 3,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 4,
@@ -90,7 +90,7 @@ const diaries = reactive([
     diaryTime: "09:00",
     diaryContent: "눈부신 햇살에 잠이 깼다.",
     locationNo: 4,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 5,
@@ -99,7 +99,7 @@ const diaries = reactive([
     diaryTime: "13:00",
     diaryContent: "식당에 사람이 아주 많았다.",
     locationNo: 5,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 6,
@@ -108,7 +108,7 @@ const diaries = reactive([
     diaryTime: "09:00",
     diaryContent: "숙소에서 아침 식사를 했다.",
     locationNo: 6,
-    trip_no: 1,
+    tripNo: 1,
   },
   {
     diaryNo: 7,
@@ -117,7 +117,7 @@ const diaries = reactive([
     diaryTime: "11:00",
     diaryContent: "아쉬움을 뒤로 하고 떠날 시간.",
     locationNo: 7,
-    trip_no: 1,
+    tripNo: 1,
   },
 ]);
 
