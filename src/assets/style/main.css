@@ -19,12 +19,6 @@ a {
   text-decoration: none;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: lightblue;
-  }
-}
-
 /*@media (min-width: 1024px) {
   body {
     display: flex;
