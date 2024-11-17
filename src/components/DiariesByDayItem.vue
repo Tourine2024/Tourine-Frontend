@@ -16,7 +16,7 @@
           <v-card class="ma-2 d-flex flex-column" width="300px">
             <v-card-title class="font-weight-black text-truncate">{{ diary.diaryTitle }}</v-card-title>
             <v-card-text class="text-truncate">{{ diary.diaryContent }}</v-card-text>
-            <v-btn class="bg-black rounded-0">더 보기</v-btn>
+            <v-btn class="bg-black rounded-0 mx-4 mb-4" :to="{ name: 'diaryDetail', params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo } }" text> 더 보기 </v-btn>
           </v-card>
         </v-slide-group-item>
       </v-slide-group>
@@ -28,6 +28,7 @@
 <script setup>
 defineProps({
   dayCnt: Number,
+  tripNo: Number,
   tripDate: String,
   diaries: Array,
 });
