@@ -1,7 +1,7 @@
 <template>
   <div id="div-trip-detail-top" class="my-5">
     <TripDetailTitleItem :trip="trip" />
-    <MapItem />
+    <MapItem :center="mapCenter" />
     <div class="mx-1 py-3">
       <v-row class="d-flex justify-space-between">
         <span class="flex-1-0 align-self-center pl-5">
@@ -32,6 +32,8 @@ import DiariesByDayItem from "@/components/DiariesByDayItem.vue";
 import { ref, reactive } from "vue";
 
 const btnText = ref("order-by-date");
+
+const mapCenter = { lat: 15.882632, lng: 108.325234 };
 
 const trip = reactive({
   tripNo: 1,

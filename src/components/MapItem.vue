@@ -8,7 +8,13 @@
 <script setup>
 import { GoogleMap, Marker } from "vue3-google-map";
 
-const center = { lat: 15.882632, lng: 108.325234 };
+defineProps({
+  center: {
+    type: Object,
+    required: true,
+  },
+});
+
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 </script>
 
