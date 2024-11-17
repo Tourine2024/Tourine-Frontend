@@ -1,8 +1,8 @@
 <template>
-  <div class="logo">
+  <RouterLink class="logo" :to="{ name: 'home' }">
     <img src="@/assets/icon/tourine_logo.svg" alt="Tourine Logo" height="50" />
     <p>Tourine</p>
-  </div>
+  </RouterLink>
 </template>
 <style scoped>
 .logo {
