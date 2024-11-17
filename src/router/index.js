@@ -14,7 +14,32 @@ const router = createRouter({
     {
       path: "/about",
       name: "about",
-      component: () => import("../views/AboutView.vue"),
+      component: () => import("@/views/AboutView.vue"),
+    },
+    {
+      path: "/trips",
+      name: "trips",
+      component: () => import("@/views/trip/TripsView.vue"),
+    },
+    {
+      path: "/trips/new",
+      name: "tripNew",
+      component: () => import("@/views/trip/TripInsertView.vue"),
+    },
+    {
+      path: "/trip/:tripNo",
+      name: "tripDetail",
+      component: () => import("@/views/trip/TripDetailView.vue"),
+    },
+    {
+      path: "/trip/:tripNo/diary/new",
+      name: "diaryNew",
+      component: () => import("@/views/diary/DiaryInsertView.vue"),
+    },
+    {
+      path: "/trip/:tripNo/diary/:diaryNo",
+      name: "diaryDetail",
+      component: () => import("@/views/diary/DiaryDetailView.vue"),
     },
   ],
 });
