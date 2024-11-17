@@ -2,7 +2,7 @@
   <div class="pt-5">
     <span class="d-flex align-items-center">
       <h2>{{ dayCnt }}일차 - {{ tripDate }}</h2>
-      <v-btn class="align-self-center mx-3 mt-1" icon="mdi-plus" density="compact"> </v-btn>
+      <v-btn class="align-self-center mx-3 mt-1" icon="mdi-plus" density="compact" :to="{ name: 'diaryNew', params: { tripNo: tripNo } }"> </v-btn>
     </span>
     <div v-if="diaries.length > 0" class="mx-auto" width="1000px">
       <v-slide-group show-arrows>
