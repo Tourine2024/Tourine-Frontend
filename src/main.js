@@ -1,6 +1,7 @@
 import "./assets/style/main.css";
 import "vuetify/styles";
 import "@mdi/font/css/materialdesignicons.css";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
@@ -30,5 +31,6 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.use(vuetify);
 
-app.use(vuetify).mount("#app");
+app.mount("#app");
