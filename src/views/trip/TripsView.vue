@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import TripItem from "@/components/TripItem.vue";
+import TripItem from "@/components/trip/TripItem.vue";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 

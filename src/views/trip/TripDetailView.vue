@@ -25,9 +25,9 @@
 </template>
 
 <script setup>
-import TripDetailTitleItem from "@/components/TripDetailTitleItem.vue";
-import MapItem from "@/components/MapItem.vue";
-import DiariesByDayItem from "@/components/DiariesByDayItem.vue";
+import TripDetailTitleItem from "@/components/trip/TripDetailTitleItem.vue";
+import MapItem from "@/components/common/MapItem.vue";
+import DiariesByDayItem from "@/components/diary/DiariesByDayItem.vue";
 
 import { ref, reactive } from "vue";
 

@@ -51,7 +51,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import MapItem from "@/components/MapItem.vue";
+import MapItem from "@/components/common/MapItem.vue";
 
 const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
 
