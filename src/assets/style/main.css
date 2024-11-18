@@ -2,11 +2,11 @@
 
 #app {
   margin: 0 auto;
-  /* padding: 2rem; */
   font-weight: normal;
   background-color: #cfedfe;
 }
 
+a,
 .green {
   text-decoration: none;
   color: #27292c;
@@ -14,9 +14,9 @@
   padding: 3px;
 }
 
-a {
+/* a {
   text-decoration: none;
-}
+} */
 
 /* @media (min-width: 1024px) {
   body {

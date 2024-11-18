@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pt-5">
+  <div class="container pt-5">
     <!-- 상단 제목 -->
     <v-row justify="center" class="mb-4">
       <h1 class="text-center font-weight-bold">새 여행</h1>
@@ -11,7 +11,14 @@
         <v-row>
           <!-- 이름 -->
           <v-col cols="12">
-            <v-text-field v-model="formData.tripName" label="여행 이름" required outlined clearable :rules="[rules.required]" />
+            <v-text-field
+              v-model="formData.tripName"
+              label="여행 이름"
+              required
+              outlined
+              clearable
+              :rules="[rules.required]"
+            />
           </v-col>
 
           <!-- 요약 -->
@@ -42,7 +49,7 @@
         </v-row>
       </v-form>
     </v-sheet>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -101,8 +108,9 @@ h1 {
   font-weight: bold;
 }
 
-.v-container {
-  background-color: white;
+.container {
+  background-color: #cfedfe;
+  height: 100%;
 }
 
 .v-sheet {

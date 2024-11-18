@@ -1,25 +1,44 @@
 <template>
-  <div id="div-trip-detail-top" class="my-5">
-    <TripDetailTitleItem :trip="trip" />
-    <MapItem :center="mapCenter" />
-    <div class="mx-1 py-3">
-      <v-row class="d-flex justify-space-between">
-        <span class="flex-1-0 align-self-center pl-5">
-          <h1 class="font-weight-black text-center">여행 기록</h1>
-        </span>
-        <span>
-          <v-btn-toggle v-model="btnText" class="d-flex flex-row-reverse mr-5" color="indigo-accent-3" group>
-            <v-btn class="rounded-t-lg px-3 mr-1 align-self-end" value="order-by-location" height="40px">장소별 기록 보기</v-btn>
-            <v-btn class="rounded-t-lg px-3 align-self-end" value="order-by-date" height="40px">날짜별 기록 보기</v-btn>
-          </v-btn-toggle>
-        </span>
-      </v-row>
-      <template v-if="btnText === 'order-by-date'">
-        <template v-for="(tripDate, key) in tripDates" :key="key">
-          <DiariesByDayItem :dayCnt="++dayCnt" :tripNo="trip.tripNo" :tripDate="tripDate" :diaries="getDiariesByDate(tripDate)" />
+  <div id="div-trip-detail-top">
+    <div class="wrapper">
+      <TripDetailTitleItem :trip="trip" />
+      <MapItem :center="mapCenter" />
+      <div class="mx-1 py-3">
+        <v-row class="d-flex justify-space-between">
+          <span class="flex-1-0 align-self-center pl-5">
+            <h1 class="font-weight-black text-center">여행 기록</h1>
+          </span>
+          <span>
+            <v-btn-toggle
+              v-model="btnText"
+              class="d-flex flex-row-reverse mr-5"
+              color="indigo-accent-3"
+              group
+            >
+              <v-btn
+                class="rounded-t-lg px-3 mr-1 align-self-end"
+                value="order-by-location"
+                height="40px"
+                >장소별 기록 보기</v-btn
+              >
+              <v-btn class="rounded-t-lg px-3 align-self-end" value="order-by-date" height="40px"
+                >날짜별 기록 보기</v-btn
+              >
+            </v-btn-toggle>
+          </span>
+        </v-row>
+        <template v-if="btnText === 'order-by-date'">
+          <template v-for="(tripDate, key) in tripDates" :key="key">
+            <DiariesByDayItem
+              :dayCnt="++dayCnt"
+              :tripNo="trip.tripNo"
+              :tripDate="tripDate"
+              :diaries="getDiariesByDate(tripDate)"
+            />
+          </template>
         </template>
-      </template>
-      <template v-if="btnText === 'order-by-location'"> </template>
+        <template v-if="btnText === 'order-by-location'"> </template>
+      </div>
     </div>
   </div>
 </template>
@@ -143,7 +162,12 @@ function getDiariesByDate(tripDate) {
 
 <style scoped>
 #div-trip-detail-top {
-  margin: 0 20px;
-  border-radius: 16px;
+  padding: 0 1.5rem;
+  background-color: #cfedfe;
+  height: fit-content;
+}
+
+.wrapper {
+  padding-bottom: 3rem;
 }
 </style>

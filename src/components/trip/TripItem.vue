@@ -1,10 +1,14 @@
 <template>
-  <div class="md-5 px-5">
-    <v-card class="px-5 py-5 my-5">
+  <div class="card md-5 px-5">
+    <v-card class="px-5 py-5">
       <v-row align="start">
         <v-col cols="3">
           <!--:src="trip.tripThumbnailUrl"-->
-          <v-img src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg" class="md-2" height="150px"></v-img>
+          <v-img
+            src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg"
+            class="md-2"
+            height="150px"
+          ></v-img>
         </v-col>
         <v-col>
           <v-card-title>{{ trip.tripName }}</v-card-title>

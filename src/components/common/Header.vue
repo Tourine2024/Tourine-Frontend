@@ -5,26 +5,35 @@ import { RouterLink } from "vue-router";
 
 <template>
   <div class="header">
-    <HomeLogo />
-    <nav>
-      <RouterLink to="/"
-        ><img src="@/assets/icon/menu_travel.svg" />나의 여행</RouterLink
-      >
-      <RouterLink to="/about"
-        ><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink
-      >
-    </nav>
+    <div class="wrapper">
+      <HomeLogo />
+      <nav>
+        <RouterLink :to="{ name: 'trips' }"
+          ><img src="@/assets/icon/menu_travel.svg" />나의 여행</RouterLink
+        >
+        <RouterLink to="/about"><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink>
+      </nav>
+    </div>
   </div>
 </template>
 <style scoped>
 .header {
   background-color: #cfedfe;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  height: fit-content;
 }
+
+.wrapper {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 nav {
-  width: 100%;
-  height: 78px;
+  width: 90%;
+  height: 65px;
 
   display: flex;
   flex-direction: row;
@@ -32,14 +41,13 @@ nav {
   align-items: center;
   justify-content: end;
 
-  margin-top: 2rem;
-  margin-right: 2rem;
-
   background-color: white;
   border-radius: 12px;
 
   font-size: 24px;
   font-weight: bold;
+
+  margin-right: 1.5rem;
 }
 
 nav a {
@@ -48,6 +56,8 @@ nav a {
   text-align: center;
   align-items: center;
   margin-right: 20px;
+
+  min-width: fit-content;
 }
 
 nav a img {

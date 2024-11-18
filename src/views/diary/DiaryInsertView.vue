@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pt-5">
+  <div class="container pt-5">
     <!-- 상단 제목 -->
     <v-row justify="center" class="mb-4">
       <h1 class="text-center font-weight-bold">새 여행 기록</h1>
@@ -11,7 +11,14 @@
         <v-row>
           <!-- 제목 -->
           <v-col cols="12">
-            <v-text-field v-model="formData.diaryTitle" label="제목" required outlined clearable :rules="[rules.required]" />
+            <v-text-field
+              v-model="formData.diaryTitle"
+              label="제목"
+              required
+              outlined
+              clearable
+              :rules="[rules.required]"
+            />
           </v-col>
 
           <!-- 날짜와 시간 -->
@@ -47,7 +54,7 @@
         </v-row>
       </v-form>
     </v-sheet>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -71,7 +78,8 @@ const formData = reactive({
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
-  dateFormat: (value) => !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
+  dateFormat: (value) =>
+    !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
   timeFormat: (value) => !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
 };
 
@@ -98,8 +106,9 @@ h1 {
   font-weight: bold;
 }
 
-.v-container {
-  background-color: white;
+.container {
+  background-color: #cfedfe;
+  height: 100%;
 }
 
 .v-sheet {

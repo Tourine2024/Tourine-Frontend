@@ -10,30 +10,32 @@ import CalenderList from "@/components/home/CalenderList.vue";
 
 <template>
   <div class="home">
-    <v-row>
-      <v-col cols="4">
-        <Profile />
-      </v-col>
+    <div class="wrapper">
+      <v-row>
+        <v-col cols="4">
+          <Profile />
+        </v-col>
 
-      <v-col cols="8">
-        <RecentTrip />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="8">
-        <v-row>
-          <v-col cols="4"> <TripDays /> </v-col>
-          <v-col cols="4"> <TripCountries /> </v-col>
-          <v-col cols="4"> <TripCount /> </v-col>
-        </v-row>
-        <v-row>
-          <DiaryList />
-        </v-row>
-      </v-col>
-      <v-col cols="4">
-        <CalenderList />
-      </v-col>
-    </v-row>
+        <v-col cols="8">
+          <RecentTrip />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="8">
+          <v-row>
+            <v-col cols="4"> <TripDays /> </v-col>
+            <v-col cols="4"> <TripCountries /> </v-col>
+            <v-col cols="4"> <TripCount /> </v-col>
+          </v-row>
+          <v-row>
+            <DiaryList />
+          </v-row>
+        </v-col>
+        <v-col cols="4">
+          <CalenderList />
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -46,6 +48,11 @@ import CalenderList from "@/components/home/CalenderList.vue";
   background-color: #cfedfe;
 
   padding-bottom: 5rem;
+}
+
+.wrapper {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .home > .v-sheet {

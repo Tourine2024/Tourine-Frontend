@@ -1,21 +1,25 @@
 <template>
-  <div id="div-trips-top" class="my-5">
-    <!-- 제목 섹션 -->
-    <v-row align="center" justify="space-between" class="mx-5">
-      <h1 class="title">나의 여행</h1>
-      <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }"> 새 여행 만들기 </v-btn>
-    </v-row>
+  <div id="div-trips-top">
+    <div class="wrapper">
+      <!-- 제목 섹션 -->
+      <v-row align="center" justify="space-between" class="mx-5">
+        <h1 class="title">나의 여행</h1>
+        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }">
+          새 여행 만들기
+        </v-btn>
+      </v-row>
 
-    <!-- 여행 리스트 -->
-    <template v-for="(trip, key) in trips" :key="key">
-      <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
-        <TripItem :trip="trip" />
-      </RouterLink>
-    </template>
+      <!-- 여행 리스트 -->
+      <template v-for="(trip, key) in trips" :key="key">
+        <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
+          <TripItem :trip="trip" />
+        </RouterLink>
+      </template>
 
-    <!-- 더 보기 버튼 -->
-    <div id="div-more-btn">
-      <v-btn class="my-3" rounded="xl" color="blue">Load more 100+</v-btn>
+      <!-- 더 보기 버튼 -->
+      <div id="div-more-btn">
+        <v-btn class="my-3" rounded="xl" color="blue">Load more 100+</v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -71,9 +75,13 @@ const trips = ref([
 
 <style scoped>
 #div-trips-top {
-  background-color: white;
-  margin: 0 20px;
-  border-radius: 16px;
+  background-color: #cfedfe;
+  padding: 0 1rem;
+}
+
+.wrapper {
+  width: 90%;
+  margin: 0 auto;
 }
 
 h1.title {
@@ -85,5 +93,6 @@ h1.title {
 #div-more-btn {
   text-align: center;
   padding-bottom: 20px;
+  margin-bottom: 3rem;
 }
 </style>
