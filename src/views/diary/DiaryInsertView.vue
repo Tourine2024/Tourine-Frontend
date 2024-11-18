@@ -16,20 +16,26 @@
 
           <!-- 날짜와 시간 -->
           <v-col cols="6">
-            <v-text-field v-model="formData.diaryDate" label="날짜 (YYYY.MM.DD)" outlined clearable :rules="[rules.dateFormat]" placeholder="예: 2024.12.01" />
+            <h3>일자 선택</h3>
+            <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
           </v-col>
           <v-col cols="6">
-            <v-text-field v-model="formData.diaryTime" label="시간 (HH:mm)" outlined clearable :rules="[rules.timeFormat]" placeholder="예: 15:30" />
+            <h3>시간 선택</h3>
+            <v-text-field v-model="formData.diaryTime" type="time" outlined />
           </v-col>
 
           <!-- 지도 (위치 정보 입력) -->
-          <v-col cols="12">
-            <v-text-field v-model="formData.location" label="위치" outlined clearable />
+          <v-col cols="6">
+            <v-text-field class="pt-5" v-model="formData.location" label="장소 검색" outlined clearable />
+          </v-col>
+          <v-col cols="6" class="mt-0">
+            <MapItem :center="center"></MapItem>
           </v-col>
 
           <!-- 내용 -->
           <v-col cols="12">
-            <v-textarea v-model="formData.diaryContent" label="내용" outlined auto-grow rows="5" clearable />
+            <!-- <v-textarea v-model="formData.diaryContent" label="내용" outlined auto-grow rows="5" clearable /> -->
+            <ToastUIEditor v-model="formData.diaryContent" label="내용" outlined auto-grow rows="5" clearable />
           </v-col>
         </v-row>
 
@@ -46,14 +52,19 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import DatePicker from "@/components/common/DatePicker.vue";
+import MapItem from "@/components/common/MapItem.vue";
+import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 
 const form = ref(null);
 const valid = ref(false);
 
+const today = new Date();
+
 const formData = reactive({
   diaryTitle: "",
-  diaryDate: "",
-  diaryTime: "",
+  diaryDate: today.getFullYear() + "." + (today.getMonth() + 1) + "." + today.getDate(),
+  diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryContent: "",
   location: "",
 });
@@ -77,6 +88,8 @@ const clearForm = () => {
     formData[key] = "";
   });
 };
+
+const center = { lat: 37.5665, lng: 126.9780 };
 </script>
 
 <style scoped>

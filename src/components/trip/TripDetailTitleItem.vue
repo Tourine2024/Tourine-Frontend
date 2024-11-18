@@ -13,7 +13,7 @@
           <v-btn class="md-3 ml-4" rounded="xl" color="blue">수정하기</v-btn>
         </v-card>
       </v-col>
-      <v-col class="text-xs-center">
+      <v-col class="text-xs-center" align="center">
         <!-- :src="trip.tripThumbnailUrl" -->
         <v-img src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg" class="md-2 rounded-circle" width="250px" height="250px" cover />
       </v-col>
