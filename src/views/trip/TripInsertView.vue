@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pt-5">
+  <div class="container pt-5">
     <!-- 상단 제목 -->
     <v-row justify="center" class="mb-4">
       <h1 class="text-center font-weight-bold">새 여행</h1>
@@ -11,20 +11,48 @@
         <v-row>
           <!-- 이름 -->
           <v-col cols="12">
-            <v-text-field v-model="formData.tripName" label="여행 이름" required outlined clearable :rules="[rules.required]" />
+            <v-text-field
+              v-model="formData.tripName"
+              label="여행 이름"
+              required
+              outlined
+              clearable
+              :rules="[rules.required]"
+            />
           </v-col>
 
           <!-- 요약 -->
           <v-col cols="12">
-            <v-textarea v-model="formData.diaryContent" label="요약 (선택 사항)" outlined auto-grow rows="5" clearable />
+            <v-textarea
+              v-model="formData.diaryContent"
+              label="요약 (선택 사항)"
+              outlined
+              auto-grow
+              rows="5"
+              clearable
+            />
           </v-col>
 
           <!-- 출발/도착 일자 -->
           <v-col cols="6">
-            <v-text-field v-model="formData.tripStartDate" label="출발 일자 (YYYY.MM.DD)" outlined clearable :rules="[rules.dateFormat]" placeholder="예: 2024.12.01" />
+            <v-text-field
+              v-model="formData.tripStartDate"
+              label="출발 일자 (YYYY.MM.DD)"
+              outlined
+              clearable
+              :rules="[rules.dateFormat]"
+              placeholder="예: 2024.12.01"
+            />
           </v-col>
           <v-col cols="6">
-            <v-text-field v-model="formData.tripEndDate" label="도착 일자 (YYYY.MM.DD)" outlined clearable :rules="[rules.dateFormat]" placeholder="예: 2024.12.06" />
+            <v-text-field
+              v-model="formData.tripEndDate"
+              label="도착 일자 (YYYY.MM.DD)"
+              outlined
+              clearable
+              :rules="[rules.dateFormat]"
+              placeholder="예: 2024.12.06"
+            />
           </v-col>
         </v-row>
 
@@ -36,7 +64,7 @@
         </v-row>
       </v-form>
     </v-sheet>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -55,7 +83,8 @@ const formData = reactive({
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
-  dateFormat: (value) => !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
+  dateFormat: (value) =>
+    !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
 };
 
 const submitForm = () => {
@@ -79,8 +108,9 @@ h1 {
   font-weight: bold;
 }
 
-.v-container {
-  background-color: white;
+.container {
+  background-color: #cfedfe;
+  height: 100%;
 }
 
 .v-sheet {

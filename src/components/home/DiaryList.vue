@@ -81,12 +81,9 @@ export default {
       :items="diarys"
       density="comfortable"
       item-key="name"
-      height="400px"
+      height="450px"
       hide-default-footer
     ></v-data-table>
-    <v-btn append-icon="mdi-account-circle" prepend-icon="mdi-check-circle">
-      ADD NEW DIARY
-    </v-btn>
   </div>
 </template>
 
