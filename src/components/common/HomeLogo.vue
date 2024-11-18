@@ -7,14 +7,14 @@
 <style scoped>
 .logo {
   width: 262px;
-  height: 78px;
+  height: 65px;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 2rem;
   padding: 2rem;
+  margin: 2rem;
 
   background-color: white;
   border-radius: 12px;

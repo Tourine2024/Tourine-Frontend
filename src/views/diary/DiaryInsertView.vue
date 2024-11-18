@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pt-5">
+  <div class="container pt-5">
     <!-- 상단 제목 -->
     <v-row justify="center" class="mb-4">
       <h1 class="text-center font-weight-bold">새 여행 기록</h1>
@@ -11,15 +11,36 @@
         <v-row>
           <!-- 제목 -->
           <v-col cols="12">
-            <v-text-field v-model="formData.diaryTitle" label="제목" required outlined clearable :rules="[rules.required]" />
+            <v-text-field
+              v-model="formData.diaryTitle"
+              label="제목"
+              required
+              outlined
+              clearable
+              :rules="[rules.required]"
+            />
           </v-col>
 
           <!-- 날짜와 시간 -->
           <v-col cols="6">
-            <v-text-field v-model="formData.diaryDate" label="날짜 (YYYY.MM.DD)" outlined clearable :rules="[rules.dateFormat]" placeholder="예: 2024.12.01" />
+            <v-text-field
+              v-model="formData.diaryDate"
+              label="날짜 (YYYY.MM.DD)"
+              outlined
+              clearable
+              :rules="[rules.dateFormat]"
+              placeholder="예: 2024.12.01"
+            />
           </v-col>
           <v-col cols="6">
-            <v-text-field v-model="formData.diaryTime" label="시간 (HH:mm)" outlined clearable :rules="[rules.timeFormat]" placeholder="예: 15:30" />
+            <v-text-field
+              v-model="formData.diaryTime"
+              label="시간 (HH:mm)"
+              outlined
+              clearable
+              :rules="[rules.timeFormat]"
+              placeholder="예: 15:30"
+            />
           </v-col>
 
           <!-- 지도 (위치 정보 입력) -->
@@ -29,7 +50,14 @@
 
           <!-- 내용 -->
           <v-col cols="12">
-            <v-textarea v-model="formData.diaryContent" label="내용" outlined auto-grow rows="5" clearable />
+            <v-textarea
+              v-model="formData.diaryContent"
+              label="내용"
+              outlined
+              auto-grow
+              rows="5"
+              clearable
+            />
           </v-col>
         </v-row>
 
@@ -41,7 +69,7 @@
         </v-row>
       </v-form>
     </v-sheet>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -60,7 +88,8 @@ const formData = reactive({
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
-  dateFormat: (value) => !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
+  dateFormat: (value) =>
+    !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
   timeFormat: (value) => !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
 };
 
@@ -85,8 +114,9 @@ h1 {
   font-weight: bold;
 }
 
-.v-container {
-  background-color: white;
+.container {
+  background-color: #cfedfe;
+  height: 100%;
 }
 
 .v-sheet {
