@@ -11,14 +11,7 @@
         <v-row>
           <!-- 이름 -->
           <v-col cols="12">
-            <v-text-field
-              v-model="formData.tripName"
-              label="여행 이름"
-              required
-              outlined
-              clearable
-              :rules="[rules.required]"
-            />
+            <v-text-field v-model="formData.tripName" label="여행 이름" required outlined clearable :rules="[rules.required]" />
           </v-col>
 
           <!-- 요약 -->
@@ -42,7 +35,7 @@
         </v-row>
 
         <!-- 저장 버튼 -->
-        <v-row justify="center" class="mt-5">
+        <v-row class="mb-5 mp-5" justify="center">
           <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
           <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
           <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
@@ -111,6 +104,7 @@ h1 {
 .container {
   background-color: #cfedfe;
   height: 100%;
+  padding-bottom: 110px;
 }
 
 .v-sheet {
