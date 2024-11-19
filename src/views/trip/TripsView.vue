@@ -18,7 +18,7 @@
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
-        <v-btn class="my-3" rounded="xl" color="blue">Load more 100+</v-btn>
+        <v-btn class="my-3" rounded="xl" color="blue" @click="getTrips">Load more</v-btn>
       </div>
     </div>
   </div>
@@ -28,49 +28,24 @@
 import TripItem from "@/components/trip/TripItem.vue";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import { localAxios } from "@/util/axios";
 
-const trips = ref([
-  {
-    tripNo: 1,
-    tripName: "서울 탐험",
-    tripSummary:
-      "The only moment, the only life we have is in the NOW. What happened a few moments or several years ago is gone, what will happen this evening, or next month when we go on holidays is not here yet.",
-    tripThumbnailUrl: "https://example.com/thumbnails/seoul.jpg",
-    tripStartDate: "2024.03.01",
-    tripEndDate: "2024.03.07",
-    memberNo: 1,
-  },
-  {
-    tripNo: 2,
-    tripName: "도쿄 여행",
-    tripSummary:
-      "The only moment, the only life we have is in the NOW. What happened a few moments or several years ago is gone, what will happen this evening, or next month when we go on holidays is not here yet.",
-    tripThumbnailUrl: "https://example.com/thumbnails/tokyo.jpg",
-    tripStartDate: "2024.05.01",
-    tripEndDate: "2024.05.07",
-    memberNo: 2,
-  },
-  {
-    tripNo: 3,
-    tripName: "파리 여행",
-    tripSummary:
-      "The only moment, the only life we have is in the NOW. What happened a few moments or several years ago is gone, what will happen this evening, or next month when we go on holidays is not here yet.",
-    tripThumbnailUrl: "https://example.com/thumbnails/paris.jpg",
-    tripStartDate: "2024.06.15",
-    tripEndDate: "2024.06.20",
-    memberNo: 3,
-  },
-  {
-    tripNo: 4,
-    tripName: "런던 탐방",
-    tripSummary:
-      "The only moment, the only life we have is in the NOW. What happened a few moments or several years ago is gone, what will happen this evening, or next month when we go on holidays is not here yet.",
-    tripThumbnailUrl: "https://example.com/thumbnails/london.jpg",
-    tripStartDate: "2024.07.10",
-    tripEndDate: "2024.07.17",
-    memberNo: 4,
-  },
-]);
+const trips = ref([]);
+const tripsTotalCnt = ref(0);
+
+async function getTrips() {
+  try {
+    const cnt = parseInt(trips.value.length / 5);
+    const response = await localAxios().get("/trips?pageNo=" + cnt);
+    trips.value.push(...response.data);
+    console.log("Trips fetched successfully:", trips.value);
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+  }
+}
+
+getTrips();
+
 </script>
 
 <style scoped>
