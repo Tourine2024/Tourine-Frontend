@@ -19,6 +19,10 @@
             <v-textarea v-model="formData.tripSummary" label="여행 요약" outlined auto-grow rows="5" placeholder="여행에 대한 간략한 설명을 적어주세요..." clearable />
           </v-col>
 
+          <v-col cols="12">
+            <v-file-input v-model="thumbnailFile" label="사진 업로드" accept="image/*" outlined clearable show-size />
+          </v-col>
+
           <!-- 출발/도착 일자 -->
           <v-col cols="6">
             <h3>출발 일자</h3>
@@ -50,6 +54,7 @@ import { ref, reactive } from "vue";
 import DatePicker from "@/components/common/DatePicker.vue";
 import { localAxios } from "@/util/axios";
 import { dateFormatter } from "@/util/date/dateFormat";
+import { uploadImage } from "@/api/image";
 
 const valid = ref(false);
 
@@ -58,12 +63,13 @@ const today = new Date();
 
 const formData = reactive({
   tripName: "",
-  tripSummary: "",
-  tripThumbnailUrl: "",
+  tripSummary: null,
+  tripThumbnailUrl: null, // 업로드된 이미지 파일 URL
   tripStartDate: today,
   tripEndDate: today,
   memberNo: 1, // 이후 로그인한 멤버 번호로 수정 
 });
+const thumbnailFile = ref(null);
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
@@ -83,6 +89,7 @@ const changeTripEndDate = () => {
 
 async function submitForm() {
   try {
+    formData.tripThumbnailUrl = await uploadImage(thumbnailFile.value);
     const payload = {
       ...formData,
       tripStartDate: dateFormatter(formData.tripStartDate),
@@ -90,6 +97,7 @@ async function submitForm() {
     };
     await localAxios().post("/trips", payload);
     alert('저장되었습니다.');
+    location.href = "../trips";
   } catch (error) {
     console.error(error);
   }
@@ -97,10 +105,11 @@ async function submitForm() {
 
 const clearForm = () => {
   formData.tripName = "";
-  formData.tripSummary = "";
-  formData.tripThumbnailUrl = "";
+  formData.tripSummary = null;
+  formData.tripThumbnailUrl = null;
   formData.tripStartDate = today;
   formData.tripEndDate = today;
+  thumbnailFile.value = null;
 };
 </script>
 
