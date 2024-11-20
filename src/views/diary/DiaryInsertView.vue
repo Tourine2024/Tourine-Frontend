@@ -11,14 +11,7 @@
         <v-row>
           <!-- 제목 -->
           <v-col cols="12">
-            <v-text-field
-              v-model="formData.diaryTitle"
-              label="제목"
-              required
-              outlined
-              clearable
-              :rules="[rules.required]"
-            />
+            <v-text-field v-model="formData.diaryTitle" label="제목" required outlined clearable :rules="[rules.required]" />
           </v-col>
 
           <!-- 날짜와 시간 -->
@@ -47,7 +40,7 @@
         </v-row>
 
         <!-- 저장 버튼 -->
-        <v-row justify="center" class="mt-5">
+        <v-row justify="center" class="mt-5 mb-0">
           <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
           <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
           <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
@@ -59,7 +52,6 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import DatePicker from "@/components/common/DatePicker.vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 
@@ -109,6 +101,7 @@ h1 {
 .container {
   background-color: #cfedfe;
   height: 100%;
+  padding-bottom: 110px;
 }
 
 .v-sheet {
