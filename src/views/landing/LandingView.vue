@@ -6,7 +6,7 @@
         class="text-center d-flex flex-column align-center justify-center text-white hero-content"
       >
         <h1 class="display-2 font-weight-bold">일상에서 벗어나는 힐링 여행 서비스 <br />TOURINE</h1>
-        <v-btn color="primary" @click="showRegister = true">Join</v-btn>
+        <v-btn color="primary" :to="{ name: 'login' }">Join</v-btn>
       </div>
     </div>
   </v-app>

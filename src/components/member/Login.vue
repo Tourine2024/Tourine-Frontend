@@ -6,7 +6,7 @@
     <v-card class="register">
       <v-card-title class="card-title">
         <img src="@/assets/icon/tourine_logo.svg" height="50px" />
-        <span class="mx-3">TOURINE 회원가입</span>
+        <span class="mx-3">TOURINE 로그인</span>
       </v-card-title>
 
       <v-card-text>
@@ -26,35 +26,10 @@
           ></v-text-field>
 
           <v-text-field
-            v-model="nickname"
-            color="primary"
-            label="이름"
-            variant="underlined"
-            :rules="[required]"
-          ></v-text-field>
-
-          <v-text-field
-            v-model="email"
-            color="primary"
-            label="이메일"
-            variant="underlined"
-            :rules="[required]"
-          ></v-text-field>
-
-          <v-text-field
             v-model="password"
             color="primary"
             label="비밀번호"
             placeholder="비밀번호를 입력하세요."
-            variant="underlined"
-            :rules="[required]"
-          ></v-text-field>
-
-          <v-text-field
-            v-model="passwordCheck"
-            color="primary"
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 한번 입력하세요."
             variant="underlined"
             :rules="[required]"
           ></v-text-field>
@@ -64,7 +39,11 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn :to="{ name: 'login' }" class="registerBtn">회원가입</v-btn>
+        <v-btn :to="{ name: 'home' }" class="loginBtn">로그인</v-btn>
+      </v-card-actions>
+      <v-card-actions class="registerInform"
+        ><span class="inform">가입된 계정이 없으신가요?</span>
+        <v-btn :to="{ name: 'register' }" class="registerBtn">회원가입</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -85,8 +64,7 @@ export default {
   },
   data() {
     return {
-      id: null,
-      nickname: null,
+      first: null,
       email: null,
       password: null,
       passwordCheck: null,
@@ -142,7 +120,7 @@ export default {
   font-weight: bold;
 }
 
-.registerBtn {
+.loginBtn {
   background-color: #4169e1;
   width: 100%;
   height: 50px;
@@ -151,6 +129,26 @@ export default {
 
   font-size: 20px;
   color: white;
+}
+
+.inform {
+  width: fit-content;
+  font-size: 20px;
+}
+
+.registerBtn {
+  color: green;
+  height: 50px;
+  border-radius: 15px;
+  text-align: center;
+
+  font-size: 20px;
+}
+
+.registerInform {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .kakao {
