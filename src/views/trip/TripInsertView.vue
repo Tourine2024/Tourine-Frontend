@@ -89,7 +89,9 @@ const changeTripEndDate = () => {
 
 async function submitForm() {
   try {
-    formData.tripThumbnailUrl = await uploadImage(thumbnailFile.value);
+    if (thumbnailFile.value != null) {
+      formData.tripThumbnailUrl = await uploadImage(thumbnailFile.value);
+    }
     const payload = {
       ...formData,
       tripStartDate: dateFormatter(formData.tripStartDate),
