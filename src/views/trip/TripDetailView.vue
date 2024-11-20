@@ -42,6 +42,7 @@ const route = useRoute();
 
 const trip = ref({});
 const diaries = ref([]);
+const tripDates = reactive([]);
 const mapCenter = ref({});
 const btnText = ref("order-by-date");
 
@@ -49,8 +50,19 @@ async function setTrip() {
   try {
     const response = await localAxios().get("/trips/" + route.params.tripNo);
     trip.value = response.data;
+    setDiaryDates();
   } catch (error) {
     console.error(error);
+  }
+}
+
+async function setDiaryDates() {
+  let tmpDate = new Date(trip.value.tripStartDate);
+  let endDate = new Date(trip.value.tripEndDate);
+  while (tmpDate <= endDate) {
+    const dateStr = dateFormatter(tmpDate);
+    tripDates.push(dateStr);
+    tmpDate.setDate(tmpDate.getDate() + 1);
   }
 }
 
@@ -80,9 +92,12 @@ async function setLocation(locationNo) {
 
 let dayCnt = 0;
 function getDiariesByDate(tripDate) {
-  if (tripDate === trip.tripEndDate) dayCnt = 0;
-  return diaries.filter((diary) => diary.diaryDate === tripDate);
+  if (tripDate === trip.value.tripEndDate) dayCnt = 0;
+  return diaries.value.filter((diary) => diary.diaryDate === tripDate);
 }
+
+setTrip();
+setDiaries();
 </script>
 
 <style scoped>
@@ -93,6 +108,6 @@ function getDiariesByDate(tripDate) {
 }
 
 .wrapper {
-  padding-bottom:3rem;
+  padding-bottom: 3rem;
 }
 </style>
