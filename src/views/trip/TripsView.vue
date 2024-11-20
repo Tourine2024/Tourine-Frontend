@@ -10,11 +10,11 @@
       </v-row>
 
       <!-- 여행 리스트 -->
-      <template v-for="(trip, key) in trips" :key="key">
+      <div v-for="(trip, key) in trips" :key="key">
         <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
           <TripItem :trip="trip" />
         </RouterLink>
-      </template>
+      </div>
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
@@ -28,7 +28,7 @@
 import TripItem from "@/components/trip/TripItem.vue";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import { localAxios } from "@/util/axios";
+import { getTripLists } from "@/api/trip";
 
 const trips = ref([]);
 const tripsTotalCnt = ref(0);
@@ -36,8 +36,10 @@ const tripsTotalCnt = ref(0);
 async function getTrips() {
   try {
     const cnt = parseInt(trips.value.length / 5);
-    const response = await localAxios().get("/trips?pageNo=" + cnt);
-    trips.value.push(...response.data);
+    const data = await getTripLists(cnt);
+    trips.value.push(...data);
+    // const response = await localAxios().get("/trips?pageNo=" + cnt);
+    // trips.value.push(...response.data);
     console.log("Trips fetched successfully:", trips.value);
   } catch (error) {
     console.error("Error fetching trips:", error);
@@ -45,7 +47,6 @@ async function getTrips() {
 }
 
 getTrips();
-
 </script>
 
 <style scoped>

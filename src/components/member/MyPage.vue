@@ -6,7 +6,7 @@
         src="@/assets/image/mypage/profileBackground.svg"
         alt="Profile Background"
       />
-      <img class="profileImage" src="@/assets/image/profile/profile_1.svg" alt="Profile Image" />
+      <img class="profileImage" :src="member.memberProfilePicUrl" alt="Profile Image" />
     </div>
     <div class="personalInfo">
       <div class="title">
@@ -15,28 +15,29 @@
       </div>
       <v-row>
         <v-col cols="6">
-          <img class="imageUpload" src="@/assets/image/profile/profile_1.svg" alt="Profile Image" />
+          <img class="imageUpload" :src="member.memberProfilePicUrl" alt="Profile Image" />
+
           <div class="inputGroup">
             <label for="joinDate">가입 날짜</label>
-            <input type="date" id="joinDate" v-model="user.joinDate" />
+            <input type="date" id="joinDate" v-model="member.memberJoinDatetime" />
           </div>
         </v-col>
         <v-col cols="6">
           <div class="inputGroup">
             <label for="id">ID</label>
-            <input type="text" id="id" v-model="user.id" disabled />
+            <input type="text" id="id" v-model="member.memberId" disabled />
           </div>
           <div class="inputGroup">
             <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" v-model="user.nickname" />
+            <input type="text" id="nickname" v-model="member.memberNickname" />
           </div>
           <div class="inputGroup">
             <label for="password">비밀번호</label>
-            <input type="password" id="password" v-model="user.password" />
+            <input type="password" id="password" v-model="member.memberPw" />
           </div>
           <div class="inputGroup">
             <label for="email">이메일</label>
-            <input type="email" id="email" v-model="user.email" />
+            <input type="email" id="email" v-model="member.memberEmail" />
           </div>
         </v-col>
       </v-row>
@@ -49,15 +50,30 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { getMemberInfo } from "@/api/member.js";
 
-const user = ref({
-  id: "ssafy",
-  nickname: "sseung",
-  password: "",
-  email: "ssafy@ssafy.com",
-  joinDate: "2024-11-01",
+const member = ref({
+  memberProfilePicUrl: "src/assets/image/profile/profile_1.svg",
+  memberId: "",
+  memberNickname: "",
+  memberPw: "",
+  memberEmail: "",
+  memberJoinDatetime: "",
 });
+
+onMounted(async () => {
+  try {
+    getUserProfile();
+  } catch (error) {
+    console.error("Failed to load member info:", error);
+  }
+});
+
+const getUserProfile = async () => {
+  const data = await getMemberInfo();
+  member.value = data;
+};
 
 const updateProfile = () => {
   // 프로필 수정 로직
