@@ -6,7 +6,6 @@
           <v-card-subtitle>{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle>
           <h1 class="font-weight-black ml-4">{{ trip.tripName }}</h1>
           <v-card-text>
-            AI 여행 요약<br />
             {{ trip.tripSummary }}
           </v-card-text>
           <v-btn class="md-3 ml-4" rounded="xl" color="blue">AI 요약하기+</v-btn>
@@ -14,14 +13,7 @@
         </v-card>
       </v-col>
       <v-col class="text-xs-center" align="center">
-        <!-- :src="trip.tripThumbnailUrl" -->
-        <v-img
-          src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg"
-          class="md-2 rounded-circle"
-          width="250px"
-          height="250px"
-          cover
-        />
+        <v-img id="diary-image" :src="trip.tripThumbnailUrl" @error="substituteImage" class="md-2 rounded-circle" width="250px" height="250px" cover />
       </v-col>
     </v-row>
   </div>
@@ -39,6 +31,13 @@ defineProps({
     memberNo: Number,
   },
 });
+
+const substituteImage = () => {
+  const diaryImage = document.querySelector('#diary-image img');
+  diaryImage.onerror = null;
+  diaryImage.src = '../src/assets/image/noimage.jpg';
+  diaryImage.style.display = "inline";
+};
 </script>
 
 <style scoped></style>
