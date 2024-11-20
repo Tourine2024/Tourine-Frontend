@@ -18,7 +18,15 @@
           <span>or</span>
 
           <v-text-field
-            v-model="first"
+            v-model="id"
+            color="primary"
+            label="아이디"
+            variant="underlined"
+            :rules="[required]"
+          ></v-text-field>
+
+          <v-text-field
+            v-model="nickname"
             color="primary"
             label="이름"
             variant="underlined"
@@ -56,7 +64,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <button class="registerBtn">회원가입</button>
+        <v-btn :to="{ name: 'login' }" class="registerBtn">회원가입</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -77,7 +85,8 @@ export default {
   },
   data() {
     return {
-      first: null,
+      id: null,
+      nickname: null,
       email: null,
       password: null,
       passwordCheck: null,
