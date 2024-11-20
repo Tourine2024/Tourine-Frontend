@@ -18,7 +18,7 @@
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
-        <v-btn class="my-3" rounded="xl" color="blue" @click="getTrips">Load more</v-btn>
+        <v-btn v-if="showButton" class="my-3" rounded="xl" color="blue" @click="getTrips">Load more</v-btn>
       </div>
     </div>
   </div>
@@ -31,14 +31,19 @@ import { RouterLink } from "vue-router";
 import { localAxios } from "@/util/axios";
 
 const trips = ref([]);
-const tripsTotalCnt = ref(0);
+const showButton = ref(true);
+let pageNo = 1;
 
 async function getTrips() {
   try {
-    const cnt = parseInt(trips.value.length / 5);
-    const response = await localAxios().get("/trips?pageNo=" + cnt);
+    const response = await localAxios().get("/trips?pageNo=" + pageNo++);
     trips.value.push(...response.data);
     console.log("Trips fetched successfully:", trips.value);
+
+    const moreResponse = await localAxios().get("/trips?pageNo=" + pageNo);
+    if (moreResponse.data.length == 0) {
+      showButton.value = false;
+    }
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
