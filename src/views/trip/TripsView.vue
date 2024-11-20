@@ -4,9 +4,7 @@
       <!-- 제목 섹션 -->
       <v-row align="center" justify="space-between" class="mx-5">
         <h1 class="title">나의 여행</h1>
-        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }">
-          새 여행 만들기
-        </v-btn>
+        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }"> 새 여행 만들기 </v-btn>
       </v-row>
 
       <!-- 여행 리스트 -->
@@ -38,7 +36,6 @@ async function getTrips() {
   try {
     const response = await localAxios().get("/trips?pageNo=" + pageNo++);
     trips.value.push(...response.data);
-    console.log("Trips fetched successfully:", trips.value);
 
     const moreResponse = await localAxios().get("/trips?pageNo=" + pageNo);
     if (moreResponse.data.length == 0) {
@@ -50,7 +47,6 @@ async function getTrips() {
 }
 
 getTrips();
-
 </script>
 
 <style scoped>
