@@ -16,20 +16,20 @@
 
           <!-- 요약 -->
           <v-col cols="12">
-            <v-textarea v-model="formData.diaryContent" label="여행 요약" outlined auto-grow rows="5" placeholder="여행에 대한 간략한 설명을 적어주세요..." clearable />
+            <v-textarea v-model="formData.tripSummary" label="여행 요약" outlined auto-grow rows="5" placeholder="여행에 대한 간략한 설명을 적어주세요..." clearable />
           </v-col>
 
           <!-- 출발/도착 일자 -->
           <v-col cols="6">
             <h3>출발 일자</h3>
             <v-locale-provider locale="ko">
-              <DatePicker show-adjacent-months v-model="formData.startDate" :rules="[rules.required]" @click="changeStartDate" outlined :hide-header="true" />
+              <DatePicker show-adjacent-months v-model="formData.tripStartDate" :rules="[rules.required]" @click="changeTripStartDate" outlined :hide-header="true" />
             </v-locale-provider>
           </v-col>
           <v-col cols="6">
             <h3>도착 일자</h3>
             <v-locale-provider locale="ko">
-              <DatePicker show-adjacent-months v-model="formData.endDate" :rules="[rules.required]" @click="changeEndDate" outlined :hide-header="true" />
+              <DatePicker show-adjacent-months v-model="formData.tripEndDate" :rules="[rules.required]" @click="changeTripEndDate" outlined :hide-header="true" />
             </v-locale-provider>
           </v-col>
         </v-row>
@@ -56,24 +56,26 @@ const today = new Date();
 
 const formData = reactive({
   tripName: "",
-  startDate: today, // Date 객체로 설정
-  endDate: today, // Date 객체로 설정
-  diaryContent: "",
+  tripSummary: "",
+  tripThumbnailUrl: "",
+  tripStartDate: today,
+  tripEndDate: today,
+  memberNo: 1, // 이후 로그인한 멤버 번호로 수정 
 });
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
 };
 
-const changeStartDate = () => {
-  if (formData.startDate > formData.endDate) {
-    formData.endDate = formData.startDate;
+const changeTripStartDate = () => {
+  if (formData.tripStartDate > formData.tripEndDate) {
+    formData.tripEndDate = formData.tripStartDate;
   }
 };
 
-const changeEndDate = () => {
-  if (formData.startDate > formData.endDate) {
-    formData.startDate = formData.endDate;
+const changeTripEndDate = () => {
+  if (formData.tripStartDate > formData.tripEndDate) {
+    formData.tripStartDate = formData.tripEndDate;
   }
 };
 
@@ -89,9 +91,10 @@ const submitForm = () => {
 
 const clearForm = () => {
   formData.tripName = "";
-  formData.startDate = today;
-  formData.endDate = today;
-  formData.diaryContent = "";
+  formData.tripSummary = "";
+  formData.tripThumbnailUrl = "";
+  formData.tripStartDate = today;
+  formData.tripEndDate = today;
 };
 </script>
 
