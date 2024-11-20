@@ -11,7 +11,7 @@ import { RouterLink } from "vue-router";
         <RouterLink :to="{ name: 'trips' }"
           ><img src="@/assets/icon/menu_travel.svg" />나의 여행</RouterLink
         >
-        <RouterLink to="/about"><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink>
+        <RouterLink to="/mypage"><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink>
       </nav>
     </div>
   </div>
