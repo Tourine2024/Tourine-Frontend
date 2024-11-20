@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import AboutView from "../views/AboutView.vue";
+import AboutView from "../views/MyPageView.vue";
 import HomeView from "@/views/HomeView.vue";
 import LandingView from "@/views/landing/LandingView.vue";
+import LoginView from "@/views/member/LoginView.vue";
+import RegisterVue from "@/views/member/RegisterView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,14 +16,26 @@ const router = createRouter({
       meta: { hideHeaderFooter: true },
     },
     {
+      path: "/login",
+      name: "login",
+      component: LoginView,
+      meta: { hideHeaderFooter: true },
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: RegisterVue,
+      meta: { hideHeaderFooter: true },
+    },
+    {
       path: "/home",
       name: "home",
       component: HomeView,
     },
     {
-      path: "/about",
-      name: "about",
-      component: () => import("@/views/AboutView.vue"),
+      path: "/mypage",
+      name: "mypage",
+      component: () => import("@/views/MyPageView.vue"),
     },
     {
       path: "/trips",
