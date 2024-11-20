@@ -13,13 +13,19 @@
         </v-card>
       </v-col>
       <v-col class="text-xs-center" align="center">
-        <v-img id="diary-image" :src="trip.tripThumbnailUrl" @error="substituteImage" class="md-2 rounded-circle" width="250px" height="250px" cover />
+        <v-img :src="trip.tripThumbnailUrl" class="md-2 rounded-circle" width="250px" height="250px" cover>
+          <template v-slot:error>
+            <v-img :src="DEFAULT_IMAGE_PATH" class="md-2 rounded-circle" width="250px" height="250px" cover></v-img>
+          </template>
+        </v-img>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script setup>
+import { DEFAULT_IMAGE_PATH } from "@/api/image";
+
 defineProps({
   trip: {
     tripNo: Number,
@@ -31,13 +37,6 @@ defineProps({
     memberNo: Number,
   },
 });
-
-const substituteImage = () => {
-  const diaryImage = document.querySelector('#diary-image img');
-  diaryImage.onerror = null;
-  diaryImage.src = '../src/assets/image/noimage.jpg';
-  diaryImage.style.display = "inline";
-};
 </script>
 
 <style scoped></style>
