@@ -48,6 +48,8 @@
 <script setup>
 import { ref, reactive } from "vue";
 import DatePicker from "@/components/common/DatePicker.vue";
+import { localAxios } from "@/util/axios";
+import { dateFormatter } from "@/util/date/dateFormat";
 
 const valid = ref(false);
 
@@ -79,14 +81,18 @@ const changeTripEndDate = () => {
   }
 };
 
-const submitForm = () => {
-  alert("새 여행이 저장되었습니다!");
-  console.log({
-    tripName: formData.tripName,
-    startDate: formData.startDate.toISOString().split("T")[0], // 저장 시 문자열로 변환
-    endDate: formData.endDate.toISOString().split("T")[0], // 저장 시 문자열로 변환
-    diaryContent: formData.diaryContent,
-  });
+async function submitForm() {
+  try {
+    const payload = {
+      ...formData,
+      tripStartDate: dateFormatter(formData.tripStartDate),
+      tripEndDate: dateFormatter(formData.tripEndDate),
+    };
+    await localAxios().post("/trips", payload);
+    alert('저장되었습니다.');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const clearForm = () => {
