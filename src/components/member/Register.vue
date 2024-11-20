@@ -45,6 +45,7 @@
             v-model="member.memberPw"
             color="primary"
             label="비밀번호"
+            type="password"
             placeholder="비밀번호를 입력하세요."
             variant="underlined"
             :rules="[required]"
@@ -54,6 +55,7 @@
             v-model="member.passwordCheck"
             color="primary"
             label="비밀번호 확인"
+            type="password"
             placeholder="비밀번호를 다시 한번 입력하세요."
             variant="underlined"
             :rules="[required]"
@@ -97,6 +99,11 @@ function required(v) {
   return !!v || "필수 입력사항 입니다!";
 }
 async function registerProcess() {
+  if (member.value.memberPw !== member.value.passwordCheck) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
   postMember.value = {
     memberId: member.value.memberId,
     memberNickname: member.value.memberNickname,
