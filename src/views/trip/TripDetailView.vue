@@ -2,8 +2,10 @@
   <div id="div-trip-detail-top">
     <div class="wrapper">
       <TripDetailTitleItem :trip="trip" />
-      <MapItem :center="mapCenter" />
-      <div class="mx-1 py-3">
+      <template v-if="diaries.length > 0">
+        <MapItem :center="mapCenter" />
+      </template>
+      <div class="mx-1 pt-5 pb-3">
         <v-row class="d-flex justify-space-between">
           <span class="flex-1-0 align-self-center pl-5">
             <h1 class="font-weight-black text-center">여행 기록</h1>
