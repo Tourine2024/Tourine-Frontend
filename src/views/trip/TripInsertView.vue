@@ -20,7 +20,10 @@
           </v-col>
 
           <v-col cols="12">
-            <v-file-input v-model="thumbnailFile" label="사진 업로드" accept="image/*" outlined clearable show-size />
+            <v-file-input v-model="thumbnailImage" label="대표 사진" accept="image/*" @change="onChangeImage" @click:clear="clearImage" outlined clearable />
+            <template v-if="thumbnailImageUrl">
+              <v-img :src="thumbnailImageUrl" height="250px" />
+            </template>
           </v-col>
 
           <!-- 출발/도착 일자 -->
@@ -51,10 +54,13 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 import DatePicker from "@/components/common/DatePicker.vue";
-import { localAxios } from "@/util/axios";
 import { dateFormatter } from "@/util/date/dateFormat";
 import { uploadImage } from "@/api/image";
+import { insertTripInfo } from "@/api/trip";
+
+const router = useRouter();
 
 const valid = ref(false);
 
@@ -69,10 +75,30 @@ const formData = reactive({
   tripEndDate: today,
   memberNo: 1, // 이후 로그인한 멤버 번호로 수정 
 });
-const thumbnailFile = ref(null);
+const thumbnailImage = ref(null);
+const thumbnailImageUrl = ref(null);
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
+};
+
+const createImage = (file) => {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    thumbnailImageUrl.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+const onChangeImage = () => {
+  console.log(thumbnailImage.value);
+  if (thumbnailImage.value) createImage(thumbnailImage.value);
+  else thumbnailImageUrl.value = null;
+};
+
+const clearImage = () => {
+  thumbnailImage.value = null;
+  thumbnailImageUrl.value = null;
 };
 
 const changeTripStartDate = () => {
@@ -89,17 +115,19 @@ const changeTripEndDate = () => {
 
 async function submitForm() {
   try {
-    if (thumbnailFile.value != null) {
-      formData.tripThumbnailUrl = await uploadImage(thumbnailFile.value);
+    if (thumbnailImage.value != null) {
+      formData.tripThumbnailUrl = await uploadImage(thumbnailImage.value);
     }
+
     const payload = {
       ...formData,
       tripStartDate: dateFormatter(formData.tripStartDate),
       tripEndDate: dateFormatter(formData.tripEndDate),
     };
-    await localAxios().post("/trips", payload);
+
+    insertTripInfo(payload);
     alert('저장되었습니다.');
-    location.href = "../trips";
+    router.push({ name: `trips` });
   } catch (error) {
     console.error(error);
   }
@@ -111,7 +139,7 @@ const clearForm = () => {
   formData.tripThumbnailUrl = null;
   formData.tripStartDate = today;
   formData.tripEndDate = today;
-  thumbnailFile.value = null;
+  thumbnailImage.value = null;
 };
 </script>
 
