@@ -39,7 +39,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn :to="{ name: 'home' }" class="loginBtn">로그인</v-btn>
+        <v-btn class="loginBtn" @click="loginProcess">로그인</v-btn>
       </v-card-actions>
       <v-card-actions class="registerInform"
         ><span class="inform">가입된 계정이 없으신가요?</span>
@@ -49,36 +49,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { loginMember } from "@/api/member";
 import CarouselImage from "@/components/common/CarouselImage.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  components: {
-    CarouselImage,
-  },
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      first: null,
-      email: null,
-      password: null,
-      passwordCheck: null,
-    };
-  },
-  methods: {
-    required(v) {
-      return !!v || "Field is required";
-    },
-    closeModal() {
-      this.localShowDialog = false; // 모달 닫기
-    },
-  },
-};
+const router = useRouter();
+
+const id = ref("");
+const password = ref("");
+
+function required(v) {
+  return !!v || "필수 입력사항 입니다!";
+}
+async function loginProcess() {
+  await loginMember(id.value, password.value);
+  router.push({ name: "home" });
+}
 </script>
 
 <style scoped>

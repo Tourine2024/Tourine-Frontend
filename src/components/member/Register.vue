@@ -18,7 +18,7 @@
           <span>or</span>
 
           <v-text-field
-            v-model="id"
+            v-model="member.memberId"
             color="primary"
             label="아이디"
             variant="underlined"
@@ -26,7 +26,7 @@
           ></v-text-field>
 
           <v-text-field
-            v-model="nickname"
+            v-model="member.memberNickname"
             color="primary"
             label="이름"
             variant="underlined"
@@ -34,7 +34,7 @@
           ></v-text-field>
 
           <v-text-field
-            v-model="email"
+            v-model="member.memberEmail"
             color="primary"
             label="이메일"
             variant="underlined"
@@ -42,18 +42,20 @@
           ></v-text-field>
 
           <v-text-field
-            v-model="password"
+            v-model="member.memberPw"
             color="primary"
             label="비밀번호"
+            type="password"
             placeholder="비밀번호를 입력하세요."
             variant="underlined"
             :rules="[required]"
           ></v-text-field>
 
           <v-text-field
-            v-model="passwordCheck"
+            v-model="member.passwordCheck"
             color="primary"
             label="비밀번호 확인"
+            type="password"
             placeholder="비밀번호를 다시 한번 입력하세요."
             variant="underlined"
             :rules="[required]"
@@ -64,43 +66,54 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn :to="{ name: 'login' }" class="registerBtn">회원가입</v-btn>
+        <v-btn @click="registerProcess" class="registerBtn">회원가입</v-btn>
       </v-card-actions>
     </v-card>
   </div>
 </template>
 
-<script>
+<script setup>
+import { registerMember } from "@/api/member";
 import CarouselImage from "@/components/common/CarouselImage.vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  components: {
-    CarouselImage,
-  },
-  props: {
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      id: null,
-      nickname: null,
-      email: null,
-      password: null,
-      passwordCheck: null,
-    };
-  },
-  methods: {
-    required(v) {
-      return !!v || "Field is required";
-    },
-    closeModal() {
-      this.localShowDialog = false; // 모달 닫기
-    },
-  },
-};
+const router = useRouter();
+
+const member = ref({
+  memberId: "",
+  memberNickname: "",
+  memberPw: "",
+  memberEmail: "",
+  passwordCheck: "",
+});
+
+const postMember = ref({
+  memberId: "",
+  memberNickname: "",
+  memberPw: "",
+  memberEmail: "",
+});
+
+function required(v) {
+  return !!v || "필수 입력사항 입니다!";
+}
+async function registerProcess() {
+  if (member.value.memberPw !== member.value.passwordCheck) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
+  postMember.value = {
+    memberId: member.value.memberId,
+    memberNickname: member.value.memberNickname,
+    memberPw: member.value.memberPw,
+    memberEmail: member.value.memberEmail,
+  };
+
+  await registerMember(postMember.value);
+  router.push({ name: "login" });
+}
 </script>
 
 <style scoped>

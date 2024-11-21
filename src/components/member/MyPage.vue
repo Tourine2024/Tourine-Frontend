@@ -6,37 +6,56 @@
         src="@/assets/image/mypage/profileBackground.svg"
         alt="Profile Background"
       />
-      <img class="profileImage" src="@/assets/image/profile/profile_1.svg" alt="Profile Image" />
+      <img
+        class="profileImage"
+        :src="
+          member.memberProfilePicUrl || 'src/assets/image/profile/profile_1.svg'
+        "
+        alt="Profile Image"
+      />
     </div>
     <div class="personalInfo">
       <div class="title">
         <h1>Personal Info</h1>
-        <button class="withdraw">회원 탈퇴</button>
+        <button @click="withdrawMember" class="withdraw">회원 탈퇴</button>
       </div>
       <v-row>
         <v-col cols="6">
-          <img class="imageUpload" src="@/assets/image/profile/profile_1.svg" alt="Profile Image" />
+          <img
+            class="imageUpload"
+            :src="
+              member.memberProfilePicUrl ||
+              'src/assets/image/profile/profile_1.svg'
+            "
+            alt="Profile Image"
+          />
+
           <div class="inputGroup">
             <label for="joinDate">가입 날짜</label>
-            <input type="date" id="joinDate" v-model="user.joinDate" />
+            <input
+              readonly
+              type="text"
+              id="joinDate"
+              v-model="member.memberJoinDatetime"
+            />
           </div>
         </v-col>
         <v-col cols="6">
           <div class="inputGroup">
-            <label for="id">ID</label>
-            <input type="text" id="id" v-model="user.id" disabled />
+            <label for="id">아이디</label>
+            <input type="text" id="id" v-model="member.memberId" disabled />
           </div>
           <div class="inputGroup">
-            <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" v-model="user.nickname" />
+            <label for="nickname">닉네임</label>
+            <input type="text" id="nickname" v-model="member.memberNickname" />
           </div>
           <div class="inputGroup">
             <label for="password">비밀번호</label>
-            <input type="password" id="password" v-model="user.password" />
+            <input type="password" id="password" v-model="member.memberPw" />
           </div>
           <div class="inputGroup">
             <label for="email">이메일</label>
-            <input type="email" id="email" v-model="user.email" />
+            <input type="email" id="email" v-model="member.memberEmail" />
           </div>
         </v-col>
       </v-row>
@@ -49,22 +68,52 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { getMemberInfo, updateMember, deleteMember } from "@/api/member.js";
+import { formatDate } from "@/util/dateFormat.js";
+import { useRouter } from "vue-router";
 
-const user = ref({
-  id: "ssafy",
-  nickname: "sseung",
-  password: "",
-  email: "ssafy@ssafy.com",
-  joinDate: "2024-11-01",
+const router = useRouter();
+
+const member = ref({
+  memberProfilePicUrl: "",
+  memberId: "",
+  memberNickname: "",
+  memberPw: "",
+  memberEmail: "",
+  memberJoinDatetime: "",
 });
 
-const updateProfile = () => {
-  // 프로필 수정 로직
+onMounted(async () => {
+  try {
+    getUserProfile();
+  } catch (error) {
+    console.error("Failed to load member info:", error);
+  }
+});
+
+const getUserProfile = async () => {
+  const data = await getMemberInfo();
+  data.memberJoinDatetime = formatDate(data.memberJoinDatetime);
+  member.value = data;
+};
+
+const updateProfile = async () => {
+  member.value.memberProfilePicUrl = "src/assets/image/profile/profile_1.svg";
+  const data = await updateMember(member.value);
+  getUserProfile();
 };
 
 const cancelUpdate = () => {
-  // 취소 로직
+  //변경사항 초기화
+  getUserProfile();
+};
+
+const withdrawMember = async () => {
+  if (confirm("정말 탈퇴하시겠습니까?")) {
+    await deleteMember();
+    router.push({ name: "login" });
+  }
 };
 </script>
 
@@ -88,11 +137,12 @@ const cancelUpdate = () => {
 }
 
 .profileBackground {
+  position: relative;
   width: 90%;
   height: auto;
   display: block;
   margin: 0 auto;
-  z-index: 5;
+  z-index: 10;
 }
 
 .profileImage {
@@ -102,7 +152,7 @@ const cancelUpdate = () => {
   transform: translateX(-50%);
   width: 90%;
   height: 80%;
-  z-index: 10;
+  z-index: 5;
 }
 
 .imageUpload {

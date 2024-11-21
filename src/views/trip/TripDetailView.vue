@@ -28,14 +28,14 @@
           </span>
         </v-row>
         <template v-if="btnText === 'order-by-date'">
-          <template v-for="(tripDate, key) in tripDates" :key="key">
+          <div v-for="(tripDate, key) in tripDates" :key="key">
             <DiariesByDayItem
               :dayCnt="++dayCnt"
               :tripNo="trip.tripNo"
               :tripDate="tripDate"
               :diaries="getDiariesByDate(tripDate)"
             />
-          </template>
+          </div>
         </template>
         <template v-if="btnText === 'order-by-location'"> </template>
       </div>
