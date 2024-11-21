@@ -8,7 +8,7 @@
           <v-card-text>
             {{ trip.tripSummary }}
           </v-card-text>
-          <v-btn @click="summarizeTrip()" class="md-3 ml-4" rounded="xl" color="blue"
+          <v-btn @click="drawPostCard(trip.tripNo)" class="md-3 ml-4" rounded="xl" color="blue"
             >AI 요약하기+</v-btn
           >
           <v-btn class="md-3 ml-4" rounded="xl" color="blue">수정하기</v-btn>
@@ -39,7 +39,7 @@
 
 <script setup>
 import { DEFAULT_IMAGE_PATH } from "@/api/image";
-import { summarizeTrip } from "@/api/openAI.js";
+import { drawPostCard, summarizeTrip } from "@/api/openAI.js";
 
 defineProps({
   trip: {
