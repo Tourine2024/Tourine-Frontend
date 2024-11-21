@@ -26,7 +26,7 @@
 
           <!-- 지도 (위치 정보 입력) -->
           <v-col cols="6">
-            <v-text-field class="pt-5" v-model="formData.location" label="장소 검색" outlined clearable />
+            <v-combobox label="장소 검색" v-model="locationQuery" :items="locationItems" @keyup="sendQueryToGoogle" menu="true"></v-combobox>
           </v-col>
           <v-col cols="6" class="mt-0">
             <MapItem :center="mapCenter" :markers="[mapCenter]"></MapItem>
@@ -53,9 +53,26 @@
 import { ref, reactive } from "vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
+import { getLocationList } from "@/api/google";
 
 const form = ref(null);
 const valid = ref(false);
+
+const mapCenter = { lat: 37.5665, lng: 126.978 };
+const locationQuery = ref("");
+const mapSearchResults = reactive([]);
+const locationItems = reactive([]);
+
+async function sendQueryToGoogle() {
+  mapSearchResults.length = 0;
+  locationItems.length = 0;
+  const locationList = await getLocationList(locationQuery.value);
+  locationList.forEach((location) => {
+    mapSearchResults.push(location.Eg);
+    locationItems.push(location.Eg.displayName);
+  });
+  console.log(mapSearchResults, locationItems);
+}
 
 const today = new Date();
 const formData = reactive({
