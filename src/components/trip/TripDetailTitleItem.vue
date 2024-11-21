@@ -8,14 +8,28 @@
           <v-card-text>
             {{ trip.tripSummary }}
           </v-card-text>
-          <v-btn class="md-3 ml-4" rounded="xl" color="blue">AI 요약하기+</v-btn>
+          <v-btn @click="summarizeTrip()" class="md-3 ml-4" rounded="xl" color="blue"
+            >AI 요약하기+</v-btn
+          >
           <v-btn class="md-3 ml-4" rounded="xl" color="blue">수정하기</v-btn>
         </v-card>
       </v-col>
       <v-col class="text-xs-center" align="center">
-        <v-img :src="trip.tripThumbnailUrl" class="md-2 rounded-circle" width="250px" height="250px" cover>
+        <v-img
+          :src="trip.tripThumbnailUrl"
+          class="md-2 rounded-circle"
+          width="250px"
+          height="250px"
+          cover
+        >
           <template v-slot:error>
-            <v-img :src="DEFAULT_IMAGE_PATH" class="md-2 rounded-circle" width="250px" height="250px" cover></v-img>
+            <v-img
+              :src="DEFAULT_IMAGE_PATH"
+              class="md-2 rounded-circle"
+              width="250px"
+              height="250px"
+              cover
+            ></v-img>
           </template>
         </v-img>
       </v-col>
@@ -25,6 +39,7 @@
 
 <script setup>
 import { DEFAULT_IMAGE_PATH } from "@/api/image";
+import { summarizeTrip } from "@/api/openAI.js";
 
 defineProps({
   trip: {
