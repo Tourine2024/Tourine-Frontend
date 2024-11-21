@@ -60,7 +60,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getMemberInfo, updateMember, deleteMember } from "@/api/member.js";
-import { formatDate } from "@/util/dateFormat.js";
+import { dateFormatter } from "@/util/date/dateFormat.js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -84,7 +84,7 @@ onMounted(async () => {
 
 const getUserProfile = async () => {
   const data = await getMemberInfo();
-  data.memberJoinDatetime = formatDate(data.memberJoinDatetime);
+  data.memberJoinDatetime = dateFormatter(new Date(data.memberJoinDatetime));
   member.value = data;
 };
 
