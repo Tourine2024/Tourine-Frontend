@@ -45,25 +45,3 @@ export const deleteTripInfo = async (tripNo) => {
     console.error(err);
   }
 }
-
-//여행일기 전체 목록
-export const getDiaryLists = async (tripNo) => {
-  try {
-    const { data } = await localAxios.get(`/trips/${tripNo}/diaries`);
-    return data;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-};
-
-//여행지 위치 조회
-export const getAttractLocation = async (locationNo) => {
-  try {
-    const { data } = await localAxios.get(`/locations/${locationNo}`);
-    return data;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-};

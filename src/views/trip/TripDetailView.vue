@@ -33,7 +33,9 @@ import TripDetailTitleItem from "@/components/trip/TripDetailTitleItem.vue";
 import MapItem from "@/components/common/MapItem.vue";
 import DiariesByDayItem from "@/components/diary/DiariesByDayItem.vue";
 import { dateFormatter } from "@/util/date/dateFormat";
-import { getTripInfo, getDiaryLists, getAttractLocation } from "@/api/trip";
+import { getTripInfo } from "@/api/trip";
+import { getDiaryLists } from "@/api/diary";
+import { getLocationInfo } from "@/api/location";
 
 import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
@@ -70,7 +72,7 @@ async function getDiaries() {
 
 async function getLocation(locationNo) {
   try {
-    const response = await getAttractLocation(locationNo);
+    const response = await getLocationInfo(locationNo);
     mapCenter.value = {
       lat: response.locationLatitude,
       lng: response.locationLongitude,
