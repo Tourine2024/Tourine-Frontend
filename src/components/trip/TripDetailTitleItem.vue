@@ -25,6 +25,7 @@
 
 <script setup>
 import { DEFAULT_IMAGE_PATH } from "@/api/image";
+import { summarizeTrip } from "@/api/openAI.js";
 
 defineProps({
   trip: {

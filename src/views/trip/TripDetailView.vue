@@ -18,9 +18,9 @@
           </span>
         </v-row>
         <template v-if="btnText === 'order-by-date'">
-          <template v-for="(tripDate, key) in tripDates" :key="key">
+          <div v-for="(tripDate, key) in tripDates" :key="key">
             <DiariesByDayItem :dayCnt="++dayCnt" :tripNo="trip.tripNo" :tripDate="tripDate" :diaries="getDiariesByDate(tripDate)" />
-          </template>
+          </div>
         </template>
         <template v-if="btnText === 'order-by-location'"> </template>
       </div>
@@ -33,8 +33,7 @@ import TripDetailTitleItem from "@/components/trip/TripDetailTitleItem.vue";
 import MapItem from "@/components/common/MapItem.vue";
 import DiariesByDayItem from "@/components/diary/DiariesByDayItem.vue";
 import { dateFormatter } from "@/util/date/dateFormat";
-import { localAxios } from "@/util/axios";
-import { getTrip } from "@/api/trip";
+import { getTripInfo, getDiaryLists, getAttractLocation } from "@/api/trip";
 
 import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
@@ -47,7 +46,17 @@ const tripDates = reactive([]);
 const mapCenter = ref({});
 const btnText = ref("order-by-date");
 
-async function getDiaryDates() {
+async function setTrip() {
+  try {
+    const response = await getTripInfo(route.params.tripNo);
+    trip.value = response;
+    setDiaryDates();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function setDiaryDates() {
   let tmpDate = new Date(trip.value.tripStartDate);
   let endDate = new Date(trip.value.tripEndDate);
   while (tmpDate <= endDate) {
@@ -59,8 +68,8 @@ async function getDiaryDates() {
 
 async function getDiaries() {
   try {
-    const response = await localAxios.get("/trips/" + route.params.tripNo + "/diaries");
-    diaries.value = response.data;
+    const response = await getDiaryLists(route.params.tripNo);
+    diaries.value = response;
     if (diaries.value.length > 0) {
       getLocation(diaries.value[0].locationNo);
     }
@@ -71,10 +80,10 @@ async function getDiaries() {
 
 async function getLocation(locationNo) {
   try {
-    const response = await localAxios.get("/locations/" + locationNo);
+    const response = await getAttractLocation(locationNo);
     mapCenter.value = {
-      lat: response.data.locationLatitude,
-      lng: response.data.locationLongitude,
+      lat: response.locationLatitude,
+      lng: response.locationLongitude,
     };
   } catch (error) {
     console.error(error);
