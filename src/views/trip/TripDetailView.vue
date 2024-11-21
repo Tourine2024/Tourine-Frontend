@@ -46,17 +46,7 @@ const tripDates = reactive([]);
 const mapCenter = ref({});
 const btnText = ref("order-by-date");
 
-async function setTrip() {
-  try {
-    const response = await getTripInfo(route.params.tripNo);
-    trip.value = response;
-    setDiaryDates();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function setDiaryDates() {
+async function getDiaryDates() {
   let tmpDate = new Date(trip.value.tripStartDate);
   let endDate = new Date(trip.value.tripEndDate);
   while (tmpDate <= endDate) {
@@ -97,7 +87,7 @@ function getDiariesByDate(tripDate) {
 }
 
 onMounted(async () => {
-  const data = await getTrip(route.params.tripNo);
+  const data = await getTripInfo(route.params.tripNo);
   Object.assign(trip.value, data);
   getDiaryDates();
   getDiaries();
