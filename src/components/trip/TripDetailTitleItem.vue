@@ -9,7 +9,7 @@
             {{ trip.tripSummary }}
           </v-card-text>
           <v-btn class="md-3 ml-4" rounded="xl" color="blue">AI 요약하기+</v-btn>
-          <v-btn class="md-3 ml-4" rounded="xl" color="blue">수정하기</v-btn>
+          <v-btn class="md-3 ml-4" rounded="xl" color="blue" :to="{ name: 'tripModify', params: { tripNo: trip.tripNo } }">수정하기</v-btn>
         </v-card>
       </v-col>
       <v-col class="text-xs-center" align="center">

@@ -1,0 +1,146 @@
+<template>
+  <div class="container pt-5">
+    <!-- 상단 제목 -->
+    <v-row justify="center" class="mb-4">
+      <h1 class="text-center font-weight-bold">여행 수정하기</h1>
+    </v-row>
+
+    <!-- 입력 폼 -->
+    <v-sheet class="pa-5" color="white">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-row>
+          <!-- 이름 -->
+          <v-col cols="12">
+            <v-text-field v-model="formData.tripName" label="여행 이름" required outlined clearable :rules="[rules.required]" />
+          </v-col>
+
+          <!-- 요약 -->
+          <v-col cols="12">
+            <v-textarea v-model="formData.tripSummary" label="여행 요약" outlined auto-grow rows="5" placeholder="여행에 대한 간략한 설명을 적어주세요..." clearable />
+          </v-col>
+
+          <v-col cols="12">
+            <v-file-input v-model="thumbnailFile" label="사진 업로드" accept="image/*" outlined clearable show-size />
+          </v-col>
+
+          <!-- 출발/도착 일자 -->
+          <v-col cols="6">
+            <h3>출발 일자</h3>
+            <v-locale-provider locale="ko">
+              <DatePicker show-adjacent-months v-model="formData.tripStartDate" :rules="[rules.required]" @click="changeTripStartDate" outlined :hide-header="true" />
+            </v-locale-provider>
+          </v-col>
+          <v-col cols="6">
+            <h3>도착 일자</h3>
+            <v-locale-provider locale="ko">
+              <DatePicker show-adjacent-months v-model="formData.tripEndDate" :rules="[rules.required]" @click="changeTripEndDate" outlined :hide-header="true" />
+            </v-locale-provider>
+          </v-col>
+        </v-row>
+
+        <!-- 저장 버튼 -->
+        <v-row class="mb-5 mp-5" justify="center">
+          <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
+          <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
+          <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
+        </v-row>
+      </v-form>
+    </v-sheet>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import DatePicker from "@/components/common/DatePicker.vue";
+import { localAxios } from "@/util/axios";
+import { dateFormatter } from "@/util/date/dateFormat";
+import { uploadImage } from "@/api/image";
+import { useRoute } from "vue-router";
+import { getTrip } from "@/api/trip";
+
+const route = useRoute();
+
+const valid = ref(false);
+
+// 오늘 날짜 계산
+const today = new Date();
+
+const formData = ref({
+  tripName: "",
+  tripSummary: null,
+  tripThumbnailUrl: null, // 업로드된 이미지 파일 URL
+  tripStartDate: today,
+  tripEndDate: today,
+  memberNo: 1, // 이후 로그인한 멤버 번호로 수정 
+});
+const thumbnailFile = ref(null);
+
+onMounted(async () => {
+  const data = await getTrip(route.params.tripNo);
+  Object.assign(formData.value, data);
+  formData.value.tripStartDate = new Date(formData.value.tripStartDate);
+  formData.value.tripEndDate = new Date(formData.value.tripEndDate);
+});
+
+const rules = {
+  required: (value) => !!value || "필수 입력 항목입니다.",
+};
+
+const changeTripStartDate = () => {
+  if (formData.tripStartDate > formData.tripEndDate) {
+    formData.tripEndDate = formData.tripStartDate;
+  }
+};
+
+const changeTripEndDate = () => {
+  if (formData.tripStartDate > formData.tripEndDate) {
+    formData.tripStartDate = formData.tripEndDate;
+  }
+};
+
+async function submitForm() {
+  try {
+    if (thumbnailFile.value != null) {
+      formData.tripThumbnailUrl = await uploadImage(thumbnailFile.value);
+    }
+    const payload = {
+      ...formData,
+      tripStartDate: dateFormatter(formData.tripStartDate),
+      tripEndDate: dateFormatter(formData.tripEndDate),
+    };
+    await localAxios.post("/trips", payload);
+    alert('저장되었습니다.');
+    location.href = "../trips";
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const clearForm = () => {
+  formData.tripName = "";
+  formData.tripSummary = null;
+  formData.tripThumbnailUrl = null;
+  formData.tripStartDate = today;
+  formData.tripEndDate = today;
+  thumbnailFile.value = null;
+};
+</script>
+
+<style scoped>
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.container {
+  background-color: #cfedfe;
+  height: 100%;
+  padding-bottom: 110px;
+}
+
+.v-sheet {
+  border-radius: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+</style>
