@@ -10,13 +10,16 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { ref, onMounted } from "vue";
 
 const editor = ref();
+
+const previewStyle = window.innerWidth > 1000 ? "vertical" : "tab";
+
 onMounted(() => {
   const editorInstance = new Editor({
     el: editor.value,
     height: "500px",
-    placeholder: "Please input your description",
-    initialEditType: "wysiwyg",
-    previewStyle: "vertical",
+    placeholder: "여행 기록을 적어주세요!",
+    initialEditType: "markdown",
+    previewStyle: previewStyle,
     hideModeSwitch: true,
     linkAttributes: {
       target: "_blank",
@@ -24,7 +27,10 @@ onMounted(() => {
     },
     toolbarItems: [["heading", "bold"], ["hr"], ["ul"], ["image", "link"]],
     hooks: {
-      addImageBlobHook: (blob: Blob, callback: (arg0: string, arg1: string) => void) => {
+      addImageBlobHook: (
+        blob: Blob,
+        callback: (arg0: string, arg1: string) => void
+      ) => {
         if (blob.size > 100 * 1024) {
           // 100KB
           alert("The image must be under 100KB.");

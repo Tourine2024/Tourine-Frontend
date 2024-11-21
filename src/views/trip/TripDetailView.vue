@@ -23,7 +23,10 @@
                 height="40px"
                 >장소별 기록 보기</v-btn
               >
-              <v-btn class="rounded-t-lg px-3 align-self-end" value="order-by-date" height="40px"
+              <v-btn
+                class="rounded-t-lg px-3 align-self-end"
+                value="order-by-date"
+                height="40px"
                 >날짜별 기록 보기</v-btn
               >
             </v-btn-toggle>
@@ -52,7 +55,7 @@ import DiariesByDayItem from "@/components/diary/DiariesByDayItem.vue";
 import { dateFormatter } from "@/util/date/dateFormat";
 import { getTripInfo, getDiaryLists, getAttractLocation } from "@/api/trip";
 
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -62,6 +65,11 @@ const diaries = ref([]);
 const tripDates = reactive([]);
 const mapCenter = ref({});
 const btnText = ref("order-by-date");
+
+onMounted(() => {
+  setTrip();
+  setDiaries();
+});
 
 async function setTrip() {
   try {
@@ -112,9 +120,6 @@ function getDiariesByDate(tripDate) {
   if (tripDate === trip.value.tripEndDate) dayCnt = 0;
   return diaries.value.filter((diary) => diary.diaryDate === tripDate);
 }
-
-setTrip();
-setDiaries();
 </script>
 
 <style scoped>

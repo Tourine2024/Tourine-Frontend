@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import AboutView from "../views/MyPageView.vue";
 import HomeView from "@/views/HomeView.vue";
 import LandingView from "@/views/landing/LandingView.vue";
 import LoginView from "@/views/member/LoginView.vue";
@@ -53,14 +52,16 @@ const router = createRouter({
       component: () => import("@/views/trip/TripDetailView.vue"),
     },
     {
-      path: "/trip/:tripNo/diary/new",
+      path: "/trip/:tripNo/diary/new/:tripDate",
       name: "diaryNew",
       component: () => import("@/views/diary/DiaryInsertView.vue"),
+      props: true,
     },
     {
       path: "/trip/:tripNo/diary/:diaryNo",
       name: "diaryDetail",
       component: () => import("@/views/diary/DiaryDetailView.vue"),
+      props: true,
     },
   ],
 });
