@@ -4,9 +4,7 @@
       <!-- 제목 섹션 -->
       <v-row align="center" justify="space-between" class="mx-5">
         <h1 class="title">나의 여행</h1>
-        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }">
-          새 여행 만들기
-        </v-btn>
+        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }"> 새 여행 만들기 </v-btn>
       </v-row>
 
       <!-- 여행 리스트 -->
@@ -18,7 +16,7 @@
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
-        <v-btn class="my-3" rounded="xl" color="blue" @click="getTrips">Load more</v-btn>
+        <v-btn v-if="showButton" class="my-3" rounded="xl" color="blue" @click="getTrips">Load more</v-btn>
       </div>
     </div>
   </div>
@@ -31,16 +29,18 @@ import { RouterLink } from "vue-router";
 import { getTripLists } from "@/api/trip";
 
 const trips = ref([]);
-const tripsTotalCnt = ref(0);
+const showButton = ref(true);
+let pageNo = 1;
 
 async function getTrips() {
   try {
-    const cnt = parseInt(trips.value.length / 5);
-    const data = await getTripLists(cnt);
-    trips.value.push(...data);
-    // const response = await localAxios().get("/trips?pageNo=" + cnt);
-    // trips.value.push(...response.data);
-    console.log("Trips fetched successfully:", trips.value);
+    const response = await localAxios().get("/trips?pageNo=" + pageNo++);
+    trips.value.push(...response.data);
+
+    const moreResponse = await localAxios().get("/trips?pageNo=" + pageNo);
+    if (moreResponse.data.length == 0) {
+      showButton.value = false;
+    }
   } catch (error) {
     console.error("Error fetching trips:", error);
   }
