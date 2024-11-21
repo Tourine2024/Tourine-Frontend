@@ -34,8 +34,9 @@ import MapItem from "@/components/common/MapItem.vue";
 import DiariesByDayItem from "@/components/diary/DiariesByDayItem.vue";
 import { dateFormatter } from "@/util/date/dateFormat";
 import { localAxios } from "@/util/axios";
+import { getTrip } from "@/api/trip";
 
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -46,17 +47,7 @@ const tripDates = reactive([]);
 const mapCenter = ref({});
 const btnText = ref("order-by-date");
 
-async function setTrip() {
-  try {
-    const response = await localAxios().get("/trips/" + route.params.tripNo);
-    trip.value = response.data;
-    setDiaryDates();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function setDiaryDates() {
+async function getDiaryDates() {
   let tmpDate = new Date(trip.value.tripStartDate);
   let endDate = new Date(trip.value.tripEndDate);
   while (tmpDate <= endDate) {
@@ -66,21 +57,21 @@ async function setDiaryDates() {
   }
 }
 
-async function setDiaries() {
+async function getDiaries() {
   try {
-    const response = await localAxios().get("/trips/" + route.params.tripNo + "/diaries");
+    const response = await localAxios.get("/trips/" + route.params.tripNo + "/diaries");
     diaries.value = response.data;
     if (diaries.value.length > 0) {
-      setLocation(diaries.value[0].locationNo);
+      getLocation(diaries.value[0].locationNo);
     }
   } catch (error) {
     console.error(error);
   }
 }
 
-async function setLocation(locationNo) {
+async function getLocation(locationNo) {
   try {
-    const response = await localAxios().get("/locations/" + locationNo);
+    const response = await localAxios.get("/locations/" + locationNo);
     mapCenter.value = {
       lat: response.data.locationLatitude,
       lng: response.data.locationLongitude,
@@ -96,8 +87,12 @@ function getDiariesByDate(tripDate) {
   return diaries.value.filter((diary) => diary.diaryDate === tripDate);
 }
 
-setTrip();
-setDiaries();
+onMounted(async () => {
+  const data = await getTrip(route.params.tripNo);
+  Object.assign(trip.value, data);
+  getDiaryDates();
+  getDiaries();
+});
 </script>
 
 <style scoped>
