@@ -3,12 +3,18 @@
     <v-row align="start">
       <v-col cols="6">
         <v-card variant="text">
-          <v-card-subtitle>{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle>
+          <v-card-subtitle
+            >{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle
+          >
           <h1 class="font-weight-black ml-4">{{ trip.tripName }}</h1>
           <v-card-text>
             {{ trip.tripSummary }}
           </v-card-text>
-          <v-btn @click="drawPostCard(trip.tripNo)" class="md-3 ml-4" rounded="xl" color="blue"
+          <v-btn
+            @click="drawPostCard(trip.tripNo)"
+            class="md-3 ml-4"
+            rounded="xl"
+            color="blue"
             >AI 요약하기+</v-btn
           >
           <v-btn class="md-3 ml-4" rounded="xl" color="blue">수정하기</v-btn>

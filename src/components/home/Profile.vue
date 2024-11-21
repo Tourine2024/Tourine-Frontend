@@ -6,6 +6,7 @@
     <p>김싸피 님, 어서오세요!</p>
   </div>
 </template>
+
 <style scoped>
 .profile {
   position: relative;
@@ -17,6 +18,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   text-align: center;
 }
