@@ -88,7 +88,6 @@ const thumbnailImageUrl = ref(null);
 
 onMounted(async () => {
   const data = await getTripInfo(tripNo);
-  console.log(data);
   Object.assign(formData, data);
   formData.tripStartDate = new Date(formData.tripStartDate);
   formData.tripEndDate = new Date(formData.tripEndDate);

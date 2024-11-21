@@ -3,7 +3,7 @@
     <div class="wrapper">
       <TripDetailTitleItem :trip="trip" />
       <template v-if="diaries.length > 0">
-        <MapItem :center="mapCenter" />
+        <MapItem :center="mapCenter" :markers="markers" />
       </template>
       <div class="mx-1 pt-5 pb-3">
         <v-row class="d-flex justify-space-between">
@@ -45,7 +45,8 @@ const route = useRoute();
 const trip = ref({});
 const diaries = ref([]);
 const tripDates = reactive([]);
-const mapCenter = ref({});
+const mapCenter = ref({ lat: 0.0, lng: 0.0 });
+const markers = reactive([]);
 const btnText = ref("order-by-date");
 
 async function getDiaryDates() {
@@ -63,17 +64,34 @@ async function getDiaries() {
     const response = await getDiaryLists(route.params.tripNo);
     diaries.value = response;
     if (diaries.value.length > 0) {
-      getLocation(diaries.value[0].locationNo);
+      mapCenter.value = await getLocation(diaries.value[0].locationNo);
     }
+    getMarkers();
   } catch (error) {
     console.error(error);
   }
 }
 
+async function getMarkers() {
+  diaries.value.forEach((diary) => {
+    const locationData = getMarkerByDiary(diary.locationNo);
+    console.log(locationData);
+    markers.push({
+      lat: locationData.lat,
+      lng: locationData.lng,
+    });
+  });
+  console.log('markers', markers);
+}
+
+async function getMarkerByDiary(locationNo) {
+  return getLocation(locationNo);
+}
+
 async function getLocation(locationNo) {
   try {
     const response = await getLocationInfo(locationNo);
-    mapCenter.value = {
+    return {
       lat: response.locationLatitude,
       lng: response.locationLongitude,
     };
