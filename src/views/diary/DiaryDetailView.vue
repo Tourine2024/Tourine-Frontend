@@ -47,7 +47,7 @@
         <v-card>
           <v-card-title class="headline">지도 보기</v-card-title>
           <v-card-text>
-            <MapItem :center="mapCenter" :markers="[...mapCenter]" />
+            <MapItem :center="mapCenter" :markers="[mapCenter]" />
           </v-card-text>
           <v-card-actions>
             <v-btn color="primary" text @click="showMapDialog = false">닫기</v-btn>

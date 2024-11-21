@@ -66,7 +66,7 @@ async function getDiaries() {
     if (diaries.value.length > 0) {
       mapCenter.value = await getLocation(diaries.value[0].locationNo);
     }
-    getMarkers();
+    const _ = await getMarkers();
   } catch (error) {
     console.error(error);
   }
@@ -74,18 +74,13 @@ async function getDiaries() {
 
 async function getMarkers() {
   diaries.value.forEach((diary) => {
-    const locationData = getMarkerByDiary(diary.locationNo);
-    console.log(locationData);
-    markers.push({
-      lat: locationData.lat,
-      lng: locationData.lng,
-    });
+    getMarkerByDiary(diary.locationNo);
   });
-  console.log('markers', markers);
 }
 
 async function getMarkerByDiary(locationNo) {
-  return getLocation(locationNo);
+  const locationLatLng = await getLocation(locationNo);
+  markers.push(locationLatLng);
 }
 
 async function getLocation(locationNo) {
