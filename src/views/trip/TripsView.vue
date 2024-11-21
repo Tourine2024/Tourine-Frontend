@@ -8,11 +8,11 @@
       </v-row>
 
       <!-- 여행 리스트 -->
-      <template v-for="(trip, key) in trips" :key="key">
+      <div v-for="(trip, key) in trips" :key="key">
         <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
           <TripItem :trip="trip" />
         </RouterLink>
-      </template>
+      </div>
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
@@ -26,7 +26,7 @@
 import TripItem from "@/components/trip/TripItem.vue";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import { localAxios } from "@/util/axios";
+import { getTripLists } from "@/api/trip";
 
 const trips = ref([]);
 const showButton = ref(true);
