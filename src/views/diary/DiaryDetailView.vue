@@ -2,10 +2,7 @@
   <div class="container">
     <!-- 상단 버튼 섹션 -->
     <div class="button-row mx-10" justify="space-between" align="center">
-      <v-btn
-        prepend-icon="mdi-arrow-u-left-top"
-        :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }"
-      >
+      <v-btn prepend-icon="mdi-arrow-u-left-top" :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }">
         여행으로 돌아가기
       </v-btn>
       <div>
@@ -21,13 +18,10 @@
           <div class="text-subtitle-1 mb-3">{{ diary.diaryDate }} {{ diary.diaryTime }}</div>
           <div class="clickable-icon" @click="showMapDialog = true">
             <v-icon icon="mdi-map-marker" />
-            {{ locationName }}
+            {{ location.locationName }}
           </div>
         </v-col>
       </div>
-
-      <!-- 지도 섹션 -->
-      <!-- <MapItem class="mb-5" :center="mapCenter" /> -->
 
       <!-- 내용 섹션 -->
       <v-row class="mx-1 mb-3">
@@ -65,29 +59,30 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import MapItem from "@/components/common/MapItem.vue";
+import { getDiaryInfo } from "@/api/diary";
+import { getLocationInfo } from "@/api/location";
 
-const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
+const route = useRoute();
 
-const diary = reactive({
-  diaryNo: 0,
-  diaryTitle: "출발",
-  diaryDate: "2024.12.01",
-  diaryTime: "00:00",
-  diaryContent: `
-    <img src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg" width="300px"/>
-    <br><br>
-    오늘 드디어 비행기를 타고 여행을 시작했다. 
-    인천공항에서 아침 일찍 출발했는데도 공항이 굉장히 붐볐다.
-    설레는 마음으로 비행기에 올라타서 창밖을 보니 구름이 정말 아름다웠다. 
-    이번 여행이 내게 어떤 추억으로 남을지 기대가 된다.
-  `,
-  locationNo: 0,
-  tripNo: 1,
+const diary = ref({});
+const location = ref({});
+const mapCenter = reactive({ lat: 0, lng: 0 });
+
+onMounted(async () => {
+  const diaryData = await getDiaryInfo(route.params.diaryNo);
+  Object.assign(diary.value, diaryData);
+  const locationData = await getLocationInfo(diaryData.locationNo);
+  Object.assign(location.value, locationData);
+  mapCenter.lat = locationData.locationLatitude;
+  mapCenter.lng = locationData.locationLongitude;
 });
 
-const locationName = "인천공항";
+//const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
+
+//const locationName = "인천공항";
 
 // 삭제 모달 제어
 const showDeleteDialog = ref(false);
@@ -147,8 +142,10 @@ h1 {
 }
 
 .clickable-icon:hover {
-  background-color: #e3f2fd; /* Hover 시 배경색 */
-  color: #1976d2; /* Hover 시 텍스트/아이콘 색상 */
+  background-color: #e3f2fd;
+  /* Hover 시 배경색 */
+  color: #1976d2;
+  /* Hover 시 텍스트/아이콘 색상 */
 }
 
 .v-card {
