@@ -8,9 +8,7 @@
       />
       <img
         class="profileImage"
-        :src="
-          member.memberProfilePicUrl || 'src/assets/image/profile/profile_1.svg'
-        "
+        :src="member.memberProfilePicUrl || 'src/assets/image/profile/profile_1.svg'"
         alt="Profile Image"
       />
     </div>
@@ -23,21 +21,13 @@
         <v-col cols="6">
           <img
             class="imageUpload"
-            :src="
-              member.memberProfilePicUrl ||
-              'src/assets/image/profile/profile_1.svg'
-            "
+            :src="member.memberProfilePicUrl || 'src/assets/image/profile/profile_1.svg'"
             alt="Profile Image"
           />
 
           <div class="inputGroup">
             <label for="joinDate">가입 날짜</label>
-            <input
-              readonly
-              type="text"
-              id="joinDate"
-              v-model="member.memberJoinDatetime"
-            />
+            <input readonly type="text" id="joinDate" v-model="member.memberJoinDatetime" />
           </div>
         </v-col>
         <v-col cols="6">
@@ -70,7 +60,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { getMemberInfo, updateMember, deleteMember } from "@/api/member.js";
-import { formatDate } from "@/util/dateFormat.js";
+import { dateFormatter } from "@/util/date/dateFormat.js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -94,7 +84,7 @@ onMounted(async () => {
 
 const getUserProfile = async () => {
   const data = await getMemberInfo();
-  data.memberJoinDatetime = formatDate(data.memberJoinDatetime);
+  data.memberJoinDatetime = dateFormatter(new Date(data.memberJoinDatetime));
   member.value = data;
 };
 
@@ -138,7 +128,7 @@ const withdrawMember = async () => {
 
 .profileBackground {
   position: relative;
-  width: 90%;
+  width: 80%;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -150,8 +140,8 @@ const withdrawMember = async () => {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
-  height: 80%;
+  width: 80%;
+  height: 75%;
   z-index: 5;
 }
 
@@ -165,7 +155,7 @@ const withdrawMember = async () => {
 }
 
 .personalInfo {
-  width: fit-content;
+  width: 90%;
   z-index: 15;
   background-color: white;
   border-radius: 12px;
@@ -173,7 +163,7 @@ const withdrawMember = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -15vh;
+  margin-top: -15%;
   margin-bottom: 5rem;
 }
 

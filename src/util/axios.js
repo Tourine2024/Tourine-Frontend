@@ -10,7 +10,6 @@ const localAxios = axios.create({
   baseURL: VITE_VUE_API_URL,
   headers: {
     "Content-Type": "application/json;charset=utf-8",
-    "Access-Control-Allow-Origin": VITE_VUE_API_URL,
   },
 });
 
