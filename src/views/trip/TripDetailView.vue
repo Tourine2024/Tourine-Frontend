@@ -23,10 +23,7 @@
                 height="40px"
                 >장소별 기록 보기</v-btn
               >
-              <v-btn
-                class="rounded-t-lg px-3 align-self-end"
-                value="order-by-date"
-                height="40px"
+              <v-btn class="rounded-t-lg px-3 align-self-end" value="order-by-date" height="40px"
                 >날짜별 기록 보기</v-btn
               >
             </v-btn-toggle>
