@@ -3,9 +3,22 @@
 <template>
   <div class="tripdays">
     <h3>올해 내가 여행한 날짜는 ?</h3>
-    <p>5 days</p>
+    <p>{{ tripDays }} days</p>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import { getTripDays } from "@/api/home";
+
+const memberNo = 1; // 이후 세션에서 가져올 것
+const tripDays = ref(0);
+
+onMounted(async () => {
+  tripDays.value = await getTripDays(memberNo);
+});
+</script>
+
 <style scoped>
 .tripdays {
   /* width: 339px; */
