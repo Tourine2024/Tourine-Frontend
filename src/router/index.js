@@ -63,6 +63,12 @@ const router = createRouter({
       component: () => import("@/views/diary/DiaryDetailView.vue"),
       props: true,
     },
+    {
+      path: "/trip/:tripNo/diary/:diaryNo/edit",
+      name: "diaryUpdate",
+      component: () => import("@/views/diary/DiaryUpdateView.vue"),
+      props: true,
+    },
   ],
 });
 
