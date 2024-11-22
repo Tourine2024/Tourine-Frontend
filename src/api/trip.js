@@ -11,6 +11,17 @@ export const getTripLists = async (pageNo) => {
   }
 };
 
+//여행일기 전체 목록
+export const getDiaryLists = async (tripNo) => {
+  try {
+    const { data } = await localAxios.get(`/trips/${tripNo}/diaries`);
+    return data;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
 //개별 여행 정보 조회
 export const getTripInfo = async (tripNo) => {
   try {
@@ -28,7 +39,7 @@ export const insertTripInfo = async (trip) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 export const updateTripInfo = async (trip) => {
   try {
@@ -36,7 +47,7 @@ export const updateTripInfo = async (trip) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 export const deleteTripInfo = async (tripNo) => {
   try {
@@ -44,4 +55,4 @@ export const deleteTripInfo = async (tripNo) => {
   } catch (err) {
     console.error(err);
   }
-}
+};

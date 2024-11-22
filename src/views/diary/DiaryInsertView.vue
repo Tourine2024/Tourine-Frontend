@@ -1,95 +1,100 @@
 <template>
   <div class="container pt-5">
     <div class="wrapper">
-    <!-- 상단 제목 -->
-    <v-row justify="center" class="mb-4">
-      <h1 class="text-center font-weight-bold">새 여행 기록</h1>
-    </v-row>
+      <!-- 상단 제목 -->
+      <v-row justify="center" class="mb-4">
+        <h1 class="text-center font-weight-bold">새 여행 기록</h1>
+      </v-row>
 
-    <!-- 입력 폼 -->
-    <v-sheet class="pa-5" color="white">
-      <v-form ref="form" v-model="valid" lazy-validation>
-        <v-row>
-          <!-- 제목 -->
-          <v-col cols="12">
-            <v-text-field
-              v-model="formData.diaryTitle"
-              label="제목"
-              required
-              outlined
-              clearable
-              :rules="[rules.required]"
-            />
-          </v-col>
+      <!-- 입력 폼 -->
+      <v-sheet class="pa-5" color="white">
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row>
+            <!-- 제목 -->
+            <v-col cols="12">
+              <v-text-field
+                v-model="formData.diaryTitle"
+                label="제목"
+                required
+                outlined
+                clearable
+                :rules="[rules.required]"
+              />
+            </v-col>
 
-          <!-- 날짜와 시간 -->
-          <v-col cols="6">
-            <h3>일자 선택</h3>
-            <v-text-field
-              class="text-grey"
-              v-model="formData.diaryDate"
-              outlined
-              readonly
-            />
-          </v-col>
-          <v-col cols="6">
-            <h3>시간 선택</h3>
-            <v-text-field v-model="formData.diaryTime" type="time" outlined />
-          </v-col>
+            <!-- 날짜와 시간 -->
+            <v-col cols="6">
+              <h3>일자 선택</h3>
+              <v-text-field
+                class="text-grey"
+                v-model="formData.diaryDate"
+                outlined
+                readonly
+              />
+            </v-col>
+            <v-col cols="6">
+              <h3>시간 선택</h3>
+              <v-text-field v-model="formData.diaryTime" type="time" outlined />
+            </v-col>
 
-          <!-- 지도 (위치 정보 입력) -->
-          <v-col cols="6">
-            <v-combobox
-              label="장소 검색"
-              v-model="locationQuery"
-              :items="mapSearchResults"
-              item-title="displayName"
-              :menu-props="{ closeOnBack: false }"
-              :menu.sync="menuOpen"
-              @update:menu="menuOpen = true"
-              @blur="menuOpen = false"
+            <!-- 지도 (위치 정보 입력) -->
+            <v-col cols="6">
+              <v-combobox
+                label="장소 검색"
+                v-model="locationQuery"
+                :items="mapSearchResults"
+                item-title="displayName"
+                :menu-props="{ closeOnBack: false }"
+                :menu.sync="menuOpen"
+                @update:menu="menuOpen = true"
+                @blur="menuOpen = false"
+              >
+                <template v-slot:item="{ item }">
+                  <v-list-item
+                    @mouseover="updateMapCenter(item.raw.latLng)"
+                    @click="selectLocation(item.raw)"
+                  >
+                    <v-list-item-title>{{
+                      item.raw.displayName
+                    }}</v-list-item-title>
+                    <v-list-item-subtitle>{{
+                      item.raw.formattedAddress
+                    }}</v-list-item-subtitle>
+                  </v-list-item>
+                </template>
+              </v-combobox>
+            </v-col>
+
+            <v-col cols="6" class="mt-0">
+              <MapItem :center="mapCenter" :markers="markerPosition"></MapItem>
+            </v-col>
+
+            <!-- 내용 -->
+            <v-col cols="12">
+              <ToastUIEditor
+                ref="editorRef"
+                v-model="formData.diaryContent"
+                @updateContent="(content) => (formData.diaryContent = content)"
+                label="내용"
+                outlined
+                auto-grow
+                rows="5"
+                clearable
+              />
+            </v-col>
+          </v-row>
+
+          <!-- 저장 버튼 -->
+          <v-row justify="center" class="mt-5 mb-0">
+            <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
+            <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)"
+              >취소</v-btn
             >
-              <template v-slot:item="{ item }">
-                <v-list-item
-                  @mouseover="updateMapCenter(item.raw.latLng)"
-                  @click="selectLocation(item.raw)"
-                >
-                  <v-list-item-title>{{
-                    item.raw.displayName
-                  }}</v-list-item-title>
-                  <v-list-item-subtitle>{{
-                    item.raw.formattedAddress
-                  }}</v-list-item-subtitle>
-                </v-list-item>
-              </template>
-            </v-combobox>
-          </v-col>
-
-          <v-col cols="6" class="mt-0">
-            <MapItem :center="mapCenter" :markers="markerPosition"></MapItem>
-          </v-col>
-
-          <!-- 내용 -->
-          <v-col cols="12">
-            <ToastUIEditor
-              v-model="formData.diaryContent"
-              label="내용"
-              outlined
-              auto-grow
-              rows="5"
-              clearable
-            />
-          </v-col>
-        </v-row>
-
-        <!-- 저장 버튼 -->
-        <v-row justify="center" class="mt-5 mb-0">
-          <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
-          <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-          <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
-        </v-row>
-      </v-form>
-    </v-sheet>
+          </v-row>
+        </v-form>
+      </v-sheet>
+    </div>
   </div>
 </template>
 
@@ -176,15 +181,8 @@ const rules = {
 
 const submitForm = async () => {
   if (form.value.validate()) {
-    // if (editorInstance.value) {
-    //   formData.diaryContent = editorInstance.value.getHTML(); // 에디터의 HTML 내용을 가져옴
-    // } else {
-    //   console.error("ToastUIEditor 인스턴스를 가져오지 못했습니다.");
-    //   return;
-    // }
-
     try {
-      console.log(formData);
+      console.log(formData.diaryContent);
       await postNewDiary(formData);
       alert("새 여행 기록이 저장되었습니다!");
       clearForm();

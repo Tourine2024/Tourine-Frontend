@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const updatedInitialValue = computed(() => {
-  return props.initialValue.toLowerCase();
+  return props.initialValue;
 });
 
 const editor = ref();

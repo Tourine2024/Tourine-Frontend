@@ -2,7 +2,10 @@
   <div class="container">
     <!-- 상단 버튼 섹션 -->
     <div class="button-row mx-10" justify="space-between" align="center">
-      <v-btn prepend-icon="mdi-arrow-u-left-top" :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }">
+      <v-btn
+        prepend-icon="mdi-arrow-u-left-top"
+        :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }"
+      >
         여행으로 돌아가기
       </v-btn>
       <div>
@@ -66,7 +69,7 @@
   </div>
 </template>
 
-<script setup
+<script setup>
 import { ref, onMounted, reactive } from "vue";
 import { getDiaryInfo } from "@/api/diary";
 import { useRoute } from "vue-router";
@@ -79,9 +82,6 @@ const tripNo = route.params.tripNo;
 const diaryNo = route.params.diaryNo;
 
 const diaryStore = useDiaryStore();
-
-const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
-const locationName = "인천공항";
 
 const diary = ref({
   diaryNo: diaryNo,
@@ -100,9 +100,9 @@ onMounted(async () => {
   getDiary();
   // const diaryData = await getDiaryInfo(route.params.diaryNo);
   // Object.assign(diary.value, diaryData);
-  const locationData = await getLocationInfo(diaryData.locationNo);
+  const locationData = await getLocationInfo(diary.value.locationNo);
   Object.assign(location.value, locationData);
-  mapCenter.lat = locationData.locationLatitude;
+  mapCenter.lat = locationData.locationLatitude;ㅌ
   mapCenter.lng = locationData.locationLongitude;
 });
 
