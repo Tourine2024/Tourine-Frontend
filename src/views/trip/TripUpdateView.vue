@@ -2,7 +2,7 @@
   <div class="container pt-5">
     <!-- 상단 제목 -->
     <v-row justify="center" class="mb-4">
-      <h1 class="text-center font-weight-bold">새 여행</h1>
+      <h1 class="text-center font-weight-bold">여행 수정하기</h1>
     </v-row>
 
     <!-- 입력 폼 -->
@@ -23,6 +23,11 @@
             <v-file-input v-model="thumbnailImage" label="대표 사진" accept="image/*" @change="onChangeImage" @click:clear="clearImage" outlined clearable />
             <template v-if="thumbnailImageUrl">
               <v-img :src="thumbnailImageUrl" height="250px" />
+            </template>
+            <template v-else-if="formData.tripThumbnailUrl">
+              <v-img :src="formData.tripThumbnailUrl" height="250px">
+                <template v-slot:error />
+              </v-img>
             </template>
           </v-col>
 
@@ -53,13 +58,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { ref, reactive, onMounted } from "vue";
 import DatePicker from "@/components/common/DatePicker.vue";
 import { dateFormatter } from "@/util/date/dateFormat";
 import { uploadImage } from "@/api/image";
-import { insertTripInfo } from "@/api/trip";
+import { useRoute, useRouter } from "vue-router";
+import { getTripInfo, updateTripInfo } from "@/api/trip";
 
+const route = useRoute();
+const tripNo = route.params.tripNo;
 const router = useRouter();
 
 const valid = ref(false);
@@ -68,6 +75,7 @@ const valid = ref(false);
 const today = new Date();
 
 const formData = reactive({
+  tripNo: tripNo,
   tripName: "",
   tripSummary: null,
   tripThumbnailUrl: null, // 업로드된 이미지 파일 URL
@@ -77,6 +85,13 @@ const formData = reactive({
 });
 const thumbnailImage = ref(null);
 const thumbnailImageUrl = ref(null);
+
+onMounted(async () => {
+  const data = await getTripInfo(tripNo);
+  Object.assign(formData, data);
+  formData.tripStartDate = new Date(formData.tripStartDate);
+  formData.tripEndDate = new Date(formData.tripEndDate);
+});
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
@@ -125,9 +140,9 @@ async function submitForm() {
       tripEndDate: dateFormatter(formData.tripEndDate),
     };
 
-    insertTripInfo(payload);
-    alert('저장되었습니다.');
-    router.push({ name: `trips` });
+    updateTripInfo(payload);
+    alert("수정되었습니다.");
+    router.push({ name: `tripDetail`, params: { tripNo: tripNo } });
   } catch (error) {
     console.error(error);
   }
@@ -140,6 +155,7 @@ const clearForm = () => {
   formData.tripStartDate = today;
   formData.tripEndDate = today;
   thumbnailImage.value = null;
+  thumbnailImageUrl.value = null;
 };
 </script>
 

@@ -2,10 +2,7 @@
   <div class="container">
     <!-- 상단 버튼 섹션 -->
     <div class="button-row mx-10" justify="space-between" align="center">
-      <v-btn
-        prepend-icon="mdi-arrow-u-left-top"
-        :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }"
-      >
+      <v-btn prepend-icon="mdi-arrow-u-left-top" :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }">
         여행으로 돌아가기
       </v-btn>
       <div>
@@ -25,13 +22,10 @@
           </div>
           <div class="clickable-icon" @click="showMapDialog = true">
             <v-icon icon="mdi-map-marker" />
-            {{ locationName }}
+            {{ location.locationName }}
           </div>
         </v-col>
       </div>
-
-      <!-- 지도 섹션 -->
-      <!-- <MapItem class="mb-5" :center="mapCenter" /> -->
 
       <!-- 내용 섹션 -->
       <v-row class="mx-1 mb-3">
@@ -59,7 +53,7 @@
         <v-card>
           <v-card-title class="headline">지도 보기</v-card-title>
           <v-card-text>
-            <MapItem :center="mapCenter" />
+            <MapItem :center="mapCenter" :markers="[mapCenter]" />
           </v-card-text>
           <v-card-actions>
             <v-btn color="primary" text @click="showMapDialog = false"
@@ -72,12 +66,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup
 import { ref, onMounted, reactive } from "vue";
 import { getDiaryInfo } from "@/api/diary";
 import { useRoute } from "vue-router";
 import MapItem from "@/components/common/MapItem.vue";
 import { useDiaryStore } from "@/stores/diary";
+import { getLocationInfo } from "@/api/location";
 
 const route = useRoute();
 const tripNo = route.params.tripNo;
@@ -98,9 +93,22 @@ const diary = ref({
   tripNo: tripNo,
 });
 
-onMounted(() => {
+const location = ref({});
+const mapCenter = reactive({ lat: 0, lng: 0 });
+
+onMounted(async () => {
   getDiary();
+  // const diaryData = await getDiaryInfo(route.params.diaryNo);
+  // Object.assign(diary.value, diaryData);
+  const locationData = await getLocationInfo(diaryData.locationNo);
+  Object.assign(location.value, locationData);
+  mapCenter.lat = locationData.locationLatitude;
+  mapCenter.lng = locationData.locationLongitude;
 });
+
+//const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
+
+//const locationName = "인천공항";
 
 const getDiary = async () => {
   try {
@@ -173,8 +181,10 @@ h1 {
 }
 
 .clickable-icon:hover {
-  background-color: #e3f2fd; /* Hover 시 배경색 */
-  color: #1976d2; /* Hover 시 텍스트/아이콘 색상 */
+  background-color: #e3f2fd;
+  /* Hover 시 배경색 */
+  color: #1976d2;
+  /* Hover 시 텍스트/아이콘 색상 */
 }
 
 .v-card {
