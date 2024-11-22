@@ -13,7 +13,7 @@ async function uploadImage(image) {
   formDataPayload.append("image", image); // 'image'는 백엔드에서 받을 키 이름
 
   try {
-    const response = await localAxios().post("/images/upload", formDataPayload, {
+    const response = await localAxios.post("/images/upload", formDataPayload, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
