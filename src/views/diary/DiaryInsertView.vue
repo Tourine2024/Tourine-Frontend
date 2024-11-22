@@ -24,7 +24,7 @@
 
             <!-- 날짜와 시간 -->
             <v-col cols="6">
-              <h3>일자 선택</h3>
+              <h3>여행 날짜</h3>
               <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
             </v-col>
             <v-col cols="6">
@@ -48,9 +48,10 @@
 
             <!-- 내용 -->
             <v-col cols="12">
-              <!-- <v-textarea v-model="formData.diaryContent" label="내용" outlined auto-grow rows="5" clearable /> -->
               <ToastUIEditor
+                ref="editorRef"
                 v-model="formData.diaryContent"
+                @updateContent="(content) => (formData.diaryContent = content)"
                 label="내용"
                 outlined
                 auto-grow
@@ -62,7 +63,7 @@
 
           <!-- 저장 버튼 -->
           <v-row justify="center" class="mt-5 mb-0">
-            <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
+            <v-btn color="primary" class="mx-2" @click="submitForm">기록하기</v-btn>
             <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
             <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
           </v-row>
@@ -77,8 +78,16 @@ import { ref, reactive } from "vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 import { useDiaryStore } from "@/stores/diary";
+import { postNewDiary } from "@/api/diary";
+import { useRouter } from "vue-router";
+import { defineProps } from "vue";
 
 const diaryStore = useDiaryStore();
+const router = useRouter();
+
+const props = defineProps({
+  tripNo: Number,
+});
 
 const form = ref(null);
 const valid = ref(false);
@@ -90,7 +99,8 @@ const formData = reactive({
   diaryDate: diaryStore.tripDate,
   diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryContent: "",
-  location: "",
+  locationNo: "1",
+  tripNo: props.tripNo,
 });
 
 const rules = {
@@ -100,11 +110,24 @@ const rules = {
   timeFormat: (value) => !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
 };
 
-const submitForm = () => {
+const submitForm = async () => {
   if (form.value.validate()) {
-    alert("새 여행 기록이 저장되었습니다!");
-    console.log(formData);
-    clearForm();
+    // if (editorInstance.value) {
+    //   formData.diaryContent = editorInstance.value.getHTML(); // 에디터의 HTML 내용을 가져옴
+    // } else {
+    //   console.error("ToastUIEditor 인스턴스를 가져오지 못했습니다.");
+    //   return;
+    // }
+
+    try {
+      console.log(formData);
+      await postNewDiary(formData);
+      alert("새 여행 기록이 저장되었습니다!");
+      clearForm();
+      router.push({ name: "tripDetail" });
+    } catch (error) {
+      console.error("여행 기록 저장 중 오류 발생:", error);
+    }
   }
 };
 

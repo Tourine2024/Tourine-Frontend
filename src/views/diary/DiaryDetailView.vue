@@ -9,10 +9,8 @@
         여행으로 돌아가기
       </v-btn>
       <div>
-        <v-btn class="mx-1" @click="showModifyDialog">수정</v-btn>
-        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true"
-          >삭제</v-btn
-        >
+        <v-btn class="mx-1" :to="{ name: 'diaryUpdate' }">수정</v-btn>
+        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true">삭제</v-btn>
       </div>
     </div>
     <div class="wrapper">
@@ -20,9 +18,7 @@
       <div class="mx-1">
         <v-col>
           <h1 class="font-weight-bold mb-3">{{ diary.diaryTitle }}</h1>
-          <div class="text-subtitle-1 mb-3">
-            {{ diary.diaryDate }} {{ diary.diaryTime }}
-          </div>
+          <div class="text-subtitle-1 mb-3">{{ diary.diaryDate }} {{ diary.diaryTime }}</div>
           <div class="clickable-icon" @click="showMapDialog = true">
             <v-icon icon="mdi-map-marker" />
             {{ locationName }}
@@ -47,9 +43,7 @@
           <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
           <v-card-actions>
             <v-btn color="red" text @click="deleteDiary">삭제</v-btn>
-            <v-btn color="grey" text @click="showDeleteDialog = false"
-              >취소</v-btn
-            >
+            <v-btn color="grey" text @click="showDeleteDialog = false">취소</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -62,9 +56,7 @@
             <MapItem :center="mapCenter" />
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" text @click="showMapDialog = false"
-              >닫기</v-btn
-            >
+            <v-btn color="primary" text @click="showMapDialog = false">닫기</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -73,31 +65,43 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, onMounted, reactive } from "vue";
+import { getDiaryInfo } from "@/api/diary";
+import { useRoute } from "vue-router";
 import MapItem from "@/components/common/MapItem.vue";
 
+const route = useRoute();
+const tripNo = route.params.tripNo;
+const diaryNo = route.params.diaryNo;
+
 const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
-
-const diary = reactive({
-  diaryNo: 0,
-  diaryTitle: "출발",
-  diaryDate: "2024.12.01",
-  diaryTime: "00:00",
-  diaryContent: `
-    <img src="https://www.casenews.co.kr/news/photo/202408/16250_35442_5945.jpg" width="300px"/>
-    <br><br>
-    오늘 드디어 비행기를 타고 여행을 시작했다. 
-    인천공항에서 아침 일찍 출발했는데도 공항이 굉장히 붐볐다.
-    설레는 마음으로 비행기에 올라타서 창밖을 보니 구름이 정말 아름다웠다. 
-    이번 여행이 내게 어떤 추억으로 남을지 기대가 된다.
-  `,
-  locationNo: 0,
-  tripNo: 1,
-});
-
 const locationName = "인천공항";
 
-const showModifyDialog = () => {};
+const diary = ref({
+  diaryNo: diaryNo,
+  diaryTitle: "",
+  diaryDate: "",
+  diaryTime: "",
+  diaryContent: "",
+  locationNo: 1,
+  tripNo: tripNo,
+});
+
+onMounted(() => {
+  getDiary();
+});
+
+const getDiary = async () => {
+  try {
+    const data = await getDiaryInfo(diaryNo);
+    console.log(data);
+
+    // diary 객체 전체를 한 번에 업데이트
+    diary.value = data;
+  } catch (error) {
+    console.error("일기 데이터를 가져오는 중 오류 발생:", error);
+  }
+};
 
 // 삭제 모달 제어
 const showDeleteDialog = ref(false);
@@ -118,7 +122,7 @@ const deleteDiary = () => {
   background-color: #cfedfe;
 
   padding: 0 2rem;
-  min-height: 100vh;
+  min-height: 85vh;
 }
 
 .wrapper {
