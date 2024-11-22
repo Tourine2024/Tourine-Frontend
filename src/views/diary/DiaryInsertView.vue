@@ -163,7 +163,7 @@ const selectLocation = (location) => {
     locationGoogleUrl: location.id,
   };
   locationQuery.value = location.displayName;
-  menuOpen.value = false;
+  document.activeElement.blur();
 };
 
 const today = new Date();
