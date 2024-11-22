@@ -23,4 +23,16 @@ export const getDiaryInfo = async (diaryNo) => {
   }
 };
 
+export const updateDiary = async (diary) => {
+  console.log(diary);
+  try {
+    const { data } = await localAxios.put(`/diaries`, diary);
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
+
 //location no 얻어오기

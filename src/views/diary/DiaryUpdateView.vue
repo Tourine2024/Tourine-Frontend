@@ -25,7 +25,12 @@
             <!-- 날짜와 시간 -->
             <v-col cols="6">
               <h3>여행 날짜</h3>
-              <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
+              <v-text-field
+                class="text-grey"
+                v-model="formData.diaryDate"
+                outlined
+                readonly
+              />
             </v-col>
             <v-col cols="6">
               <h3>시간 선택</h3>
@@ -51,8 +56,8 @@
               <ToastUIEditor
                 ref="editorRef"
                 v-model="formData.diaryContent"
-                :initialValue="formData.diaryContent"
-                label="내용"
+                :initial-value="formData.diaryContent"
+                label="diaryContnet"
                 outlined
                 auto-grow
                 rows="5"
@@ -63,9 +68,13 @@
 
           <!-- 저장 버튼 -->
           <v-row justify="center" class="mt-5 mb-0">
-            <v-btn color="primary" class="mx-2" @click="submitForm">기록하기</v-btn>
+            <v-btn color="primary" class="mx-2" @click="submitForm"
+              >수정하기</v-btn
+            >
             <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-            <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)"
+              >취소</v-btn
+            >
           </v-row>
         </v-form>
       </v-sheet>
@@ -80,7 +89,7 @@ import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 import { useDiaryStore } from "@/stores/diary";
 import { postNewDiary } from "@/api/diary";
 import { useRouter, useRoute } from "vue-router";
-import { getDiaryInfo } from "@/api/diary";
+import { updateDiary } from "@/api/diary";
 
 const diaryStore = useDiaryStore();
 const router = useRouter();
@@ -97,7 +106,7 @@ const formData = ref({
   diaryTitle: "",
   diaryDate: "",
   diaryTime: "",
-  diaryContent: "",
+  diaryContent: diaryStore.diary.diaryContent,
   locationNo: "1",
   tripNo: tripNo,
 });
@@ -105,26 +114,31 @@ const formData = ref({
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
   dateFormat: (value) =>
-    !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
-  timeFormat: (value) => !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
+    !value ||
+    /^\d{4}\.\d{2}\.\d{2}$/.test(value) ||
+    "날짜 형식이 올바르지 않습니다.",
+  timeFormat: (value) =>
+    !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
 };
 
 onMounted(() => {
   getDiary();
 });
 
-const getDiary = async () => {
+const getDiary = () => {
   try {
-    const data = await getDiaryInfo(diaryNo);
-    console.log(data);
+    formData.value = diaryStore.diary;
+    console.log(formData.value.diaryContent);
+    // const data = await getDiaryInfo(diaryNo);
+    // console.log(data);
 
-    // 개별 필드를 수동으로 업데이트
-    formData.value.diaryTitle = data.diaryTitle;
-    formData.value.diaryDate = data.diaryDate;
-    formData.value.diaryTime = data.diaryTime;
-    formData.value.diaryContent = data.diaryContent;
-    formData.value.locationNo = data.locationNo;
-    formData.value.tripNo = data.tripNo;
+    // // 개별 필드를 수동으로 업데이트
+    // formData.value.diaryTitle = data.diaryTitle;
+    // formData.value.diaryDate = data.diaryDate;
+    // formData.value.diaryTime = data.diaryTime;
+    // formData.value.diaryContent = data.diaryContent;
+    // formData.value.locationNo = data.locationNo;
+    // formData.value.tripNo = data.tripNo;
   } catch (error) {
     console.error("일기 데이터를 가져오는 중 오류 발생:", error);
   }
@@ -134,8 +148,8 @@ const submitForm = async () => {
   if (form.value.validate()) {
     try {
       console.log(formData);
-      await postNewDiary(formData);
-      alert("새 여행 기록이 저장되었습니다!");
+      await updateDiary(formData);
+      alert("여행 기록이 수정되었습니다!");
       clearForm();
       router.push({ name: "tripDetail" });
     } catch (error) {

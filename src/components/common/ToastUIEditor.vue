@@ -8,10 +8,14 @@
 import { uploadImage } from "@/api/image"; // 서버로 이미지를 업로드하는 API
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import { ref, onMounted, defineEmits, defineProps } from "vue";
+import { ref, onMounted, defineEmits, defineProps, computed } from "vue";
 
 const props = defineProps({
   initialValue: String, // 초기 Markdown 데이터를 받는 Props
+});
+
+const updatedInitialValue = computed(() => {
+  return props.initialValue.toLowerCase();
 });
 
 const editor = ref();
@@ -28,7 +32,7 @@ onMounted(() => {
     placeholder: "여행 기록을 적어주세요!",
     initialEditType: "markdown",
     previewStyle: previewStyle,
-    initialValue: props.initialValue || "",
+    initialValue: updatedInitialValue.value || "",
     hideModeSwitch: true,
     linkAttributes: {
       target: "_blank",
@@ -50,8 +54,12 @@ onMounted(() => {
           // 서버에서 이미지 URL을 반환받았을 때
           if (imageUrl) {
             // alt 텍스트 설정 (필요에 따라 입력)
-            const imageDescriptionInput = document.getElementById("toastuiAltTextInput");
-            const altText = imageDescriptionInput ? imageDescriptionInput.value : "";
+            const imageDescriptionInput = document.getElementById(
+              "toastuiAltTextInput"
+            );
+            const altText = imageDescriptionInput
+              ? imageDescriptionInput.value
+              : "";
 
             // 에디터에 이미지 추가
             callback(imageUrl, altText);
@@ -73,6 +81,9 @@ onMounted(() => {
   });
 });
 
+console.log(props.initialValue); // Editor instance
+props.initialValue = props.initialValue + " hi";
+
 // Markdown to HTML 변환 함수
 function convertMarkdownToHTML(markdown) {
   const editor = new Editor({
@@ -87,7 +98,10 @@ function convertMarkdownToHTML(markdown) {
 // 에디터 내용을 부모 컴포넌트로 전달하는 함수 정의
 const emitEditorContent = () => {
   if (editorInstance.value) {
-    emit("updateContent", convertMarkdownToHTML(editorInstance.value.getMarkdown())); // HTML 내용을 부모로 emit
+    emit(
+      "updateContent",
+      convertMarkdownToHTML(editorInstance.value.getMarkdown())
+    ); // HTML 내용을 부모로 emit
   }
 };
 </script>

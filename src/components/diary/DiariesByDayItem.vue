@@ -26,7 +26,9 @@
           >
             <div class="flip-card-inner" :class="{ flipped: hoverStates[key] }">
               <!-- 카드 앞면 -->
-              <v-card class="ma-4 flip-card-front d-flex flex-column align-center justify-center">
+              <v-card
+                class="ma-4 flip-card-front d-flex flex-column align-center justify-center"
+              >
                 <v-card-title class="font-weight-black text-truncate">
                   {{ diary.diaryTitle }}
                 </v-card-title>
@@ -40,7 +42,10 @@
                 class="ma-4 flip-card-back d-flex flex-column align-center justify-center"
                 style="padding: 16px"
               >
-                <v-card-text v-html="diary.diaryContent" class="limited-text mb-auto"></v-card-text>
+                <v-card-text
+                  v-html="diary.diaryContent"
+                  class="limited-text mb-auto"
+                ></v-card-text>
               </v-card>
             </div>
           </div>
