@@ -6,10 +6,7 @@
         class="align-self-center mx-3 mt-1"
         icon="mdi-plus"
         density="compact"
-        :to="{
-          name: 'diaryNew',
-          params: { tripNo: tripNo, tripDate: tripDate },
-        }"
+        @click="setDiaryData"
       >
       </v-btn>
     </span>
@@ -26,9 +23,7 @@
             <v-card-title class="font-weight-black text-truncate">{{
               diary.diaryTitle
             }}</v-card-title>
-            <v-card-text class="text-truncate">{{
-              diary.diaryContent
-            }}</v-card-text>
+            <v-card-text class="text-truncate">{{ diary.diaryContent }}</v-card-text>
             <v-btn
               class="bg-black rounded-0 mx-4 mb-4"
               :to="{
@@ -48,12 +43,27 @@
 </template>
 
 <script setup>
+import { defineProps } from "vue";
+import { useRouter } from "vue-router";
+import { useDiaryStore } from "@/stores/diary";
+
+const router = useRouter();
+const diaryStore = useDiaryStore();
+
 const props = defineProps({
   dayCnt: Number,
   tripNo: Number,
   tripDate: String,
   diaries: Array,
 });
+
+const setDiaryData = () => {
+  diaryStore.tripDate = props.tripDate;
+  router.push({
+    name: "diaryNew",
+    params: { tripNo: props.tripNo },
+  });
+};
 </script>
 
 <style scoped>

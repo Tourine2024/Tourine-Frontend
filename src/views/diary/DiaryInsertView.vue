@@ -25,12 +25,7 @@
             <!-- 날짜와 시간 -->
             <v-col cols="6">
               <h3>일자 선택</h3>
-              <v-text-field
-                class="text-grey"
-                v-model="formData.diaryDate"
-                outlined
-                readonly
-              />
+              <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
             </v-col>
             <v-col cols="6">
               <h3>시간 선택</h3>
@@ -69,9 +64,7 @@
           <v-row justify="center" class="mt-5 mb-0">
             <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
             <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-            <v-btn color="grey" class="mx-2" @click="$router.go(-1)"
-              >취소</v-btn
-            >
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
           </v-row>
         </v-form>
       </v-sheet>
@@ -83,13 +76,9 @@
 import { ref, reactive } from "vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
+import { useDiaryStore } from "@/stores/diary";
 
-const props = defineProps({
-  tripNo: Number,
-  tripDate: String,
-});
-
-console.log(props.tripNo, props.tripDate);
+const diaryStore = useDiaryStore();
 
 const form = ref(null);
 const valid = ref(false);
@@ -98,7 +87,7 @@ const today = new Date();
 
 const formData = reactive({
   diaryTitle: "",
-  diaryDate: props.tripDate,
+  diaryDate: diaryStore.tripDate,
   diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryContent: "",
   location: "",
@@ -107,11 +96,8 @@ const formData = reactive({
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
   dateFormat: (value) =>
-    !value ||
-    /^\d{4}\.\d{2}\.\d{2}$/.test(value) ||
-    "날짜 형식이 올바르지 않습니다.",
-  timeFormat: (value) =>
-    !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
+    !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
+  timeFormat: (value) => !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
 };
 
 const submitForm = () => {

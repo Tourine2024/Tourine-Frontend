@@ -52,7 +52,7 @@ const router = createRouter({
       component: () => import("@/views/trip/TripDetailView.vue"),
     },
     {
-      path: "/trip/:tripNo/diary/new/:tripDate",
+      path: "/trip/:tripNo/diary/new",
       name: "diaryNew",
       component: () => import("@/views/diary/DiaryInsertView.vue"),
       props: true,
