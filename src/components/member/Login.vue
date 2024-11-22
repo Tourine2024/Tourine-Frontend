@@ -64,6 +64,11 @@ function required(v) {
   return !!v || "필수 입력사항 입니다!";
 }
 async function loginProcess() {
+  if (id.value === "" || password.value === "") {
+    alert("아이디와 비밀번호를 모두 입력하세요.");
+    return;
+  }
+
   await loginMember(id.value, password.value);
   router.push({ name: "home" });
 }
