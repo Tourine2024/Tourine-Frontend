@@ -34,11 +34,11 @@ const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   d[l] ? console.warn(p + " only loads once. Ignoring:", g) : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
 };
 
-export const getLocationList = async (query) => {
+export const searchLocations = async (query) => {
   const { Place } = await google.maps.importLibrary("places");
   const request = {
     textQuery: query,
-    fields: ["id", "addressComponents", "displayName", "location"],
+    fields: ["id", "formattedAddress", "addressComponents", "displayName", "location"],
     language: "ko-KR",
     maxResultCount: 10,
   };

@@ -11,13 +11,25 @@
         <v-row>
           <!-- 제목 -->
           <v-col cols="12">
-            <v-text-field v-model="formData.diaryTitle" label="제목" required outlined clearable :rules="[rules.required]" />
+            <v-text-field
+              v-model="formData.diaryTitle"
+              label="제목"
+              required
+              outlined
+              clearable
+              :rules="[rules.required]"
+            />
           </v-col>
 
           <!-- 날짜와 시간 -->
           <v-col cols="6">
             <h3>일자 선택</h3>
-            <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
+            <v-text-field
+              class="text-grey"
+              v-model="formData.diaryDate"
+              outlined
+              readonly
+            />
           </v-col>
           <v-col cols="6">
             <h3>시간 선택</h3>
@@ -26,15 +38,46 @@
 
           <!-- 지도 (위치 정보 입력) -->
           <v-col cols="6">
-            <v-combobox label="장소 검색" v-model="locationQuery" :items="locationItems" @keyup="sendQueryToGoogle" menu="true"></v-combobox>
+            <v-combobox
+              label="장소 검색"
+              v-model="locationQuery"
+              :items="mapSearchResults"
+              item-title="displayName"
+              :menu-props="{ closeOnBack: false }"
+              :menu.sync="menuOpen"
+              @update:menu="menuOpen = true"
+              @blur="menuOpen = false"
+            >
+              <template v-slot:item="{ item }">
+                <v-list-item
+                  @mouseover="updateMapCenter(item.raw.latLng)"
+                  @click="selectLocation(item.raw)"
+                >
+                  <v-list-item-title>{{
+                    item.raw.displayName
+                  }}</v-list-item-title>
+                  <v-list-item-subtitle>{{
+                    item.raw.formattedAddress
+                  }}</v-list-item-subtitle>
+                </v-list-item>
+              </template>
+            </v-combobox>
           </v-col>
+
           <v-col cols="6" class="mt-0">
-            <MapItem :center="mapCenter" :markers="[mapCenter]"></MapItem>
+            <MapItem :center="mapCenter" :markers="markerPosition"></MapItem>
           </v-col>
 
           <!-- 내용 -->
           <v-col cols="12">
-            <ToastUIEditor v-model="formData.diaryContent" label="내용" outlined auto-grow rows="5" clearable />
+            <ToastUIEditor
+              v-model="formData.diaryContent"
+              label="내용"
+              outlined
+              auto-grow
+              rows="5"
+              clearable
+            />
           </v-col>
         </v-row>
 
@@ -50,34 +93,66 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
-import { getLocationList } from "@/api/google";
+import { searchLocations } from "@/api/google";
 
 const form = ref(null);
 const valid = ref(false);
 
-const mapCenter = { lat: 37.5665, lng: 126.978 };
+const mapCenter = ref({ lat: 37.501465, lng: 127.039549 }); // 멀티캠퍼스
 const locationQuery = ref("");
-const mapSearchResults = reactive([]);
-const locationItems = reactive([]);
+const mapSearchResults = ref([]);
+const markerPosition = ref([]);
+const selectedLocation = ref(null);
 
-async function sendQueryToGoogle() {
-  mapSearchResults.length = 0;
-  locationItems.length = 0;
-  const locationList = await getLocationList(locationQuery.value);
-  locationList.forEach((location) => {
-    mapSearchResults.push(location.Eg);
-    locationItems.push(location.Eg.displayName);
-  });
-  console.log(mapSearchResults, locationItems);
-}
+const menuOpen = ref(true);
+watch(locationQuery, async () => {
+  const tmpResults = [];
+  if (locationQuery.value) {
+    const locationList = await searchLocations(locationQuery.value);
+
+    const _ = await locationList.forEach((location) => {
+      tmpResults.push({
+        id: location.Eg.id,
+        displayName: location.Eg.displayName,
+        formattedAddress: location.Eg.formattedAddress,
+        addressComponents: location.Eg.addressComponents,
+        latLng: location.Eg.location,
+      });
+    });
+  }
+  mapSearchResults.value = tmpResults;
+});
+
+const updateMapCenter = (latLng) => {
+  mapCenter.value = { lat: latLng.lat, lng: latLng.lng };
+  markerPosition.value = [latLng];
+};
+
+const selectLocation = (location) => {
+  const countryComp = location.addressComponents.find((comp) =>
+    comp.types.includes("country")
+  );
+  const country = countryComp ? countryComp.shortText : null;
+
+  selectedLocation.value = {
+    locationName: location.displayName,
+    locationCountry: country,
+    locationLatitude: location.latLng.lat.toFixed(6),
+    locationLongitude: location.latLng.lng.toFixed(6),
+    locationGoogleUrl: location.id,
+  };
+  locationQuery.value = location.displayName;
+  menuOpen.value = false;
+};
 
 const today = new Date();
 const formData = reactive({
   diaryTitle: "",
-  diaryDate: today.getFullYear() + "." + (today.getMonth() + 1) + "." + today.getDate(),
+  diaryDate:
+    today.getFullYear() + "." + (today.getMonth() + 1) + "." + today.getDate(),
   diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryContent: "",
   location: "",
@@ -85,9 +160,6 @@ const formData = reactive({
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
-  dateFormat: (value) =>
-    !value || /^\d{4}\.\d{2}\.\d{2}$/.test(value) || "날짜 형식이 올바르지 않습니다.",
-  timeFormat: (value) => !value || /^\d{2}:\d{2}$/.test(value) || "시간 형식이 올바르지 않습니다.",
 };
 
 const submitForm = () => {
