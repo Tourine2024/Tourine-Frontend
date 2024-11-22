@@ -1,5 +1,6 @@
 <template>
   <div class="container pt-5">
+    <div class="wrapper">
     <!-- 상단 제목 -->
     <v-row justify="center" class="mb-4">
       <h1 class="text-center font-weight-bold">새 여행 기록</h1>
@@ -96,7 +97,18 @@
 import { ref, reactive, watch } from "vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
+import { useDiaryStore } from "@/stores/diary";
+import { postNewDiary } from "@/api/diary";
+import { useRouter } from "vue-router";
+import { defineProps } from "vue";
 import { searchLocations } from "@/api/google";
+
+const diaryStore = useDiaryStore();
+const router = useRouter();
+
+const props = defineProps({
+  tripNo: Number,
+});
 
 const form = ref(null);
 const valid = ref(false);
@@ -151,22 +163,35 @@ const selectLocation = (location) => {
 const today = new Date();
 const formData = reactive({
   diaryTitle: "",
-  diaryDate:
-    today.getFullYear() + "." + (today.getMonth() + 1) + "." + today.getDate(),
+  diaryDate: diaryStore.tripDate,
   diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryContent: "",
-  location: "",
+  locationNo: "1",
+  tripNo: props.tripNo,
 });
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
 };
 
-const submitForm = () => {
+const submitForm = async () => {
   if (form.value.validate()) {
-    alert("새 여행 기록이 저장되었습니다!");
-    console.log(formData);
-    clearForm();
+    // if (editorInstance.value) {
+    //   formData.diaryContent = editorInstance.value.getHTML(); // 에디터의 HTML 내용을 가져옴
+    // } else {
+    //   console.error("ToastUIEditor 인스턴스를 가져오지 못했습니다.");
+    //   return;
+    // }
+
+    try {
+      console.log(formData);
+      await postNewDiary(formData);
+      alert("새 여행 기록이 저장되었습니다!");
+      clearForm();
+      router.push({ name: "tripDetail" });
+    } catch (error) {
+      console.error("여행 기록 저장 중 오류 발생:", error);
+    }
   }
 };
 
@@ -186,12 +211,17 @@ h1 {
 .container {
   background-color: #cfedfe;
   height: 100%;
-  padding-bottom: 110px;
+}
+
+.wrapper {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 5rem;
 }
 
 .v-sheet {
   border-radius: 10px;
-  max-width: 800px;
+  width: 85%;
   margin: 0 auto;
 }
 </style>
