@@ -3,12 +3,20 @@
     <v-row align="start">
       <v-col cols="6">
         <v-card variant="text">
-          <v-card-subtitle>{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle>
+          <v-card-subtitle
+            >{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle
+          >
           <h1 class="font-weight-black ml-4">{{ trip.tripName }}</h1>
           <v-card-text>
             {{ trip.tripSummary }}
           </v-card-text>
-          <v-btn class="md-3 ml-4" rounded="xl" color="blue">AI 요약하기+</v-btn>
+          <v-btn
+            @click="drawPostCard(trip.tripNo)"
+            class="md-3 ml-4"
+            rounded="xl"
+            color="blue"
+            >AI 요약하기+</v-btn
+          >
           <v-btn class="md-3 ml-4" rounded="xl" color="blue" :to="{ name: 'tripModify', params: { tripNo: trip.tripNo } }">수정</v-btn>
           <v-btn class="md-3 ml-4" rounded="xl" color="red" @click="showDeleteDialog = true">삭제</v-btn>
         </v-card>
@@ -41,7 +49,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { DEFAULT_IMAGE_PATH } from "@/api/image";
 import { deleteTripInfo } from "@/api/trip";
-import { summarizeTrip } from "@/api/openAI.js";
+import { drawPostCard, summarizeTrip } from "@/api/openAI.js";
 
 defineProps({
   trip: {
