@@ -35,4 +35,12 @@ export const updateDiary = async (diary) => {
   }
 };
 
-//location no 얻어오기
+export const deleteDiary = async (diaryNo) => {
+  try {
+    const { data } = await localAxios.delete(`/diaries/${diaryNo}`);
+    return data;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};

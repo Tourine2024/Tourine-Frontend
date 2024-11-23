@@ -11,23 +11,49 @@
         <v-row>
           <!-- 이름 -->
           <v-col cols="12">
-            <v-text-field v-model="formData.tripName" label="여행 이름" required outlined clearable :rules="[rules.required]" />
+            <v-text-field
+              v-model="formData.tripName"
+              label="여행 이름"
+              required
+              outlined
+              clearable
+              :rules="[rules.required]"
+            />
           </v-col>
 
           <!-- 요약 -->
           <v-col cols="12">
-            <v-textarea v-model="formData.tripSummary" label="여행 요약" outlined auto-grow rows="5" placeholder="여행에 대한 간략한 설명을 적어주세요..." clearable />
+            <v-textarea
+              v-model="formData.tripSummary"
+              label="여행 요약"
+              outlined
+              auto-grow
+              rows="5"
+              placeholder="여행에 대한 간략한 설명을 적어주세요..."
+              clearable
+            />
           </v-col>
 
           <v-col cols="12">
-            <v-file-input v-model="thumbnailImage" label="대표 사진" accept="image/*" @change="onChangeImage" @click:clear="clearImage" outlined clearable />
-            <template v-if="thumbnailImageUrl">
-              <v-img :src="thumbnailImageUrl" height="250px" />
-            </template>
-            <template v-else-if="formData.tripThumbnailUrl">
-              <v-img :src="formData.tripThumbnailUrl" height="250px">
-                <template v-slot:error />
-              </v-img>
+            <v-file-input
+              v-model="thumbnailImage"
+              label="대표 사진"
+              accept="image/*"
+              @change="onChangeImage"
+              @click:clear="clearImage"
+              outlined
+              clearable
+            />
+            <template
+              v-if="
+                thumbnailImageUrl !== DEFAULT_IMAGE_PATH ||
+                formData.tripThumbnailUrl
+              "
+            >
+              <v-img
+                :src="thumbnailImageUrl || formData.tripThumbnailUrl"
+                height="250px"
+              />
             </template>
           </v-col>
 
@@ -35,13 +61,27 @@
           <v-col cols="6">
             <h3>출발 일자</h3>
             <v-locale-provider locale="ko">
-              <DatePicker show-adjacent-months v-model="formData.tripStartDate" :rules="[rules.required]" @click="changeTripStartDate" outlined :hide-header="true" />
+              <DatePicker
+                show-adjacent-months
+                v-model="formData.tripStartDate"
+                :rules="[rules.required]"
+                @click="changeTripStartDate"
+                outlined
+                :hide-header="true"
+              />
             </v-locale-provider>
           </v-col>
           <v-col cols="6">
             <h3>도착 일자</h3>
             <v-locale-provider locale="ko">
-              <DatePicker show-adjacent-months v-model="formData.tripEndDate" :rules="[rules.required]" @click="changeTripEndDate" outlined :hide-header="true" />
+              <DatePicker
+                show-adjacent-months
+                v-model="formData.tripEndDate"
+                :rules="[rules.required]"
+                @click="changeTripEndDate"
+                outlined
+                :hide-header="true"
+              />
             </v-locale-provider>
           </v-col>
         </v-row>
@@ -64,6 +104,7 @@ import { dateFormatter } from "@/util/date/dateFormat";
 import { uploadImage } from "@/api/image";
 import { useRoute, useRouter } from "vue-router";
 import { getTripInfo, updateTripInfo } from "@/api/trip";
+import { DEFAULT_IMAGE_PATH } from "@/api/image";
 
 const route = useRoute();
 const tripNo = route.params.tripNo;
@@ -81,7 +122,7 @@ const formData = reactive({
   tripThumbnailUrl: null, // 업로드된 이미지 파일 URL
   tripStartDate: today,
   tripEndDate: today,
-  memberNo: 1, // 이후 로그인한 멤버 번호로 수정 
+  memberNo: 1, // 이후 로그인한 멤버 번호로 수정
 });
 const thumbnailImage = ref(null);
 const thumbnailImageUrl = ref(null);
@@ -91,6 +132,7 @@ onMounted(async () => {
   Object.assign(formData, data);
   formData.tripStartDate = new Date(formData.tripStartDate);
   formData.tripEndDate = new Date(formData.tripEndDate);
+  console.log(formData.tripThumbnailUrl);
 });
 
 const rules = {
@@ -146,7 +188,7 @@ async function submitForm() {
   } catch (error) {
     console.error(error);
   }
-};
+}
 
 const clearForm = () => {
   formData.tripName = "";

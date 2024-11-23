@@ -74,7 +74,11 @@
               <ToastUIEditor
                 ref="editorRef"
                 v-model="formData.diaryContent"
-                @updateContent="(content) => (formData.diaryContent = content)"
+                @updateContent="
+                  (mdContent) => {
+                    formData.diaryContent = mdContent;
+                  }
+                "
                 label="내용"
                 outlined
                 auto-grow
@@ -182,7 +186,7 @@ const rules = {
 const submitForm = async () => {
   if (form.value.validate()) {
     try {
-      console.log(formData.diaryContent);
+      console.log("전송", formData.diaryContent);
       await postNewDiary(formData);
       alert("새 여행 기록이 저장되었습니다!");
       clearForm();

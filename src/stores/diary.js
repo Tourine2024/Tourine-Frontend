@@ -16,5 +16,7 @@ export const useDiaryStore = defineStore("diary", () => {
     tripNo: 0,
   });
 
-  return { tripDate, diary };
+  const diaryContent = ref("");
+
+  return { tripDate, diaryContent };
 });

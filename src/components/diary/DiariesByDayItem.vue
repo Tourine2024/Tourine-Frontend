@@ -43,7 +43,7 @@
                 style="padding: 16px"
               >
                 <v-card-text
-                  v-html="diary.diaryContent"
+                  v-html="convertMarkdownToHTML(diary.diaryContent)"
                   class="limited-text mb-auto"
                 ></v-card-text>
               </v-card>
@@ -60,6 +60,7 @@
 import { defineProps, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useDiaryStore } from "@/stores/diary";
+import Editor from "@toast-ui/editor";
 
 const router = useRouter();
 const diaryStore = useDiaryStore();
@@ -77,6 +78,16 @@ const hoverStates = ref([]); // 각 다이어리 항목의 호버 상태를 관�
 onMounted(() => {
   hoverStates.value = new Array(props.diaries.length).fill(false);
 });
+
+function convertMarkdownToHTML(markdown) {
+  const editor = new Editor({
+    el: document.createElement("div"), // 임시로 사용할 보이지 않는 엘리먼트를 생성
+    initialEditType: "markdown",
+    initialValue: markdown, // 변환할 Markdown 내용을 입력
+  });
+
+  return editor.getHTML(); // 변환된 HTML을 반환
+}
 
 const setHoverState = (index, state) => {
   hoverStates.value[index] = state;
