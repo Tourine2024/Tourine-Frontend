@@ -29,6 +29,7 @@
             v-model="password"
             color="primary"
             label="비밀번호"
+            type="password"
             placeholder="비밀번호를 입력하세요."
             variant="underlined"
             :rules="[required]"
@@ -69,8 +70,13 @@ async function loginProcess() {
     return;
   }
 
-  await loginMember(id.value, password.value);
-  router.push({ name: "home" });
+  const data = await loginMember(id.value, password.value);
+  if (data) {
+    localStorage.setItem("memberNo", data.memberNo);
+    router.push({ name: "home" });
+  } else {
+    alert("로그인 아이디나 비밀번호를 다시 확인하세요.");
+  }
 }
 </script>
 

@@ -3,10 +3,10 @@ export default {
   data() {
     return {
       items: [
-        { src: "src/assets/image/landing/seoul.jpg" },
-        { src: "src/assets/image/landing/europe.jpg" },
-        { src: "src/assets/image/landing/newyork.jpg" },
         { src: "src/assets/image/landing/swiss.jpg" },
+        { src: "src/assets/image/landing/seoul.jpg" },
+        { src: "src/assets/image/landing/newyork.jpg" },
+        { src: "src/assets/image/landing/europe.jpg" },
       ],
     };
   },

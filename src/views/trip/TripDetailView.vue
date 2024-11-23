@@ -107,6 +107,7 @@ async function getDiaries() {
     diaries.value = response;
     if (diaries.value.length > 0) {
       mapCenter.value = await getLocation(diaries.value[0].locationNo);
+      trip.value.tripDiaryCount = diaries.value.length;
     }
     const _ = await getMarkers();
   } catch (error) {
@@ -159,7 +160,11 @@ function getDiariesByDate(tripDate) {
 
 onMounted(async () => {
   const data = await getTripInfo(route.params.tripNo);
-  Object.assign(trip.value, data);
+  trip.value = {
+    ...data,
+    tripDiaryCount: 0,
+  };
+  // Object.assign(trip.value, data);
   getDiaryDates();
   getDiaries();
 });
