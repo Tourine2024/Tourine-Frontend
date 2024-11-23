@@ -39,7 +39,7 @@ onMounted(() => {
   console.log(props.content);
   editorInstance.value = new Editor({
     el: editor.value,
-    height: "500px",
+    height: "auto",
     placeholder: "여행 기록을 적어주세요!",
     initialEditType: "markdown",
     previewStyle: previewStyle,

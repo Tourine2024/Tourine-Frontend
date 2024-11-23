@@ -38,9 +38,9 @@
       </div>
 
       <!-- 내용 섹션 -->
-      <v-row class="mx-1 mb-3">
+      <v-row class="mx-1">
         <v-col>
-          <div v-html="diary.diaryContent" />
+          <div class="content" v-html="diary.diaryContent" />
         </v-col>
       </v-row>
 
@@ -121,7 +121,9 @@ onMounted(async () => {
   diary.value.diaryDate = data.diaryDate;
   diary.value.diaryTime = data.diaryTime;
 
-  diary.value.diaryContent = convertMarkdownToHTML(data.diaryContent);
+  diary.value.diaryContent = updateImageWidthInHtml(
+    convertMarkdownToHTML(data.diaryContent)
+  );
   diaryStore.diaryContent = data.diaryContent;
   console.log("html", diary.value.diaryContent);
 
@@ -146,13 +148,36 @@ const getDiary = async () => {
     // diary 객체 전체를 한 번에 업데이트
     diary.value = data;
     console.log("html", diary.diaryContent);
-    diary.diaryContent = convertMarkdownToHTML(diary.diaryContent);
+    diary.diaryContent = updateImageWidthInHtml(
+      convertMarkdownToHTML(diary.diaryContent)
+    );
+
+    console.log(diary.diaryContent);
 
     // diaryStore.diary = data;
   } catch (error) {
     console.error("일기 데이터를 가져오는 중 오류 발생:", error);
   }
 };
+
+//이미지 크기 변환
+function updateImageWidthInHtml(htmlString) {
+  console.log(htmlString);
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, "text/html");
+  const images = doc.querySelectorAll("img");
+  const lists = doc.querySelectorAll("li");
+
+  images.forEach((img) => {
+    img.style.width = "50%";
+  });
+
+  lists.forEach((li) => {
+    li.style.margin = "1rem";
+  });
+
+  return doc.body.innerHTML;
+}
 
 // Markdown to HTML 변환 함수
 function convertMarkdownToHTML(markdown) {
@@ -196,8 +221,10 @@ const deleteDiaryReq = async () => {
 .wrapper {
   width: 90%;
   background-color: white;
-  padding: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 5rem;
   border-radius: 12px;
+  height: fit-content;
 }
 
 .v-row {
@@ -244,5 +271,10 @@ h1 {
   font-size: 1rem;
   line-height: 1.6;
   color: #333;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
 }
 </style>
