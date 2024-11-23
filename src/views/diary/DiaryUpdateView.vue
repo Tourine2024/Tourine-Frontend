@@ -56,8 +56,13 @@
               <ToastUIEditor
                 ref="editorRef"
                 v-model="formData.diaryContent"
-                :initial-value="formData.diaryContent"
-                label="diaryContnet"
+                :content="formData.diaryContent"
+                @updateContent="
+                  (mdContent) => {
+                    formData.diaryContent = mdContent;
+                  }
+                "
+                label="diaryContent"
                 outlined
                 auto-grow
                 rows="5"
@@ -83,13 +88,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, toRaw } from "vue";
 import MapItem from "@/components/common/MapItem.vue";
 import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 import { useDiaryStore } from "@/stores/diary";
-import { postNewDiary } from "@/api/diary";
+import { postNewDiary, updateDiary, getDiaryInfo } from "@/api/diary";
 import { useRouter, useRoute } from "vue-router";
-import { updateDiary } from "@/api/diary";
 
 const diaryStore = useDiaryStore();
 const router = useRouter();
@@ -106,7 +110,7 @@ const formData = ref({
   diaryTitle: "",
   diaryDate: "",
   diaryTime: "",
-  diaryContent: diaryStore.diary.diaryContent,
+  diaryContent: diaryStore.diaryContent,
   locationNo: "1",
   tripNo: tripNo,
 });
@@ -125,20 +129,26 @@ onMounted(() => {
   getDiary();
 });
 
-const getDiary = () => {
+const getDiary = async () => {
   try {
-    formData.value = diaryStore.diary;
-    console.log(formData.value.diaryContent);
-    // const data = await getDiaryInfo(diaryNo);
-    // console.log(data);
+    // formData.value = diaryStore.diary;
+
+    const data = await getDiaryInfo(diaryNo);
 
     // // 개별 필드를 수동으로 업데이트
-    // formData.value.diaryTitle = data.diaryTitle;
-    // formData.value.diaryDate = data.diaryDate;
-    // formData.value.diaryTime = data.diaryTime;
-    // formData.value.diaryContent = data.diaryContent;
-    // formData.value.locationNo = data.locationNo;
-    // formData.value.tripNo = data.tripNo;
+    formData.value.diaryTitle = data.diaryTitle;
+    formData.value.diaryDate = data.diaryDate;
+    formData.value.diaryTime = data.diaryTime;
+
+    formData.value.diaryContent = data.diaryContent;
+    diaryStore.diaryContent = data.diaryContent;
+
+    formData.value.locationNo = data.locationNo;
+    formData.value.tripNo = data.tripNo;
+
+    console.log(diaryStore.diaryContent);
+    console.log(formData.value.diaryContent);
+    // diaryStore.diaryContent = data.diaryContent;
   } catch (error) {
     console.error("일기 데이터를 가져오는 중 오류 발생:", error);
   }
@@ -147,10 +157,11 @@ const getDiary = () => {
 const submitForm = async () => {
   if (form.value.validate()) {
     try {
-      console.log(formData);
-      await updateDiary(formData);
+      console.log(formData.value.diaryContent);
+      const rawFormData = toRaw(formData.value);
+      console.log(rawFormData);
+      await updateDiary(rawFormData);
       alert("여행 기록이 수정되었습니다!");
-      clearForm();
       router.push({ name: "tripDetail" });
     } catch (error) {
       console.error("여행 기록 저장 중 오류 발생:", error);

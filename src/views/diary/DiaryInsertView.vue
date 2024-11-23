@@ -74,7 +74,11 @@
               <ToastUIEditor
                 ref="editorRef"
                 v-model="formData.diaryContent"
-                @updateContent="(content) => (formData.diaryContent = content)"
+                @updateContent="
+                  (mdContent) => {
+                    formData.diaryContent = mdContent;
+                  }
+                "
                 label="내용"
                 outlined
                 auto-grow

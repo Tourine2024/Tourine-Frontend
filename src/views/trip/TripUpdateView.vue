@@ -44,13 +44,16 @@
               outlined
               clearable
             />
-            <template v-if="thumbnailImageUrl">
-              <v-img :src="thumbnailImageUrl" height="250px" />
-            </template>
-            <template v-else-if="formData.tripThumbnailUrl">
-              <v-img :src="formData.tripThumbnailUrl" height="250px">
-                <template v-slot:error />
-              </v-img>
+            <template
+              v-if="
+                thumbnailImageUrl !== DEFAULT_IMAGE_PATH ||
+                formData.tripThumbnailUrl
+              "
+            >
+              <v-img
+                :src="thumbnailImageUrl || formData.tripThumbnailUrl"
+                height="250px"
+              />
             </template>
           </v-col>
 
@@ -97,6 +100,7 @@ import { dateFormatter } from "@/util/date/dateFormat";
 import { uploadImage } from "@/api/image";
 import { useRoute, useRouter } from "vue-router";
 import { getTripInfo, updateTripInfo } from "@/api/trip";
+import { DEFAULT_IMAGE_PATH } from "@/api/image";
 
 const route = useRoute();
 const tripNo = route.params.tripNo;
@@ -124,6 +128,7 @@ onMounted(async () => {
   Object.assign(formData, data);
   formData.tripStartDate = new Date(formData.tripStartDate);
   formData.tripEndDate = new Date(formData.tripEndDate);
+  console.log(formData.tripThumbnailUrl);
 });
 
 const rules = {
