@@ -13,12 +13,15 @@
         :key="key"
         :options="{ position: marker }"
       />
+      <template v-if="path">
+        <Polyline :options="path" />
+      </template>
     </GoogleMap>
   </div>
 </template>
 
 <script setup>
-import { GoogleMap, AdvancedMarker } from "vue3-google-map";
+import { GoogleMap, AdvancedMarker, Polyline } from "vue3-google-map";
 
 defineProps({
   center: {
@@ -32,6 +35,10 @@ defineProps({
   zoom: {
     type: Number,
     default: 15,
+  },
+  path: {
+    type: Object,
+    default: null,
   },
 });
 

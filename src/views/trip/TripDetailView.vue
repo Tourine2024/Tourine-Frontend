@@ -8,7 +8,7 @@
             <MapItem
               :center="mapCenter"
               :markers="markers"
-              :zoom="11"
+              :zoom="6"
               :path="path"
             />
           </v-col>
@@ -22,7 +22,13 @@
                 class="w-100 mt-5"
               />
             </v-locale-provider>
-            <v-btn @click="resetDate">초기화</v-btn>
+            <v-row>
+              <v-btn @click="resetDate">초기화</v-btn>
+            </v-row>
+            <v-row>
+              <v-btn @click="showPath = true">동선 보이기</v-btn>
+              <v-btn @click="showPath = false">동선 숨기기</v-btn>
+            </v-row>
           </v-col>
         </v-row>
       </template>
@@ -68,14 +74,29 @@ const tripDates = reactive([]);
 const mapCenter = ref({ lat: 0.0, lng: 0.0 });
 const markers = ref([]);
 const path = ref(null);
+const showPath = ref(false);
 const selectedDate = ref(null);
 const btnText = ref("order-by-date");
 
 watch(selectedDate, async () => {
   if (selectedDate.value) {
-    getMarkersByDate(dateFormatter(selectedDate.value));
+    await getMarkersByDate(dateFormatter(selectedDate.value));
   } else {
-    getMarkers();
+    await getMarkers();
+  }
+});
+
+watch([showPath, markers], ([newShowPath, newMarkers]) => {
+  if (newShowPath && newMarkers.length > 0) {
+    path.value = {
+      path: newMarkers,
+      geodesic: true,
+      strokeColor: "#FF0000",
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+    };
+  } else {
+    path.value = null; // 숨기기
   }
 });
 
@@ -108,35 +129,35 @@ async function getDiaries() {
     if (diaries.value.length > 0) {
       mapCenter.value = await getLocation(diaries.value[0].locationNo);
     }
-    const _ = await getMarkers();
+    await getMarkers();
   } catch (error) {
     console.error(error);
   }
 }
 
 async function getMarkers() {
-  markers.value = [];
-  diaries.value.forEach((diary) => {
-    getMarkerByDiary(diary.locationNo);
-  });
+  const tmpMarkers = [];
+  for (const diary of diaries.value) {
+    const locationLatLng = await getLocation(diary.locationNo);
+    tmpMarkers.push(locationLatLng);
+  }
+  markers.value = tmpMarkers;
 }
 
 async function getMarkersByDate(tripDate) {
   if (tripDate) {
-    markers.value = [];
-    diaries.value
-      .filter((diary) => diary.diaryDate === tripDate)
-      .forEach((diary) => {
-        getMarkerByDiary(diary.locationNo);
-      });
+    const tmpMarkers = [];
+    const filteredDiaries = diaries.value.filter(
+      (diary) => diary.diaryDate === tripDate
+    );
+    for (const diary of filteredDiaries) {
+      const locationLatLng = await getLocation(diary.locationNo);
+      tmpMarkers.push(locationLatLng);
+    }
+    markers.value = tmpMarkers;
   } else {
-    getMarkers();
+    await getMarkers();
   }
-}
-
-async function getMarkerByDiary(locationNo) {
-  const locationLatLng = await getLocation(locationNo);
-  markers.value.push(locationLatLng);
 }
 
 async function getLocation(locationNo) {
