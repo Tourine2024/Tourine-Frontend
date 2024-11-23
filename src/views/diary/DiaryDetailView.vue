@@ -70,12 +70,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import { getDiaryInfo } from "@/api/diary";
 import { useRoute } from "vue-router";
 import MapItem from "@/components/common/MapItem.vue";
 import { useDiaryStore } from "@/stores/diary";
 import { getLocationInfo } from "@/api/location";
+import Editor from "@toast-ui/editor";
 
 const route = useRoute();
 const tripNo = route.params.tripNo;
@@ -97,12 +98,30 @@ const location = ref({});
 const mapCenter = reactive({ lat: 0, lng: 0 });
 
 onMounted(async () => {
-  getDiary();
+  // getDiary();
   // const diaryData = await getDiaryInfo(route.params.diaryNo);
   // Object.assign(diary.value, diaryData);
+
+  // //html 변환
+  // diary.diaryContent = convertMarkdownToHTML(diary.value.diaryContent);
+  // console.log("html", diary.diaryContent);
+
+  const data = await getDiaryInfo(diaryNo);
+  // diary 객체 전체를 한 번에 업데이트하지 않고, 필드별로 업데이트
+  diary.value.diaryTitle = data.diaryTitle;
+  diary.value.diaryDate = data.diaryDate;
+  diary.value.diaryTime = data.diaryTime;
+
+  diary.value.diaryContent = convertMarkdownToHTML(data.diaryContent);
+  diaryStore.diaryContent = data.diaryContent;
+  console.log("html", diary.value.diaryContent);
+
+  diary.value.locationNo = data.locationNo;
+  diary.value.tripNo = data.tripNo;
+
   const locationData = await getLocationInfo(diary.value.locationNo);
   Object.assign(location.value, locationData);
-  mapCenter.lat = locationData.locationLatitude;ㅌ
+  mapCenter.lat = locationData.locationLatitude;
   mapCenter.lng = locationData.locationLongitude;
 });
 
@@ -117,11 +136,25 @@ const getDiary = async () => {
 
     // diary 객체 전체를 한 번에 업데이트
     diary.value = data;
-    diaryStore.diary = data;
+    console.log("html", diary.diaryContent);
+    diary.diaryContent = convertMarkdownToHTML(diary.diaryContent);
+
+    // diaryStore.diary = data;
   } catch (error) {
     console.error("일기 데이터를 가져오는 중 오류 발생:", error);
   }
 };
+
+// Markdown to HTML 변환 함수
+function convertMarkdownToHTML(markdown) {
+  const editor = new Editor({
+    el: document.createElement("div"), // 임시로 사용할 보이지 않는 엘리먼트를 생성
+    initialEditType: "markdown",
+    initialValue: markdown, // 변환할 Markdown 내용을 입력
+  });
+
+  return editor.getHTML(); // 변환된 HTML을 반환
+}
 
 // 삭제 모달 제어
 const showDeleteDialog = ref(false);
