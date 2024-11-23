@@ -9,7 +9,14 @@
         여행으로 돌아가기
       </v-btn>
       <div>
-        <v-btn class="mx-1" :to="{ name: 'diaryUpdate' }">수정</v-btn>
+        <v-btn
+          class="mx-1"
+          :to="{
+            name: 'diaryUpdate',
+            params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
+          }"
+          >수정</v-btn
+        >
         <v-btn class="mx-1" color="red" @click="showDeleteDialog = true"
           >삭제</v-btn
         >
@@ -43,7 +50,7 @@
           <v-card-title class="headline">삭제 확인</v-card-title>
           <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
           <v-card-actions>
-            <v-btn color="red" text @click="deleteDiary">삭제</v-btn>
+            <v-btn color="red" text @click="deleteDiaryReq">삭제</v-btn>
             <v-btn color="grey" text @click="showDeleteDialog = false"
               >취소</v-btn
             >
@@ -72,13 +79,15 @@
 <script setup>
 import { ref, onMounted, reactive, watch } from "vue";
 import { getDiaryInfo } from "@/api/diary";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import MapItem from "@/components/common/MapItem.vue";
 import { useDiaryStore } from "@/stores/diary";
 import { getLocationInfo } from "@/api/location";
 import Editor from "@toast-ui/editor";
+import { deleteDiary } from "@/api/diary";
 
 const route = useRoute();
+const router = useRouter();
 const tripNo = route.params.tripNo;
 const diaryNo = route.params.diaryNo;
 
@@ -162,9 +171,15 @@ const showDeleteDialog = ref(false);
 // 지도 모달 제어
 const showMapDialog = ref(false);
 
-const deleteDiary = () => {
+const deleteDiaryReq = async () => {
+  await deleteDiary(diaryNo);
   alert("삭제되었습니다.");
   showDeleteDialog.value = false;
+
+  router.push({
+    name: "tripDetail",
+    params: { tripNo: tripNo },
+  });
 };
 </script>
 
