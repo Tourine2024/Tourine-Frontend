@@ -62,12 +62,10 @@
             <h3>출발 일자</h3>
             <v-locale-provider locale="ko">
               <DatePicker
-                show-adjacent-months
                 v-model="formData.tripStartDate"
                 :rules="[rules.required]"
                 @click="changeTripStartDate"
                 outlined
-                :hide-header="true"
               />
             </v-locale-provider>
           </v-col>
@@ -75,12 +73,10 @@
             <h3>도착 일자</h3>
             <v-locale-provider locale="ko">
               <DatePicker
-                show-adjacent-months
                 v-model="formData.tripEndDate"
                 :rules="[rules.required]"
                 @click="changeTripEndDate"
                 outlined
-                :hide-header="true"
               />
             </v-locale-provider>
           </v-col>

@@ -111,6 +111,7 @@ import { postNewDiary } from "@/api/diary";
 import { useRouter } from "vue-router";
 import { defineProps } from "vue";
 import { searchLocations } from "@/api/google";
+import { insertLocationInfo } from "@/api/location";
 
 const diaryStore = useDiaryStore();
 const router = useRouter();
@@ -166,7 +167,7 @@ const selectLocation = (location) => {
     locationGoogleUrl: location.id,
   };
   locationQuery.value = location.displayName;
-  menuOpen.value = false;
+  document.activeElement.blur();
 };
 
 const today = new Date();
@@ -175,7 +176,7 @@ const formData = reactive({
   diaryDate: diaryStore.tripDate,
   diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryContent: "",
-  locationNo: "1",
+  locationNo: null,
   tripNo: props.tripNo,
 });
 
@@ -186,7 +187,9 @@ const rules = {
 const submitForm = async () => {
   if (form.value.validate()) {
     try {
-      console.log("전송", formData.diaryContent);
+      console.log(formData.diaryContent);
+      const locationNo = await insertLocationInfo(selectedLocation.value);
+      formData.locationNo = locationNo;
       await postNewDiary(formData);
       alert("새 여행 기록이 저장되었습니다!");
       clearForm();

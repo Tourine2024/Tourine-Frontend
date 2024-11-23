@@ -53,9 +53,9 @@ onMounted(() => {
     hooks: {
       addImageBlobHook: async (blob, callback) => {
         // 이미지 크기 제한 확인
-        if (blob.size > 100 * 1024) {
+        if (blob.size > 50 * 1024 * 1024) {
           // 100KB 제한
-          alert("이미지의 크기는 100KB를 초과할 수 없습니다.");
+          alert("이미지의 크기는 50MB를 초과할 수 없습니다.");
           return false;
         }
 

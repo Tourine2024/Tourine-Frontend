@@ -107,7 +107,7 @@ const location = ref({});
 const mapCenter = reactive({ lat: 0, lng: 0 });
 
 onMounted(async () => {
-  // getDiary();
+  await getDiary();
   // const diaryData = await getDiaryInfo(route.params.diaryNo);
   // Object.assign(diary.value, diaryData);
 
@@ -131,7 +131,7 @@ onMounted(async () => {
   diary.value.tripNo = data.tripNo;
 
   const locationData = await getLocationInfo(diary.value.locationNo);
-  Object.assign(location.value, locationData);
+  location.value = { ...locationData };
   mapCenter.lat = locationData.locationLatitude;
   mapCenter.lng = locationData.locationLongitude;
 });
