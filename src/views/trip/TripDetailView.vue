@@ -3,7 +3,7 @@
     <div class="wrapper">
       <TripDetailTitleItem :trip="trip" />
       <template v-if="diaries.length > 0">
-        <MapItem :center="mapCenter" :markers="markers" />
+        <MapItem :center="mapCenter" :markers="markers" :zoom="2" />
       </template>
       <div class="mx-1 pt-5 pb-3">
         <v-row class="d-flex justify-space-between">
