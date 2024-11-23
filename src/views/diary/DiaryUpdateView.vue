@@ -162,7 +162,10 @@ const submitForm = async () => {
       console.log(rawFormData);
       await updateDiary(rawFormData);
       alert("여행 기록이 수정되었습니다!");
-      router.push({ name: "tripDetail" });
+      router.push({
+        name: "diaryDetail",
+        params: { tripNo: tripNo, diaryNo: diaryNo },
+      });
     } catch (error) {
       console.error("여행 기록 저장 중 오류 발생:", error);
     }
