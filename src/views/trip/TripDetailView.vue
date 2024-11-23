@@ -68,16 +68,6 @@ const mapCenter = ref({ lat: 0.0, lng: 0.0 });
 const markers = reactive([]);
 const btnText = ref("order-by-date");
 
-async function setTrip() {
-  try {
-    const response = await getTripInfo(route.params.tripNo);
-    trip.value = response;
-    setDiaryDates();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 async function getDiaryDates() {
   let tmpDate = new Date(trip.value.tripStartDate);
   let endDate = new Date(trip.value.tripEndDate);

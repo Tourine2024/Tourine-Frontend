@@ -102,7 +102,7 @@ onMounted(async () => {
   // Object.assign(diary.value, diaryData);
   const locationData = await getLocationInfo(diary.value.locationNo);
   Object.assign(location.value, locationData);
-  mapCenter.lat = locationData.locationLatitude;ㅌ
+  mapCenter.lat = locationData.locationLatitude;
   mapCenter.lng = locationData.locationLongitude;
 });
 
