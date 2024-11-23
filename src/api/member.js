@@ -8,7 +8,7 @@ export const loginMember = async (id, password) => {
       memberId: id,
       memberPw: password,
     });
-    localStorage.setItem("memberNo", data.memberNo);
+
     return data;
   } catch (err) {
     console.error(err);
