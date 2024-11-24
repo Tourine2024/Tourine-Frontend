@@ -3,7 +3,7 @@
     <GoogleMap
       :api-key="GOOGLE_MAPS_API_KEY"
       :map-id="GOOGLE_MAPS_MAP_ID"
-      style="width: 100%; height: 600px"
+      style="width: 100%; height: 570px"
       :center="center"
       :zoom="zoom"
       class="px-4 py-5"
