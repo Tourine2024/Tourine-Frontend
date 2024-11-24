@@ -1,11 +1,26 @@
-<script setup></script>
-
 <template>
   <div class="profile">
-    <img src="@/assets/image/profile/profile_1.svg" />
-    <p>김싸피 님, 어서오세요!</p>
+    <img :src="memberInfo.memberProfilePicUrl || defaultProfilePic" />
+    <p>{{ memberInfo.memberNickname }} 님, 어서오세요!</p>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import { getMemberInfo } from "@/api/member";
+import defaultProfilePic from "@/assets/image/profile/profile_1.svg";
+
+// const memberNo = 1; // 이후 세션에서 가져올 것
+const memberNo = localStorage.getItem("memberNo");
+const memberInfo = ref({
+  memberNickname: "",
+  memberProfilePicUrl: "",
+});
+
+onMounted(async () => {
+  memberInfo.value = await getMemberInfo(memberNo);
+});
+</script>
 
 <style scoped>
 .profile {
