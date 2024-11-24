@@ -2,7 +2,7 @@
 
 <template>
   <div class="tripdays">
-    <h3>올해 내가 여행한 국가는 ?</h3>
+    <h3>올해 내가 여행한 나라 🌎</h3>
     <p>{{ tripCountries }} countries</p>
   </div>
 </template>
@@ -12,6 +12,7 @@ import { ref, onMounted } from "vue";
 import { getTripCountries } from "@/api/home";
 
 const memberNo = 1; // 이후 세션에서 가져올 것
+// const memberNo = localStorage.getItem( "memberNo" );
 const tripCountries = ref(0);
 
 onMounted(async () => {
