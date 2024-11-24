@@ -3,12 +3,12 @@
     <div class="wrapper">
       <TripDetailTitleItem :trip="trip" />
       <template v-if="diaries.length > 0">
-        <v-row>
+        <v-row id="map">
           <v-col cols="8">
             <MapItem
               :center="mapCenter"
               :markers="markers"
-              :zoom="6"
+              :zoom="2"
               :path="path"
             />
           </v-col>
@@ -38,7 +38,7 @@
             <h1 class="font-weight-black text-center">여행 기록</h1>
           </span>
         </v-row>
-          <div v-for="(tripDate, key) in tripDates" :key="key">
+        <div v-for="(tripDate, key) in tripDates" :key="key">
           <template
             v-if="!selectedDate || tripDate === dateFormatter(selectedDate)"
           >
@@ -49,7 +49,7 @@
               :diaries="getDiariesByDate(tripDate)"
             />
           </template>
-          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -65,9 +65,10 @@ import { getTripInfo, getDiaryLists } from "@/api/trip";
 import { getLocationInfo } from "@/api/location";
 
 import { ref, reactive, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 const trip = ref({});
 const diaries = ref([]);
@@ -77,7 +78,6 @@ const markers = ref([]);
 const path = ref(null);
 const showPath = ref(false);
 const selectedDate = ref(null);
-const btnText = ref("order-by-date");
 
 watch(selectedDate, async () => {
   if (selectedDate.value) {
@@ -85,6 +85,7 @@ watch(selectedDate, async () => {
   } else {
     await getMarkers();
   }
+  router.push({ path: route.fullPath, hash: "#map" });
 });
 
 watch([showPath, markers], ([newShowPath, newMarkers]) => {

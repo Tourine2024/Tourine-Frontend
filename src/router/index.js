@@ -6,6 +6,14 @@ import LoginView from "@/views/member/LoginView.vue";
 import RegisterVue from "@/views/member/RegisterView.vue";
 
 const router = createRouter({
+  scrollBehavior(to) {
+    if (to.hash) {
+      const element = document.querySelector(to.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  },
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
