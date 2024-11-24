@@ -4,6 +4,7 @@ import HomeView from "@/views/HomeView.vue";
 import LandingView from "@/views/landing/LandingView.vue";
 import LoginView from "@/views/member/LoginView.vue";
 import RegisterVue from "@/views/member/RegisterView.vue";
+import KakaoLoginView from "@/views/member/KakaoLoginView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,12 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+      meta: { hideHeaderFooter: true },
+    },
+    {
+      path: "/login/kakao",
+      name: "kakaoLogin",
+      component: KakaoLoginView,
       meta: { hideHeaderFooter: true },
     },
     {
