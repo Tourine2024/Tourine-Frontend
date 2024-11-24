@@ -16,8 +16,8 @@
   padding: 2rem;
   margin: 2rem;
 
-  background-color: white;
   border-radius: 12px;
+  background-color: #ffffff;
 }
 p {
   margin-left: 1rem;

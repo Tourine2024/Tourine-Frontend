@@ -5,6 +5,7 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+import ko from "vuetify/lib/locale/ko";
 
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 
@@ -24,6 +25,10 @@ const vuetify = createVuetify({
     sets: {
       mdi,
     },
+  },
+  lang: {
+    locales: { ko },
+    current: "ko", // 기본 언어를 한국어로 설정
   },
 });
 

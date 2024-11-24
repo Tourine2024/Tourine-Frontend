@@ -1,11 +1,23 @@
-<script setup></script>
-
 <template>
   <div class="tripdays">
-    <h3>올해 내가 기록한 여행은 ?</h3>
-    <p>5 trips</p>
+    <h3>올해 내가 떠난 횟수 ✈️</h3>
+    <p>{{ recordTrips }} trips</p>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import { getTripCounts } from "@/api/home";
+
+const memberNo = 1; // 이후 세션에서 가져올 것
+// const memberNo = localStorage.getItem( "memberNo" );
+const recordTrips = ref(0);
+
+onMounted(async () => {
+  recordTrips.value = await getTripCounts(memberNo);
+});
+</script>
+
 <style scoped>
 .tripdays {
   /* width: 339px; */

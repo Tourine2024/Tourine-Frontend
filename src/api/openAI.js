@@ -7,7 +7,8 @@ export const summarizeTrip = async (tripNo) => {
     return data;
   } catch (err) {
     console.error(err);
-    return err;
+    alert("여행 요약하기를 실패했습니다. 다시 시도해주세요.");
+    return "fail";
   }
 };
 
@@ -17,6 +18,7 @@ export const drawPostCard = async (tripNo) => {
     console.log(data);
     return data;
   } catch (err) {
+    alert("우표 이미지를 생성하는 데 실패했습니다. 다시 시도해주세요.");
     console.error(err);
     return err;
   }

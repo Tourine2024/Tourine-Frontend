@@ -8,37 +8,40 @@
           >
           <h1 class="font-weight-black ml-4">{{ trip.tripName }}</h1>
           <v-card-text>{{ trip.tripSummary }}</v-card-text>
-          <!-- 조건부 렌더링 -->
           <template v-if="showButtons">
             <v-btn
               @click="summarize(trip.tripNo)"
               class="md-3 ml-4"
               rounded="xl"
               color="blue"
-              >AI 요약하기+</v-btn
             >
+              AI 요약하기+
+            </v-btn>
             <v-btn
               @click="createStamp(trip.tripNo)"
               class="md-3 ml-4"
               rounded="xl"
               color="green"
-              >우표 만들기 📮</v-btn
             >
+              우표 만들기 📮
+            </v-btn>
           </template>
           <v-btn
             class="md-3 ml-4"
             rounded="xl"
             color="blue"
             :to="{ name: 'tripModify', params: { tripNo: trip.tripNo } }"
-            >수정</v-btn
           >
+            수정
+          </v-btn>
           <v-btn
             class="md-3 ml-4"
             rounded="xl"
             color="red"
             @click="showDeleteDialog = true"
-            >삭제</v-btn
           >
+            삭제
+          </v-btn>
         </v-card>
       </v-col>
       <v-col class="text-xs-center" align="center">
@@ -69,15 +72,17 @@
         <v-card-text>
           <v-container>
             <v-row justify="center">
-              <v-progress-circular v-if="loading" indeterminate color="primary">
-              </v-progress-circular>
+              <v-progress-circular
+                v-if="loading"
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
               <v-img
                 v-if="!loading"
                 :src="stampImageUrl"
                 aspect-ratio="1"
                 contain
-              >
-              </v-img>
+              ></v-img>
             </v-row>
           </v-container>
         </v-card-text>
@@ -109,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { deleteTripInfo, updateTripInfo } from "@/api/trip";
 import { drawPostCard, summarizeTrip } from "@/api/openAI.js";
@@ -129,8 +134,10 @@ const showButtons = computed(() => props.trip.tripDiaryCount >= 3);
 
 const summarize = async (tripNo) => {
   const summary = await summarizeTrip(tripNo);
-  props.trip.tripSummary = summary;
-  await updateTripInfo(props.trip);
+  if (summary !== "fail") {
+    props.trip.tripSummary = summary;
+    await updateTripInfo(props.trip);
+  }
 };
 
 const createStamp = async (tripNo) => {
@@ -140,8 +147,10 @@ const createStamp = async (tripNo) => {
     stampImageUrl.value = await drawPostCard(tripNo);
   } catch (error) {
     console.error("Error generating stamp:", error);
+    alert("우표 이미지를 생성하는 데 실패했습니다. 다시 시도해주세요.");
   } finally {
     loading.value = false;
+    showImageDialog.value = false; // 모달 창 닫기
   }
 };
 
