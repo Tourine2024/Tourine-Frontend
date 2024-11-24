@@ -46,6 +46,7 @@ async function getDiaries() {
   try {
     const response = await getAllDiarys(memberNo);
     diaries.value = response;
+    console.log("Diaries loaded:", diaries.value);
     response.forEach((diary) => {
       diaryDates.add(diary.diaryDate.split("T")[0]); // 날짜 부분만 추출
     });
