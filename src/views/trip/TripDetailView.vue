@@ -22,12 +22,41 @@
                 class="w-100 mt-5"
               />
             </v-locale-provider>
-            <v-row>
-              <v-btn @click="resetDate">초기화</v-btn>
+            <v-row class="mt-4">
+              <v-col cols="6" class="pr-0">
+                <v-btn
+                  :class="{ 'btn-active': showPath }"
+                  :color="showPath ? 'blue' : 'white'"
+                  @click="showPath = true"
+                  block
+                >
+                  동선 보이기
+                </v-btn>
+              </v-col>
+              <v-col cols="6" class="pl-0">
+                <v-btn
+                  :class="{ 'btn-active': !showPath }"
+                  :color="!showPath ? 'blue' : 'white'"
+                  @click="showPath = false"
+                  block
+                >
+                  동선 숨기기
+                </v-btn>
+              </v-col>
             </v-row>
             <v-row>
-              <v-btn @click="showPath = true">동선 보이기</v-btn>
-              <v-btn @click="showPath = false">동선 숨기기</v-btn>
+              <v-col cols="12">
+                <v-btn v-if="selectedDate" @click="resetDate" block
+                  >모든 날짜 보기</v-btn
+                >
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col col="12">
+                <v-btn v-if="selectedDate" @click="setDiaryData" block
+                  >기록 추가하기</v-btn
+                >
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -63,12 +92,15 @@ import DatePicker from "@/components/common/DatePicker.vue";
 import { dateFormatter } from "@/util/date/dateFormat";
 import { getTripInfo, getDiaryLists } from "@/api/trip";
 import { getLocationInfo } from "@/api/location";
+import { useDiaryStore } from "@/stores/diary";
 
 import { ref, reactive, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
+
+const diaryStore = useDiaryStore();
 
 const trip = ref({});
 const diaries = ref([]);
@@ -188,6 +220,14 @@ function getDayCnt(tripDate) {
 function getDiariesByDate(tripDate) {
   return diaries.value.filter((diary) => diary.diaryDate === tripDate);
 }
+
+const setDiaryData = () => {
+  diaryStore.tripDate = dateFormatter(selectedDate.value);
+  router.push({
+    name: "diaryNew",
+    params: { tripNo: trip.value.tripNo },
+  });
+};
 
 onMounted(async () => {
   const data = await getTripInfo(route.params.tripNo);
