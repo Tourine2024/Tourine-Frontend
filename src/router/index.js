@@ -37,6 +37,12 @@ const router = createRouter({
       component: () => import("@/views/MyPageView.vue"),
     },
     {
+      path: "/collection",
+      name: "collection",
+      component: () => import("@/views/collection/CollectionView.vue"),
+      meta: { hideHeaderFooter: true },
+    },
+    {
       path: "/trips",
       name: "trips",
       component: () => import("@/views/trip/TripsView.vue"),

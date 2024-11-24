@@ -1,35 +1,81 @@
-<script setup>
-import DatePicker from "../common/DatePicker.vue";
-</script>
-
 <template>
   <div class="date">
-    <DatePicker class="datePicker" />
-    <v-card id="bus" class="card mx-auto" height="96px" link
-      ><img src="@/assets/icon/bus.svg" />
-      <p>오늘은 챌린지를 찍었다.</p></v-card
-    >
-    <v-card id="hotel" class="card mx-auto" height="96px" link
-      ><img src="@/assets/icon/hotel.svg" />
-      <p>박원우가 해변에서 춤췄다. ㅋㅋㅋ</p></v-card
-    >
-    <v-card id="flight" class="card mx-auto" height="96px" link
-      ><img src="@/assets/icon/flight.svg" />
-      <p>비행기를 탈 수 있을까?</p></v-card
-    >
+    <v-locale-provider locale="ko">
+      <DatePicker
+        class="datePicker"
+        :allowed-dates="allowedDates"
+        v-model="selectedDate"
+      />
+    </v-locale-provider>
+    <div class="diary-cards">
+      <v-card
+        v-for="diary in filteredDiaries"
+        :key="diary.id"
+        :to="{
+          name: 'diaryDetail',
+          params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
+        }"
+        class="card mx-auto"
+        height="96px"
+        link
+      >
+        <img src="@/assets/icon/bus.svg" />
+        <p>{{ diary.diaryTitle }}</p>
+      </v-card>
+    </div>
   </div>
 </template>
+
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import DatePicker from "@/components/common/DatePicker.vue";
+import { getAllDiarys } from "@/api/home";
+
+const diaries = ref([]);
+const selectedDate = ref(null);
+const memberNo = 1;
+//const memberNo = localStorage.getItem("memberNo");`
+
+const diaryDates = new Set();
+
+onMounted(async () => {
+  await getDiaries();
+});
+
+async function getDiaries() {
+  try {
+    const response = await getAllDiarys(memberNo);
+    diaries.value = response;
+    console.log("Diaries loaded:", diaries.value);
+    response.forEach((diary) => {
+      diaryDates.add(diary.diaryDate.split("T")[0]); // 날짜 부분만 추출
+    });
+  } catch (error) {
+    console.error("Failed to load diaries:", error);
+  }
+}
+
+const allowedDates = (date) => {
+  const formattedDate = date.toISOString().split("T")[0];
+  return diaryDates.has(formattedDate);
+};
+
+const filteredDiaries = computed(() => {
+  const selectedDateString = selectedDate.value?.toISOString().split("T")[0];
+  return diaries.value.filter(
+    (diary) => diary.diaryDate.split("T")[0] === selectedDateString
+  );
+});
+</script>
+
 <style scoped>
 .date {
   position: relative;
-  /* width: 339px; */
   width: 100%;
   height: 755px;
   border-radius: 12px;
   background-color: white;
-
   margin-right: 2rem;
-
   padding: 1rem;
 }
 
@@ -39,8 +85,10 @@ import DatePicker from "../common/DatePicker.vue";
   object-fit: cover;
 }
 
-img {
-  margin-right: 1rem;
+.diary-cards {
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 0 1rem;
 }
 
 .card {
@@ -48,23 +96,32 @@ img {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 1rem;
-  border-radius: 24px;
-}
-#bus {
+  padding: 0 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
   background-color: rgba(0, 133, 86, 0.1);
 }
 
-#hotel {
-  background-color: rgba(255, 116, 44, 0.1);
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-#flight {
-  background-color: rgba(52, 106, 255, 0.1);
+img {
+  margin-right: 1rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
 
 p {
   font-size: 16px;
   font-weight: bold;
+  flex-grow: 1;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
