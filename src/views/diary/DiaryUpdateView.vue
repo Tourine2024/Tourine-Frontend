@@ -202,10 +202,18 @@ const getDiary = async () => {
     const locationInfo = await getLocationInfo(data.locationNo);
     locationQuery.value = locationInfo.locationName;
     menuOpen.value = false;
+    selectedLocation.value = {
+      locationName: locationInfo.locationName,
+      locationCountry: locationInfo.locationCountry,
+      locationLatitude: locationInfo.locationLatitude,
+      locationLongitude: locationInfo.locationLongitude,
+      locationGoogleUrl: locationInfo.locationGoogleUrl,
+    };
     mapCenter.value = {
       lat: locationInfo.locationLatitude,
       lng: locationInfo.locationLongitude,
     };
+    markerPosition.value = [mapCenter.value];
 
     formData.value.tripNo = data.tripNo;
 
