@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { deleteTripInfo, updateTripInfo } from "@/api/trip";
 import { drawPostCard, summarizeTrip } from "@/api/openAI.js";
@@ -129,8 +129,10 @@ const showButtons = computed(() => props.trip.tripDiaryCount >= 3);
 
 const summarize = async (tripNo) => {
   const summary = await summarizeTrip(tripNo);
-  props.trip.tripSummary = summary;
-  await updateTripInfo(props.trip);
+  if (summary !== "fail") {
+    props.trip.tripSummary = summary;
+    await updateTripInfo(props.trip);
+  }
 };
 
 const createStamp = async (tripNo) => {

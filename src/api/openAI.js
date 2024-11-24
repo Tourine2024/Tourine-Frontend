@@ -7,7 +7,8 @@ export const summarizeTrip = async (tripNo) => {
     return data;
   } catch (err) {
     console.error(err);
-    return err;
+    alert("여행 요약하기를 실패했습니다. ");
+    return "fail";
   }
 };
 
