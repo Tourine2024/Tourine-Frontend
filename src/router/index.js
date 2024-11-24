@@ -11,8 +11,10 @@ const router = createRouter({
       const element = document.querySelector(to.hash);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
+        return { selector: to.hash };
       }
     }
+    return { top: 0 };
   },
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
