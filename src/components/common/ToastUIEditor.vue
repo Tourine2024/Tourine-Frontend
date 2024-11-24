@@ -9,7 +9,7 @@ import TurndownService from "turndown";
 import { uploadImage } from "@/api/image"; // 서버로 이미지를 업로드하는 API
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import { ref, onMounted, defineEmits, defineProps, computed, watch } from "vue";
+import { ref, onMounted, defineEmits, computed, watch } from "vue";
 
 import MarkdownIt from "markdown-it";
 import markdownItCheckbox from "markdown-it-checkbox";

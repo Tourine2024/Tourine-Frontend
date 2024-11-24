@@ -109,7 +109,6 @@ import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 import { useDiaryStore } from "@/stores/diary";
 import { postNewDiary } from "@/api/diary";
 import { useRouter } from "vue-router";
-import { defineProps } from "vue";
 import { searchLocations } from "@/api/google";
 import { insertLocationInfo } from "@/api/location";
 
