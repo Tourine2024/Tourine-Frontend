@@ -38,17 +38,18 @@
             <h1 class="font-weight-black text-center">여행 기록</h1>
           </span>
         </v-row>
-        <template v-if="btnText === 'order-by-date'">
           <div v-for="(tripDate, key) in tripDates" :key="key">
+          <template
+            v-if="!selectedDate || tripDate === dateFormatter(selectedDate)"
+          >
             <DiariesByDayItem
-              :dayCnt="++dayCnt"
+              :dayCnt="getDayCnt(tripDate)"
               :tripNo="trip.tripNo"
               :tripDate="tripDate"
               :diaries="getDiariesByDate(tripDate)"
             />
+          </template>
           </div>
-        </template>
-        <template v-if="btnText === 'order-by-location'"> </template>
       </div>
     </div>
   </div>
@@ -173,9 +174,17 @@ async function getLocation(locationNo) {
   }
 }
 
-let dayCnt = 0;
+function getDayCnt(tripDate) {
+  return (
+    Math.abs(
+      (new Date(tripDate).getTime() -
+        new Date(trip.value.tripStartDate).getTime()) /
+        (1000 * 60 * 60 * 24)
+    ) + 1
+  );
+}
+
 function getDiariesByDate(tripDate) {
-  if (tripDate === trip.value.tripEndDate) dayCnt = 0;
   return diaries.value.filter((diary) => diary.diaryDate === tripDate);
 }
 
