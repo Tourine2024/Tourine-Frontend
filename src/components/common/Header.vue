@@ -11,11 +11,17 @@ import { RouterLink } from "vue-router";
         <RouterLink :to="{ name: 'trips' }"
           ><img src="@/assets/icon/menu_travel.svg" />나의 여행</RouterLink
         >
-        <RouterLink to="/mypage"><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink>
+        <RouterLink :to="{ name: 'collection' }"
+          ><img src="@/assets/icon/menu_travel.svg" />컬렉션</RouterLink
+        >
+        <RouterLink to="/mypage"
+          ><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink
+        >
       </nav>
     </div>
   </div>
 </template>
+
 <style scoped>
 .header {
   background-color: #cfedfe;
@@ -67,6 +73,7 @@ nav a img {
 nav a:hover {
   color: #00507a;
   font-weight: bolder;
+  cursor: pointer;
 }
 
 nav a.router-link-exact-active {
