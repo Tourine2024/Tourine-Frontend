@@ -45,3 +45,14 @@ export const getAllDiarys = async (memberNo) => {
     return err;
   }
 };
+
+//여행 전체 목록
+export const getAllTrips = async (memberNo) => {
+  try {
+    const { data } = await localAxios.get(`/home/trips?memberNo=${memberNo}`);
+    return data;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+};
