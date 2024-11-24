@@ -40,6 +40,7 @@
             <!-- 지도 (위치 정보 입력) -->
             <v-col cols="6">
               <v-combobox
+                class="pt-5"
                 label="장소 검색"
                 v-model="locationQuery"
                 :items="mapSearchResults"

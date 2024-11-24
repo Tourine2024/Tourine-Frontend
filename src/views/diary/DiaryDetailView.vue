@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- 상단 버튼 섹션 -->
-    <div class="button-row mx-10" justify="space-between" align="center">
+    <div class="button-row ml-15 mr-14" justify="space-between" align="center">
       <v-btn
         prepend-icon="mdi-arrow-u-left-top"
         :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }"
@@ -38,7 +38,7 @@
       </div>
 
       <!-- 내용 섹션 -->
-      <v-row class="mx-1">
+      <v-row class="mx-1 my-4">
         <v-col>
           <div class="content" v-html="diary.diaryContent" />
         </v-col>
@@ -135,10 +135,6 @@ onMounted(async () => {
   mapCenter.lat = locationData.locationLatitude;
   mapCenter.lng = locationData.locationLongitude;
 });
-
-//const mapCenter = reactive({ lat: 37.458649, lng: 126.441946 });
-
-//const locationName = "인천공항";
 
 const getDiary = async () => {
   try {
