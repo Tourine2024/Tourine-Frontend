@@ -30,6 +30,7 @@
 import { ref, computed, onMounted } from "vue";
 import DatePicker from "@/components/common/DatePicker.vue";
 import { getAllDiarys } from "@/api/home";
+import { dateFormatter } from "@/util/date/dateFormat";
 
 const diaries = ref([]);
 const selectedDate = ref(null);
@@ -48,7 +49,7 @@ async function getDiaries() {
     diaries.value = response;
     console.log("Diaries loaded:", diaries.value);
     response.forEach((diary) => {
-      diaryDates.add(diary.diaryDate.split("T")[0]); // 날짜 부분만 추출
+      diaryDates.add(diary.diaryDate.replace(/-/g, ".")); // 날짜 부분만 추출
     });
   } catch (error) {
     console.error("Failed to load diaries:", error);
@@ -56,15 +57,19 @@ async function getDiaries() {
 }
 
 const allowedDates = (date) => {
-  const formattedDate = date.toISOString().split("T")[0];
+  const formattedDate = dateFormatter(date);
   return diaryDates.has(formattedDate);
 };
 
 const filteredDiaries = computed(() => {
-  const selectedDateString = selectedDate.value?.toISOString().split("T")[0];
-  return diaries.value.filter(
-    (diary) => diary.diaryDate.split("T")[0] === selectedDateString
-  );
+  if (selectedDate.value) {
+    const selectedDateString = dateFormatter(selectedDate.value);
+    return diaries.value.filter(
+      (diary) => diary.diaryDate.replace(/-/g, ".") === selectedDateString
+    );
+  } else {
+    return null;
+  }
 });
 </script>
 
