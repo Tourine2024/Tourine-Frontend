@@ -3,7 +3,7 @@
     <div class="wrapper">
       <!-- 상단 제목 -->
       <v-row justify="center" class="mb-4">
-        <h1 class="text-center font-weight-bold">여행 일기 편집</h1>
+        <h1 class="text-center font-weight-bold">여행 기록 편집</h1>
       </v-row>
 
       <!-- 입력 폼 -->
@@ -24,7 +24,7 @@
 
             <!-- 날짜와 시간 -->
             <v-col cols="6">
-              <h3>여행 날짜</h3>
+              <h3>여행 일자</h3>
               <v-text-field
                 class="text-grey"
                 v-model="formData.diaryDate"
@@ -89,7 +89,7 @@
             </v-col>
           </v-row>
 
-          <!-- 저장 버튼 -->
+          <!-- 수정 버튼 -->
           <v-row justify="center" class="mt-5 mb-0">
             <v-btn color="primary" class="mx-2" @click="submitForm"
               >수정하기</v-btn

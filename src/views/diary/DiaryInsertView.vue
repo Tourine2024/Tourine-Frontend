@@ -24,7 +24,7 @@
 
             <!-- 날짜와 시간 -->
             <v-col cols="6">
-              <h3>일자 선택</h3>
+              <h3>여행 일자</h3>
               <v-text-field
                 class="text-grey"
                 v-model="formData.diaryDate"
@@ -129,6 +129,16 @@ const mapSearchResults = ref([]);
 const markerPosition = ref([]);
 const selectedLocation = ref(null);
 
+const today = new Date();
+const formData = reactive({
+  diaryTitle: "",
+  diaryDate: diaryStore.tripDate,
+  diaryTime: today.getHours() + ":" + today.getMinutes(),
+  diaryContent: "",
+  locationNo: null,
+  tripNo: props.tripNo,
+});
+
 const menuOpen = ref(true);
 watch(locationQuery, async () => {
   const tmpResults = [];
@@ -169,16 +179,6 @@ const selectLocation = (location) => {
   locationQuery.value = location.displayName;
   document.activeElement.blur();
 };
-
-const today = new Date();
-const formData = reactive({
-  diaryTitle: "",
-  diaryDate: diaryStore.tripDate,
-  diaryTime: today.getHours() + ":" + today.getMinutes(),
-  diaryContent: "",
-  locationNo: null,
-  tripNo: props.tripNo,
-});
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
