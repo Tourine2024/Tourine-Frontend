@@ -37,6 +37,17 @@
               <v-text-field v-model="formData.diaryTime" type="time" outlined />
             </v-col>
 
+            <!-- 카테고리 -->
+            <v-col cols="12">
+              <h3>카테고리</h3>
+              <v-radio-group v-model="formData.diaryCategory" inline>
+                <v-radio class="mr-5" label="관광" :value="1"></v-radio>
+                <v-radio class="mr-5" label="음식" :value="2"></v-radio>
+                <v-radio class="mr-5" label="액티비티" :value="3"></v-radio>
+                <v-radio class="mr-5" label="기타" :value="0"></v-radio>
+              </v-radio-group>
+            </v-col>
+
             <!-- 지도 (위치 정보 입력) -->
             <v-col cols="6">
               <v-combobox
@@ -134,6 +145,7 @@ const formData = reactive({
   diaryTitle: "",
   diaryDate: diaryStore.tripDate,
   diaryTime: today.getHours() + ":" + today.getMinutes(),
+  diaryCategory: 1,
   diaryContent: "",
   locationNo: null,
   tripNo: props.tripNo,
