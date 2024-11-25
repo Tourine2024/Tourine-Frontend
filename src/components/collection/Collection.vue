@@ -3,10 +3,10 @@
     <div class="stamps">
       <img
         v-for="stamp in stamps"
-        :src="stamp.collectionImgUrl"
-        :alt="`Stamp ${stamp.collectionId}`"
+        :src="stamp.stampImg"
+        :alt="`Stamp ${stamp.stampId}`"
         class="profileBackground"
-        :key="stamp.collectionId"
+        :key="stamp.stampId"
       />
     </div>
   </div>
