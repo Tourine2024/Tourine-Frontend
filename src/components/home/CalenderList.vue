@@ -4,18 +4,22 @@
       <DatePicker class="datePicker" :allowed-dates="allowedDates" v-model="selectedDate" />
     </v-locale-provider>
     <div class="diary-cards">
-      <v-card
-        v-for="diary in filteredDiaries"
-        :key="diary.id"
-        :to="{
-          name: 'diaryDetail',
-          params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
-        }"
-        class="card mx-auto"
-        height="96px"
-        link
-      >
-        <img src="@/assets/icon/bus.svg" />
+      <v-card v-for="diary in filteredDiaries" :key="diary.id" :to="{
+        name: 'diaryDetail',
+        params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
+      }" class="card mx-auto" height="96px" link :class="getClassByCategory(diary)">
+        <template v-if="diary.diaryCategory === 1">
+          <img src="@/assets/icon/luggage.svg" />
+        </template>
+        <template v-else-if="diary.diaryCategory === 2">
+          <img src="@/assets/icon/food.svg" />
+        </template>
+        <template v-else-if="diary.diaryCategory === 3">
+          <img src="@/assets/icon/activity.svg" />
+        </template>
+        <template v-else>
+          <img src="@/assets/icon/etc.svg" />
+        </template>
         <p>{{ diary.diaryTitle }}</p>
       </v-card>
     </div>
@@ -66,6 +70,21 @@ const filteredDiaries = computed(() => {
     return null;
   }
 });
+
+const getClassByCategory = (diary) => {
+  if (diary.diaryCategory === 1) {
+    return 'bg-green-lighten-4';
+  }
+  else if (diary.diaryCategory === 2) {
+    return 'bg-amber-lighten-4';
+  }
+  else if (diary.diaryCategory === 3) {
+    return 'bg-purple-lighten-4';
+  }
+  else {
+    return 'bg-blue-lighten-4';
+  }
+};
 </script>
 
 <style scoped>
