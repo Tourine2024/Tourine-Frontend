@@ -45,17 +45,17 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12">
-                <v-btn v-if="selectedDate" @click="resetDate" block
-                  >모든 날짜 보기</v-btn
-                >
+              <v-col cols="12" class="py-0" >
+                <v-btn v-if="selectedDate" @click="resetDate" block>
+                  모든 날짜 보기
+                </v-btn>
               </v-col>
             </v-row>
             <v-row>
               <v-col col="12">
-                <v-btn v-if="selectedDate" @click="setDiaryData" block
-                  >기록 추가하기</v-btn
-                >
+                <v-btn v-if="selectedDate" @click="setDiaryData" block>
+                  기록 추가하기
+                </v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -68,9 +68,7 @@
           </span>
         </v-row>
         <div v-for="(tripDate, key) in tripDates" :key="key">
-          <template
-            v-if="!selectedDate || tripDate === dateFormatter(selectedDate)"
-          >
+          <template v-if="!selectedDate || tripDate === dateFormatter(selectedDate)">
             <DiariesByDayItem
               :dayCnt="getDayCnt(tripDate)"
               :tripNo="trip.tripNo"
@@ -212,7 +210,7 @@ function getDayCnt(tripDate) {
     Math.abs(
       (new Date(tripDate).getTime() -
         new Date(trip.value.tripStartDate).getTime()) /
-        (1000 * 60 * 60 * 24)
+      (1000 * 60 * 60 * 24)
     ) + 1
   );
 }
