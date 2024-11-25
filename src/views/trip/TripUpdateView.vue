@@ -44,16 +44,8 @@
               outlined
               clearable
             />
-            <template
-              v-if="
-                thumbnailImageUrl !== DEFAULT_IMAGE_PATH ||
-                formData.tripThumbnailUrl
-              "
-            >
-              <v-img
-                :src="thumbnailImageUrl || formData.tripThumbnailUrl"
-                height="250px"
-              />
+            <template v-if="thumbnailImageUrl !== DEFAULT_IMAGE_PATH || formData.tripThumbnailUrl">
+              <v-img :src="thumbnailImageUrl || formData.tripThumbnailUrl" height="250px" />
             </template>
           </v-col>
 
@@ -111,6 +103,8 @@ const valid = ref(false);
 // 오늘 날짜 계산
 const today = new Date();
 
+const memberNo = localStorage.getItem("memberNo");
+
 const formData = reactive({
   tripNo: tripNo,
   tripName: "",
@@ -118,7 +112,7 @@ const formData = reactive({
   tripThumbnailUrl: null, // 업로드된 이미지 파일 URL
   tripStartDate: today,
   tripEndDate: today,
-  memberNo: 1, // 이후 로그인한 멤버 번호로 수정
+  memberNo: memberNo, // 이후 로그인한 멤버 번호로 수정
 });
 const thumbnailImage = ref(null);
 const thumbnailImageUrl = ref(null);

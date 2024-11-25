@@ -59,6 +59,7 @@ getTrips();
 #div-trips-top {
   background-color: #cfedfe;
   padding: 0 1rem;
+  min-height: 80vh;
 }
 
 .wrapper {
