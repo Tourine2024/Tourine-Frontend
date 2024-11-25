@@ -1,25 +1,16 @@
 <template>
   <div class="container">
     <!-- 상단 버튼 섹션 -->
-    <div class="button-row ml-15 mr-14" justify="space-between" align="center">
-      <v-btn
-        prepend-icon="mdi-arrow-u-left-top"
-        :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }"
-      >
+    <div class="button-row" justify="space-between" align="center">
+      <v-btn prepend-icon="mdi-arrow-u-left-top" :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }">
         여행으로 돌아가기
       </v-btn>
       <div>
-        <v-btn
-          class="mx-1"
-          :to="{
-            name: 'diaryUpdate',
-            params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
-          }"
-          >수정</v-btn
-        >
-        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true"
-          >삭제</v-btn
-        >
+        <v-btn class="mx-1" :to="{
+          name: 'diaryUpdate',
+          params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
+        }">수정</v-btn>
+        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true">삭제</v-btn>
       </div>
     </div>
     <div class="wrapper">
@@ -30,7 +21,7 @@
           <div class="text-subtitle-1 mb-3">
             {{ diary.diaryDate }} {{ diary.diaryTime }}
           </div>
-          <div class="clickable-icon" @click="showMapDialog = true">
+          <div class="clickable-icon pr-3" @click="showMapDialog = true">
             <v-icon icon="mdi-map-marker" />
             {{ location.locationName }}
           </div>
@@ -51,9 +42,7 @@
           <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
           <v-card-actions>
             <v-btn color="red" text @click="deleteDiaryReq">삭제</v-btn>
-            <v-btn color="grey" text @click="showDeleteDialog = false"
-              >취소</v-btn
-            >
+            <v-btn color="grey" text @click="showDeleteDialog = false">취소</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -66,9 +55,7 @@
             <MapItem :center="mapCenter" :markers="[mapCenter]" />
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" text @click="showMapDialog = false"
-              >닫기</v-btn
-            >
+            <v-btn color="primary" text @click="showMapDialog = false">닫기</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
