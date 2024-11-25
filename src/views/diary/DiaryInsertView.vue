@@ -24,17 +24,34 @@
 
             <!-- 날짜와 시간 -->
             <v-col cols="6">
-              <h3>일자 선택</h3>
-              <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
+              <h3>여행 일자</h3>
+              <v-text-field
+                class="text-grey"
+                v-model="formData.diaryDate"
+                outlined
+                readonly
+              />
             </v-col>
             <v-col cols="6">
               <h3>시간 선택</h3>
               <v-text-field v-model="formData.diaryTime" type="time" outlined />
             </v-col>
 
+            <!-- 카테고리 -->
+            <v-col cols="12">
+              <h3>카테고리</h3>
+              <v-radio-group v-model="formData.diaryCategory" inline>
+                <v-radio class="mr-5" label="관광" :value="1"></v-radio>
+                <v-radio class="mr-5" label="음식" :value="2"></v-radio>
+                <v-radio class="mr-5" label="액티비티" :value="3"></v-radio>
+                <v-radio class="mr-5" label="기타" :value="0"></v-radio>
+              </v-radio-group>
+            </v-col>
+
             <!-- 지도 (위치 정보 입력) -->
             <v-col cols="6">
               <v-combobox
+                class="pt-5"
                 label="장소 검색"
                 v-model="locationQuery"
                 :items="mapSearchResults"
@@ -117,6 +134,17 @@ const mapSearchResults = ref([]);
 const markerPosition = ref([]);
 const selectedLocation = ref(null);
 
+const today = new Date();
+const formData = reactive({
+  diaryTitle: "",
+  diaryDate: diaryStore.tripDate,
+  diaryTime: today.getHours() + ":" + today.getMinutes(),
+  diaryCategory: 1,
+  diaryContent: "",
+  locationNo: 0,
+  tripNo: props.tripNo,
+});
+
 const menuOpen = ref(true);
 watch(locationQuery, async () => {
   const tmpResults = [];
@@ -155,16 +183,6 @@ const selectLocation = (location) => {
   locationQuery.value = location.displayName;
   document.activeElement.blur();
 };
-
-const today = new Date();
-const formData = reactive({
-  diaryTitle: "",
-  diaryDate: diaryStore.tripDate,
-  diaryTime: today.getHours() + ":" + today.getMinutes(),
-  diaryContent: "",
-  locationNo: 0,
-  tripNo: props.tripNo,
-});
 
 const rules = {
   required: (value) => !!value || "필수 입력 항목입니다.",
