@@ -12,52 +12,39 @@
           <v-row>
             <!-- 제목 -->
             <v-col cols="12">
-              <v-text-field
-                v-model="formData.diaryTitle"
-                label="제목"
-                required
-                outlined
-                clearable
-                :rules="[rules.required]"
-              />
+              <v-text-field v-model="formData.diaryTitle" label="제목" required outlined clearable
+                :rules="[rules.required]" />
             </v-col>
 
             <!-- 날짜와 시간 -->
             <v-col cols="6">
               <h3>여행 일자</h3>
-              <v-text-field
-                class="text-grey"
-                v-model="formData.diaryDate"
-                outlined
-                readonly
-              />
+              <v-text-field class="text-grey" v-model="formData.diaryDate" outlined readonly />
             </v-col>
             <v-col cols="6">
               <h3>시간 선택</h3>
               <v-text-field v-model="formData.diaryTime" type="time" outlined />
             </v-col>
 
+            <!-- 카테고리 -->
+            <v-col cols="12">
+              <h3>카테고리</h3>
+              <v-radio-group v-model="formData.diaryCategory" inline>
+                <v-radio class="mr-5" label="관광" :value="1"></v-radio>
+                <v-radio class="mr-5" label="음식" :value="2"></v-radio>
+                <v-radio class="mr-5" label="액티비티" :value="3"></v-radio>
+                <v-radio class="mr-5" label="기타" :value="0"></v-radio>
+              </v-radio-group>
+            </v-col>
+
             <!-- 지도 (위치 정보 입력) -->
             <v-col cols="6">
-              <v-combobox
-                class="pt-5"
-                label="장소 검색"
-                v-model="locationQuery"
-                :items="mapSearchResults"
-                item-title="displayName"
-                :menu-props="{ closeOnBack: false }"
-                :menu.sync="menuOpen"
-                @update:menu="menuOpen = true"
-                @blur="menuOpen = false"
-              >
+              <v-combobox class="pt-5" label="장소 검색" v-model="locationQuery" :items="mapSearchResults"
+                item-title="displayName" :menu-props="{ closeOnBack: false }" :menu.sync="menuOpen"
+                @update:menu="menuOpen = true" @blur="menuOpen = false">
                 <template v-slot:item="{ item }">
-                  <v-list-item
-                    @mouseover="updateMapCenter(item.raw.latLng)"
-                    @click="selectLocation(item.raw)"
-                  >
-                    <v-list-item-title>{{
-                      item.raw.displayName
-                    }}</v-list-item-title>
+                  <v-list-item @mouseover="updateMapCenter(item.raw.latLng)" @click="selectLocation(item.raw)">
+                    <v-list-item-title>{{ item.raw.displayName }}</v-list-item-title>
                     <v-list-item-subtitle>{{
                       item.raw.formattedAddress
                     }}</v-list-item-subtitle>
@@ -71,33 +58,19 @@
 
             <!-- 내용 -->
             <v-col cols="12">
-              <ToastUIEditor
-                ref="editorRef"
-                v-model="formData.diaryContent"
-                :content="formData.diaryContent"
-                @updateContent="
-                  (mdContent) => {
+              <ToastUIEditor ref="editorRef" v-model="formData.diaryContent" :content="formData.diaryContent"
+                @updateContent="(mdContent) => {
                     formData.diaryContent = mdContent;
                   }
-                "
-                label="diaryContent"
-                outlined
-                auto-grow
-                rows="5"
-                clearable
-              />
+                  " label="diaryContent" outlined auto-grow rows="5" clearable />
             </v-col>
           </v-row>
 
           <!-- 수정 버튼 -->
           <v-row justify="center" class="mt-5 mb-0">
-            <v-btn color="primary" class="mx-2" @click="submitForm"
-              >수정하기</v-btn
-            >
+            <v-btn color="primary" class="mx-2" @click="submitForm">수정하기</v-btn>
             <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-            <v-btn color="grey" class="mx-2" @click="$router.go(-1)"
-              >취소</v-btn
-            >
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
           </v-row>
         </v-form>
       </v-sheet>
@@ -136,6 +109,7 @@ const formData = ref({
   diaryTitle: "",
   diaryDate: "",
   diaryTime: "",
+  diaryCategory: 0,
   diaryContent: diaryStore.diaryContent,
   locationNo: "1",
   tripNo: tripNo,
@@ -194,6 +168,7 @@ const getDiary = async () => {
     formData.value.diaryTitle = data.diaryTitle;
     formData.value.diaryDate = data.diaryDate;
     formData.value.diaryTime = data.diaryTime;
+    formData.value.diaryCategory = data.diaryCategory;
 
     formData.value.diaryContent = data.diaryContent;
     diaryStore.diaryContent = data.diaryContent;

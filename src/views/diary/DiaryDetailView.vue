@@ -21,9 +21,29 @@
           <div class="text-subtitle-1 mb-3">
             {{ diary.diaryDate }} {{ diary.diaryTime }}
           </div>
-          <div class="clickable-icon pr-3" @click="showMapDialog = true">
-            <v-icon icon="mdi-map-marker" />
-            {{ location.locationName }}
+          <div class="d-flex">
+            <span class="px-2 mr-3 rounded-lg d-inline-flex align-center" :class="getClassByCategory(diary)">
+              <template v-if="diary.diaryCategory === 1">
+                <img src="@/assets/icon/luggage.svg" class="mr-1" />
+                <span>관광</span>
+              </template>
+              <template v-else-if="diary.diaryCategory === 2">
+                <img src="@/assets/icon/food.svg" class="mr-1" />
+                <span>음식</span>
+              </template>
+              <template v-else-if="diary.diaryCategory === 3">
+                <img src="@/assets/icon/activity.svg" class="mr-1" />
+                <span>액티비티</span>
+              </template>
+              <template v-else-if="diary.diaryCategory === 0">
+                <img src="@/assets/icon/etc.svg" class="mr-1" />
+                <span>기타</span>
+              </template>
+            </span>
+            <span class="clickable-icon" @click="showMapDialog = true">
+              <v-icon icon="mdi-map-marker" />
+              {{ location.locationName }}
+            </span>
           </div>
         </v-col>
       </div>
@@ -85,6 +105,7 @@ const diary = ref({
   diaryTitle: "",
   diaryDate: "",
   diaryTime: "",
+  diaryCategory: null,
   diaryContent: "",
   locationNo: 1,
   tripNo: tripNo,
@@ -107,6 +128,7 @@ onMounted(async () => {
   diary.value.diaryTitle = data.diaryTitle;
   diary.value.diaryDate = data.diaryDate;
   diary.value.diaryTime = data.diaryTime;
+  diary.value.diaryCategory = data.diaryCategory;
 
   diary.value.diaryContent = updateImageWidthInHtml(
     convertMarkdownToHTML(data.diaryContent)
@@ -140,6 +162,21 @@ const getDiary = async () => {
     // diaryStore.diary = data;
   } catch (error) {
     console.error("일기 데이터를 가져오는 중 오류 발생:", error);
+  }
+};
+
+const getClassByCategory = (diary) => {
+  if (diary.diaryCategory === 1) {
+    return 'bg-green-lighten-4';
+  }
+  else if (diary.diaryCategory === 2) {
+    return 'bg-amber-lighten-4';
+  }
+  else if (diary.diaryCategory === 3) {
+    return 'bg-purple-lighten-4';
+  }
+  else {
+    return 'bg-blue-lighten-4';
   }
 };
 
