@@ -100,13 +100,15 @@ const valid = ref(false);
 // 오늘 날짜 계산
 const today = new Date();
 
+const memberNo = localStorage.getItem("memberNo");
+
 const formData = reactive({
   tripName: "",
   tripSummary: null,
   tripThumbnailUrl: null, // 업로드된 이미지 파일 URL
   tripStartDate: today,
   tripEndDate: today,
-  memberNo: 1, // 이후 로그인한 멤버 번호로 수정
+  memberNo: memberNo, // 이후 로그인한 멤버 번호로 수정
 });
 const thumbnailImage = ref(null);
 const thumbnailImageUrl = ref(null);
