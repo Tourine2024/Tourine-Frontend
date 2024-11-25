@@ -1,31 +1,22 @@
 <template>
-  <div
-    class="recentTrip"
-    :style="{
-      backgroundImage: `url(${currentTrip.tripThumbnailUrl || defaultTripPic})`,
-    }"
-  >
+  <div class="recentTrip" :style="{
+    backgroundImage: `url(${currentTrip.tripThumbnailUrl || defaultTripPic})`,
+  }">
     <div class="content" @click="routeDetail(currentTrip.tripNo)">
       <h1>최근 여행</h1>
       <h3>{{ currentTrip.tripName }}</h3>
       <p>{{ currentTrip.tripStartDate }} - {{ currentTrip.tripEndDate }}</p>
       <div class="btn-group">
-        <button
-          :class="{
-            'button-visible': showPrevButton,
-            'button-invisible': !showPrevButton,
-          }"
-          @click.stop="prevTrip"
-        >
+        <button :class="{
+          'button-visible': showPrevButton,
+          'button-invisible': !showPrevButton,
+        }" @click.stop="prevTrip">
           <img src="@/assets/icon/button/arrow_left.svg" />
         </button>
-        <button
-          :class="{
-            'button-visible': showNextButton,
-            'button-invisible': !showNextButton,
-          }"
-          @click.stop="nextTrip"
-        >
+        <button :class="{
+          'button-visible': showNextButton,
+          'button-invisible': !showNextButton,
+        }" @click.stop="nextTrip">
           <img src="@/assets/icon/button/arrow_right.svg" />
         </button>
       </div>
@@ -46,6 +37,10 @@ const currentTripIndex = ref(0);
 
 onMounted(async () => {
   tripList.value = await getAllTrips(memberNo);
+  for (const trip of tripList.value) {
+    trip.tripStartDate = trip.tripStartDate.replace(/-/g, ".");
+    trip.tripEndDate = trip.tripEndDate.replace(/-/g, ".");
+  }
 });
 
 const currentTrip = computed(() => {
@@ -133,7 +128,7 @@ p {
   display: flex;
 }
 
-.btn-group > button {
+.btn-group>button {
   margin: 0 0.5rem;
   background: rgba(255, 255, 255, 0.8);
   border: none;
@@ -158,17 +153,17 @@ p {
   box-shadow: none;
 }
 
-.btn-group > button:hover {
+.btn-group>button:hover {
   background-color: #ffffff;
   transform: scale(1.1);
 }
 
-.btn-group > button.button-invisible:hover {
+.btn-group>button.button-invisible:hover {
   background-color: transparent;
   transform: none;
 }
 
-.btn-group > button img {
+.btn-group>button img {
   height: 24px;
 }
 </style>
