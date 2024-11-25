@@ -9,8 +9,8 @@
 import { ref, onMounted } from "vue";
 import { getTripCounts } from "@/api/home";
 
-const memberNo = 1; // 이후 세션에서 가져올 것
-// const memberNo = localStorage.getItem( "memberNo" );
+// const memberNo = 1; // 이후 세션에서 가져올 것
+const memberNo = localStorage.getItem("memberNo");
 const recordTrips = ref(0);
 
 onMounted(async () => {

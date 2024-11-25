@@ -1,11 +1,7 @@
 <template>
   <div class="date">
     <v-locale-provider locale="ko">
-      <DatePicker
-        class="datePicker"
-        :allowed-dates="allowedDates"
-        v-model="selectedDate"
-      />
+      <DatePicker class="datePicker" :allowed-dates="allowedDates" v-model="selectedDate" />
     </v-locale-provider>
     <div class="diary-cards">
       <v-card
@@ -33,8 +29,7 @@ import { getAllDiarys } from "@/api/home";
 
 const diaries = ref([]);
 const selectedDate = ref(null);
-const memberNo = 1;
-//const memberNo = localStorage.getItem("memberNo");`
+const memberNo = localStorage.getItem("memberNo");
 
 const diaryDates = new Set();
 
@@ -62,9 +57,7 @@ const allowedDates = (date) => {
 
 const filteredDiaries = computed(() => {
   const selectedDateString = selectedDate.value?.toISOString().split("T")[0];
-  return diaries.value.filter(
-    (diary) => diary.diaryDate.split("T")[0] === selectedDateString
-  );
+  return diaries.value.filter((diary) => diary.diaryDate.split("T")[0] === selectedDateString);
 });
 </script>
 

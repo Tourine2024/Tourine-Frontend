@@ -2,8 +2,9 @@ import { localAxios } from "@/util/axios";
 
 //여행 전체 목록
 export const getTripLists = async (pageNo) => {
+  const memberNo = localStorage.getItem("memberNo");
   try {
-    const { data } = await localAxios.get(`/trips?pageNo=${pageNo}`);
+    const { data } = await localAxios.get(`/trips?pageNo=${pageNo}&memberNo=${memberNo}`);
     return data;
   } catch (err) {
     console.error(err);
@@ -24,8 +25,9 @@ export const getDiaryLists = async (tripNo) => {
 
 //개별 여행 정보 조회
 export const getTripInfo = async (tripNo) => {
+  const memberNo = localStorage.getItem("memberNo");
   try {
-    const { data } = await localAxios.get(`/trips/${tripNo}`);
+    const { data } = await localAxios.get(`/trips/${tripNo}?memberNo=${memberNo}`);
     return data;
   } catch (err) {
     console.error(err);

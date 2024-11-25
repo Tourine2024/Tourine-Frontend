@@ -56,6 +56,8 @@ import CarouselImage from "@/components/common/CarouselImage.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+const { VITE_KAKAO_API_KEY } = import.meta.env;
+
 const router = useRouter();
 
 const id = ref("");
@@ -77,6 +79,13 @@ async function loginProcess() {
   } else {
     alert("로그인 아이디나 비밀번호를 다시 확인하세요.");
   }
+}
+
+function kakaoLogin() {
+  const redirect_uri = "http://localhost:5173/login/kakao";
+  const clientId = VITE_KAKAO_API_KEY;
+  const Auth_url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirect_uri}`;
+  window.location.href = Auth_url;
 }
 </script>
 
