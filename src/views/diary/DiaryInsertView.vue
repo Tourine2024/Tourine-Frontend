@@ -66,12 +66,8 @@
                     @mouseover="updateMapCenter(item.raw.latLng)"
                     @click="selectLocation(item.raw)"
                   >
-                    <v-list-item-title>{{
-                      item.raw.displayName
-                    }}</v-list-item-title>
-                    <v-list-item-subtitle>{{
-                      item.raw.formattedAddress
-                    }}</v-list-item-subtitle>
+                    <v-list-item-title>{{ item.raw.displayName }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ item.raw.formattedAddress }}</v-list-item-subtitle>
                   </v-list-item>
                 </template>
               </v-combobox>
@@ -104,9 +100,7 @@
           <v-row justify="center" class="mt-5 mb-0">
             <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
             <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-            <v-btn color="grey" class="mx-2" @click="$router.go(-1)"
-              >취소</v-btn
-            >
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
           </v-row>
         </v-form>
       </v-sheet>
@@ -147,7 +141,7 @@ const formData = reactive({
   diaryTime: today.getHours() + ":" + today.getMinutes(),
   diaryCategory: 1,
   diaryContent: "",
-  locationNo: null,
+  locationNo: 0,
   tripNo: props.tripNo,
 });
 
@@ -176,9 +170,7 @@ const updateMapCenter = (latLng) => {
 };
 
 const selectLocation = (location) => {
-  const countryComp = location.addressComponents.find((comp) =>
-    comp.types.includes("country")
-  );
+  const countryComp = location.addressComponents.find((comp) => comp.types.includes("country"));
   const country = countryComp ? countryComp.shortText : null;
 
   selectedLocation.value = {

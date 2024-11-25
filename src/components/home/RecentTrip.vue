@@ -31,7 +31,8 @@ import { getAllTrips } from "@/api/home";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const memberNo = 1;
+// const memberNo = 1;
+const memberNo = localStorage.getItem("memberNo");
 const tripList = ref([]);
 const currentTripIndex = ref(0);
 

@@ -1,11 +1,7 @@
 <template>
   <div class="date">
     <v-locale-provider locale="ko">
-      <DatePicker
-        class="datePicker"
-        :allowed-dates="allowedDates"
-        v-model="selectedDate"
-      />
+      <DatePicker class="datePicker" :allowed-dates="allowedDates" v-model="selectedDate" />
     </v-locale-provider>
     <div class="diary-cards">
       <v-card
@@ -34,8 +30,7 @@ import { dateFormatter } from "@/util/date/dateFormat";
 
 const diaries = ref([]);
 const selectedDate = ref(null);
-const memberNo = 1;
-//const memberNo = localStorage.getItem("memberNo");`
+const memberNo = localStorage.getItem("memberNo");
 
 const diaryDates = new Set();
 

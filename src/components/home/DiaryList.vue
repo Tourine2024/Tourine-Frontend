@@ -25,8 +25,8 @@ const headers = ref([
   { title: "여행지", key: "locationName" },
 ]);
 
-const memberNo = 1;
-// const memberNo = localStorage.getItem("memberNo");
+// const memberNo = 1;
+const memberNo = localStorage.getItem("memberNo");
 
 onMounted(async () => {
   await getDiaries();
