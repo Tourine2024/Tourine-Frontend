@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from "@/views/HomeView.vue";
+import KakaoLoginView from "@/views/member/KakaoLoginView.vue";
 import LandingView from "@/views/landing/LandingView.vue";
 import LoginView from "@/views/member/LoginView.vue";
 import RegisterVue from "@/views/member/RegisterView.vue";
-import KakaoLoginView from "@/views/member/KakaoLoginView.vue";
 
 const router = createRouter({
   scrollBehavior(to) {
@@ -57,7 +57,6 @@ const router = createRouter({
       path: "/collection",
       name: "collection",
       component: () => import("@/views/collection/CollectionView.vue"),
-      meta: { hideHeaderFooter: true },
     },
     {
       path: "/trips",

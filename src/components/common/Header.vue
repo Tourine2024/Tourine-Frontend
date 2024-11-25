@@ -1,26 +1,59 @@
-<script setup>
-import HomeLogo from "./HomeLogo.vue";
-import { RouterLink } from "vue-router";
-</script>
-
 <template>
   <div class="header">
     <div class="wrapper">
       <HomeLogo />
       <nav>
-        <RouterLink :to="{ name: 'trips' }"
-          ><img src="@/assets/icon/menu_travel.svg" />나의 여행</RouterLink
+        <RouterLink :to="{ name: 'trips' }">
+          <img src="@/assets/icon/menu_travel.svg" />나의 여행
+        </RouterLink>
+        <RouterLink :to="{ name: 'collection' }">
+          <img src="@/assets/icon/menu_travel.svg" />컬렉션
+        </RouterLink>
+        <div
+          @mouseover="showOverlay($event)"
+          @mouseleave="hideOverlay($event)"
+          class="profile-menu"
         >
-        <RouterLink :to="{ name: 'collection' }"
-          ><img src="@/assets/icon/menu_travel.svg" />컬렉션</RouterLink
-        >
-        <RouterLink to="/mypage"
-          ><img src="@/assets/icon/menu_mypage.svg" />마이 페이지</RouterLink
-        >
+          <img src="@/assets/image/profile/profile_1.svg" />
+          <span>{{ userProfile.nickname }} 님</span>
+          <div v-if="showMenu" class="overlay">
+            <RouterLink :to="{ name: 'mypage' }">마이 페이지</RouterLink>
+            <RouterLink :to="{ name: 'landing' }" @click="logoutProcess">로그아웃</RouterLink>
+          </div>
+        </div>
       </nav>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import HomeLogo from "@/components/common/HomeLogo.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const showMenu = ref(false);
+
+const userProfile = ref({
+  nickname: "이효승",
+  profileImage: "@/assets/image/profile/profile_1.svg", // 실제 경로에 맞게 조정해주세요
+});
+
+const showOverlay = (event) => {
+  event.stopPropagation();
+  showMenu.value = true;
+};
+
+const hideOverlay = (event) => {
+  event.stopPropagation();
+  showMenu.value = false;
+};
+
+const logoutProcess = () => {
+  localStorage.removeItem("memberNo");
+  router.push({ name: "landing" });
+};
+</script>
 
 <style scoped>
 .header {
@@ -40,29 +73,23 @@ import { RouterLink } from "vue-router";
 nav {
   width: 90%;
   height: 65px;
-
   display: flex;
   flex-direction: row;
   text-align: center;
   align-items: center;
   justify-content: end;
-
   background-color: white;
   border-radius: 12px;
-
   font-size: 24px;
   font-weight: bold;
-
   margin-right: 1.5rem;
 }
 
 nav a {
   display: flex;
   flex-direction: row;
-  text-align: center;
   align-items: center;
   margin-right: 20px;
-
   min-width: fit-content;
 }
 
@@ -85,13 +112,60 @@ nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
 
-/* nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-} */
+.profile-menu {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: 1.5rem;
+}
 
-nav a:first-of-type {
-  border: 0;
+.profile-menu img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover; /* 이미지 채우기 */
+  object-position: center; /* 중앙 정렬 */
+  margin-right: 10px;
+  background-color: #e6e8ec;
+}
+
+.profile-menu .overlay {
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  right: 0;
+  top: 100%;
+  padding: 5px;
+  width: auto;
+  border-radius: 8px;
+}
+
+.profile-menu:hover .overlay {
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay a {
+  font-size: 20px;
+  padding: 8px 0 8px 8px;
+  text-align: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-weight: normal; /* 기본 상태에서는 일반 폰트 무게로 설정 */
+  color: #27292c; /* 기본 색상 설정 */
+}
+
+.overlay a:hover {
+  color: #00507a; /* 호버 시 색상 변경 */
+  font-weight: bolder; /* 호버 시 볼드 효과 */
+  cursor: pointer; /* 마우스 커서를 포인터로 설정 */
+}
+
+.profile-menu:hover span {
+  font-weight: bold; /* 볼드 효과 추가 */
+  color: #00507a;
 }
 </style>
