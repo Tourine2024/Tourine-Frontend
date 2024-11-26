@@ -12,50 +12,34 @@
               :path="path"
             />
           </v-col>
-          <v-col>
+          <v-col class="btnGroup mt-5">
             <v-locale-provider locale="ko">
               <DatePicker
                 v-model="selectedDate"
                 :allowed-dates="allowedDates"
                 :year="parseInt(trip.tripStartDate.substr(0, 4))"
                 :month="parseInt(trip.tripStartDate.substr(5, 2)) - 1"
-                class="w-100 mt-5"
+                class="w-100"
               />
             </v-locale-provider>
-            <v-row class="mt-4">
-              <v-col cols="6" class="pr-0">
-                <v-btn
-                  :class="{ 'btn-active': showPath }"
-                  :color="showPath ? 'blue' : 'white'"
-                  @click="showPath = true"
-                  block
-                  style="font-size: 18px"
-                >
-                  동선 보이기
-                </v-btn>
-              </v-col>
-              <v-col cols="6" class="pl-0">
-                <v-btn
-                  :class="{ 'btn-active': !showPath }"
-                  :color="!showPath ? 'blue' : 'white'"
-                  @click="showPath = false"
-                  block
-                  style="font-size: 18px"
-                >
-                  동선 숨기기
-                </v-btn>
+            <v-row class="toggleContainer mt-4">
+              <v-col cols="12" class="toggle">
+                <span>동선 보이기</span>
+                <v-switch
+                  class="mt-3"
+                  v-model="showPath"
+                  color="blue"
+                ></v-switch>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col cols="12" class="py-0" >
-                <v-btn v-if="selectedDate" @click="resetDate" block style="font-size: 18px">
+            <v-row class="btns mt-4">
+              <v-col class="btn mt-2" cols="6">
+                <v-btn v-if="selectedDate" @click="resetDate" block>
                   모든 날짜 보기
                 </v-btn>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col col="12">
-                <v-btn v-if="selectedDate" @click="setDiaryData" block style="font-size: 18px">
+              <v-col class="btn mt-2" cols="6">
+                <v-btn v-if="selectedDate" @click="setDiaryData" block>
                   기록 추가하기
                 </v-btn>
               </v-col>
@@ -70,7 +54,9 @@
           </span>
         </v-row>
         <div v-for="(tripDate, key) in tripDates" :key="key">
-          <template v-if="!selectedDate || tripDate === dateFormatter(selectedDate)">
+          <template
+            v-if="!selectedDate || tripDate === dateFormatter(selectedDate)"
+          >
             <DiariesByDayItem
               :dayCnt="getDayCnt(tripDate)"
               :tripNo="trip.tripNo"
@@ -212,7 +198,7 @@ function getDayCnt(tripDate) {
     Math.abs(
       (new Date(tripDate).getTime() -
         new Date(trip.value.tripStartDate).getTime()) /
-      (1000 * 60 * 60 * 24)
+        (1000 * 60 * 60 * 24)
     ) + 1
   );
 }
@@ -245,10 +231,76 @@ onMounted(async () => {
 #div-trip-detail-top {
   padding: 0 1.5rem;
   background-color: #cfedfe;
-  height: fit-content;
+  height: 100%;
 }
 
 .wrapper {
   padding-bottom: 3rem;
+}
+
+.v-row {
+  flex-direction: row;
+  justify-content: center;
+}
+.btns {
+  width: 100%;
+}
+.btn {
+  width: 100%;
+  padding: 0 0.2rem;
+}
+
+.btnGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.toggleContainer {
+  width: 100%;
+}
+
+.v-switch > .v-input__details {
+  display: none;
+}
+
+.toggle {
+  background-color: #e3f2fd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 50px; /* 내부 패딩 조정 */
+  width: 100%;
+  height: 50%;
+}
+
+.v-btn {
+  border: none; /* 테두리 제거 */
+  padding: 10px 20px; /* 패딩 조정 */
+  font-size: 20px; /* 글자 크기 조정 */
+  font-weight: bold; /* 글자 굵기 */
+  text-transform: uppercase; /* 대문자로 변경 */
+  border-radius: 12px; /* 둥근 모서리 */
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* 부드러운 전환 효과 */
+  cursor: pointer; /* 마우스 오버시 커서 변경 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  width: 100%; /* 가로 전체 채우기 */
+  margin: 5px 0; /* 상하 간격 조정 */
+  height: 3rem;
+}
+
+.v-btn:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 강조 */
+  transform: translateY(-2px); /* 클릭 효과를 위해 조금 위로 이동 */
+}
+
+.v-btn:active {
+  transform: translateY(1px); /* 클릭 시 버튼을 아래로 누르는 효과 */
 }
 </style>

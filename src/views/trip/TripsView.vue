@@ -4,21 +4,35 @@
       <!-- 제목 섹션 -->
       <v-row align="center" justify="space-between" class="mx-5">
         <h1 class="title">나의 여행</h1>
-        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }" style="font-size: 18px;">
+        <v-btn
+          class="newTrip"
+          prepend-icon="mdi-plus"
+          color="blue-darken-2"
+          rounded="lg"
+          :to="{ name: 'tripNew' }"
+           style="font-size: 18px;"
+        >
           새 여행 만들기
         </v-btn>
       </v-row>
 
       <!-- 여행 리스트 -->
       <div v-for="(trip, key) in trips" :key="key">
-        <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
+        <RouterLink
+          :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }"
+        >
           <TripItem :trip="trip" />
         </RouterLink>
       </div>
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
-        <v-btn v-if="showButton" class="my-3" rounded="xl" color="blue" @click="getTrips"
+        <v-btn
+          v-if="showButton"
+          class="my-3"
+          rounded="xl"
+          color="blue"
+          @click="getTrips"
           >Load more</v-btn
         >
       </div>
@@ -77,5 +91,10 @@ h1.title {
   text-align: center;
   padding-bottom: 20px;
   margin-bottom: 3rem;
+}
+
+.newTrip {
+  font-size: 20px;
+  height: 50px;
 }
 </style>

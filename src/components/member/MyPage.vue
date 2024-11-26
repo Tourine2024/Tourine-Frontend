@@ -8,29 +8,55 @@
       />
       <img
         class="profileImage"
-        :src="member.memberProfilePicUrl || 'src/assets/image/profile/profile_1.svg'"
+        :src="member.memberProfilePicUrl || defaultProfile"
         alt="Profile Image"
       />
     </div>
     <div class="personalInfo">
       <div class="title">
         <h1>Personal Info</h1>
-        <button @click="withdrawMember" class="withdraw">회원 탈퇴</button>
+        <!-- <button @click="withdrawMember" class="withdraw">회원 탈퇴</button> -->
       </div>
       <v-row>
-        <v-col cols="6">
-          <img
-            class="imageUpload"
-            :src="member.memberProfilePicUrl || 'src/assets/image/profile/profile_1.svg'"
-            alt="Profile Image"
-          />
-
+        <v-col cols="6" class="side">
+          <div class="imageUpload" @click="showModal = true">
+            <img
+              :src="member.memberProfilePicUrl || defaultProfile"
+              alt="Profile Image"
+            />
+          </div>
+          <v-dialog v-model="showModal" max-width="600px">
+            <v-card>
+              <v-card-title>프로필 사진 선택</v-card-title>
+              <v-card-text class="profileSelection">
+                <img
+                  v-for="(img, index) in profileImages"
+                  :src="img"
+                  :alt="`profile ${index + 1}`"
+                  @click="selectProfile(img)"
+                  :key="index"
+                  class="selectableProfile"
+                />
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="showModal = false"
+                  >닫기</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <div class="inputGroup">
             <label for="joinDate">가입 날짜</label>
-            <input readonly type="text" id="joinDate" v-model="member.memberJoinDatetime" />
+            <input
+              readonly
+              type="text"
+              id="joinDate"
+              v-model="member.memberJoinDatetime"
+            />
           </div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="6" class="side">
           <div class="inputGroup">
             <label for="id">아이디</label>
             <input type="text" id="id" v-model="member.memberId" disabled />
@@ -52,18 +78,16 @@
       <div class="actions">
         <v-btn color="primary" @click="updateProfile" style="font-size: 18px">수정하기</v-btn>
         <v-btn color="grey" @click="cancelUpdate" style="font-size: 18px">취소</v-btn>
+        <v-btn @click="withdrawMember" color="red" style="font-size: 18px">회원 탈퇴</v-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 import { getMemberInfo, updateMember, deleteMember } from "@/api/member.js";
 import { dateFormatter } from "@/util/date/dateFormat.js";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
 
 const member = ref({
   memberProfilePicUrl: "",
@@ -73,41 +97,76 @@ const member = ref({
   memberEmail: "",
   memberJoinDatetime: "",
 });
+const showModal = ref(false);
+const defaultProfile = "src/assets/image/profile/profile_1.svg";
+const profileImages = ref(
+  Array.from(
+    { length: 20 },
+    (v, i) => `src/assets/image/profile/profile_${i + 1}.svg`
+  )
+);
 
 onMounted(async () => {
   try {
-    getUserProfile();
+    const data = await getMemberInfo();
+    member.value = {
+      ...data,
+      memberJoinDatetime: dateFormatter(new Date(data.memberJoinDatetime)),
+    };
   } catch (error) {
     console.error("Failed to load member info:", error);
   }
 });
 
-const getUserProfile = async () => {
-  const data = await getMemberInfo();
-  data.memberJoinDatetime = dateFormatter(new Date(data.memberJoinDatetime));
-  member.value = data;
+const selectProfile = (image) => {
+  member.value.memberProfilePicUrl = image;
+  showModal.value = false;
 };
 
 const updateProfile = async () => {
-  member.value.memberProfilePicUrl = "src/assets/image/profile/profile_1.svg";
-  const data = await updateMember(member.value);
-  getUserProfile();
+  try {
+    await updateMember(member.value);
+  } catch (error) {
+    console.error("Update failed:", error);
+  }
 };
 
 const cancelUpdate = () => {
-  //변경사항 초기화
-  getUserProfile();
+  getUserProfile(); // 사용자 프로필로 롤백
 };
 
 const withdrawMember = async () => {
   if (confirm("정말 탈퇴하시겠습니까?")) {
     await deleteMember();
-    router.push({ name: "login" });
+    // 로그아웃 로직
+  }
+};
+
+const getUserProfile = async () => {
+  try {
+    const data = await getMemberInfo();
+    member.value = data;
+  } catch (error) {
+    console.error("Failed to load member info:", error);
   }
 };
 </script>
 
-<style>
+<style scoped>
+/* 기존 스타일 */
+.profileSelection {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  overflow-y: auto;
+  max-height: 300px;
+}
+.selectableProfile {
+  cursor: pointer;
+  width: 100%;
+  padding: 5px;
+}
+
 .mypage {
   height: fit-content;
   min-height: 100vh;
@@ -147,7 +206,12 @@ const withdrawMember = async () => {
 
 .imageUpload {
   width: 80%;
-  margin-bottom: 1.3rem;
+  margin: 0 auto; /* 좌우 자동 마진을 주어 가운데 정렬 */
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  display: flex; /* Flexbox를 사용하여 내부 이미지를 중앙 정렬 */
+  justify-content: center; /* 내부 이미지를 수평 중앙에 위치시킵니다 */
+  cursor: pointer;
 }
 
 .joinDate {
@@ -173,18 +237,8 @@ const withdrawMember = async () => {
   padding: 2rem 0;
 }
 
-.withdraw {
-  background-color: #979797;
-  border-radius: 20px;
-  width: 130px;
-  height: 50px;
-  font-size: 20px;
-  color: white;
-  margin-left: 300px;
-}
-
 .inputGroup {
-  margin-bottom: 15px;
+  margin-bottom: 3rem;
 }
 
 .inputGroup label {
@@ -207,5 +261,9 @@ const withdrawMember = async () => {
 
 .actions .v-btn {
   margin: 0 10px;
+}
+
+.side {
+  padding: 0 5rem;
 }
 </style>

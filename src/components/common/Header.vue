@@ -14,11 +14,13 @@
           @mouseleave="hideOverlay($event)"
           class="profile-menu"
         >
-          <img src="@/assets/image/profile/profile_1.svg" />
-          <span>{{ userProfile.nickname }} 님</span>
+          <img :src="memberProfile.memberProfilePicUrl" />
+          <span>{{ memberProfile.memberNickname }} 님</span>
           <div v-if="showMenu" class="overlay">
             <RouterLink :to="{ name: 'mypage' }">마이 페이지</RouterLink>
-            <RouterLink :to="{ name: 'landing' }" @click="logoutProcess">로그아웃</RouterLink>
+            <RouterLink :to="{ name: 'landing' }" @click="logoutProcess"
+              >로그아웃</RouterLink
+            >
           </div>
         </div>
       </nav>
@@ -27,16 +29,30 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import HomeLogo from "@/components/common/HomeLogo.vue";
 import { useRouter } from "vue-router";
+import { getMemberInfo } from "@/api/member";
 
 const router = useRouter();
 const showMenu = ref(false);
 
-const userProfile = ref({
-  nickname: "이효승",
-  profileImage: "@/assets/image/profile/profile_1.svg", // 실제 경로에 맞게 조정해주세요
+const memberProfile = ref({
+  memberProfilePicUrl: "",
+  memberId: "",
+  memberNickname: "",
+});
+
+onMounted(async () => {
+  try {
+    const data = await getMemberInfo();
+    // console.log("member info:", data);
+    memberProfile.value = {
+      ...data,
+    };
+  } catch (error) {
+    console.error("Failed to load member info:", error);
+  }
 });
 
 const showOverlay = (event) => {

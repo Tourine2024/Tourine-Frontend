@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row align="start">
+    <v-row align="center">
       <v-col cols="6">
         <v-card variant="text">
           <v-card-subtitle style="font-size: 18px"
@@ -12,17 +12,15 @@
             <v-btn
               @click="summarize(trip.tripNo)"
               class="md-3 ml-4"
-              rounded="xl"
-              color="blue"
+              color="teal-lighten-1"
               style="font-size: 18px"
             >
-              AI 요약하기+
+              AI 요약하기 ✏️
             </v-btn>
             <v-btn
               @click="createStamp(trip.tripNo)"
               class="md-3 ml-4"
-              rounded="xl"
-              color="green"
+              color="light-green-lighten-1"
               style="font-size: 18px"
             >
               우표 만들기 📮
@@ -30,20 +28,13 @@
           </template>
           <v-btn
             class="md-3 ml-4"
-            rounded="xl"
-            color="blue"
+            color="blue-darken-3"
             :to="{ name: 'tripModify', params: { tripNo: trip.tripNo } }"
             style="font-size: 18px"
           >
             수정
           </v-btn>
-          <v-btn
-            class="md-3 ml-4"
-            rounded="xl"
-            color="red"
-            @click="showDeleteDialog = true"
-            style="font-size: 18px"
-          >
+          <v-btn class="md-3 ml-4" color="red" @click="showDeleteDialog = true" style="font-size: 18px">
             삭제
           </v-btn>
         </v-card>
@@ -93,9 +84,15 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue" text @click="createStamp($route.params.tripNo)">다시 만들기</v-btn>
-          <v-btn color="green" text @click="addToCollection(stampImageUrl)">컬렉션에 추가</v-btn>
-          <v-btn color="red darken-1" text @click="closeImageDialog">닫기</v-btn>
+          <v-btn color="blue" text @click="createStamp($route.params.tripNo)"
+            >다시 만들기</v-btn
+          >
+          <v-btn color="green" text @click="addToCollection(stampImageUrl)"
+            >컬렉션에 추가</v-btn
+          >
+          <v-btn color="red darken-1" text @click="closeImageDialog"
+            >닫기</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -184,4 +181,13 @@ const deleteTrip = async (tripNo) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-btn {
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 16px;
+  min-width: 5rem;
+  padding: 0.7rem 1rem;
+  height: fit-content;
+}
+</style>
