@@ -10,7 +10,7 @@
           color="blue-darken-2"
           rounded="lg"
           :to="{ name: 'tripNew' }"
-           style="font-size: 18px;"
+          style="font-size: 18px"
         >
           새 여행 만들기
         </v-btn>
@@ -18,9 +18,7 @@
 
       <!-- 여행 리스트 -->
       <div v-for="(trip, key) in trips" :key="key">
-        <RouterLink
-          :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }"
-        >
+        <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
           <TripItem :trip="trip" />
         </RouterLink>
       </div>
@@ -29,6 +27,7 @@
       <div id="div-more-btn">
         <v-btn
           v-if="showButton"
+          style="font-size: 18px"
           class="my-3"
           rounded="xl"
           color="blue"
@@ -73,7 +72,7 @@ getTrips();
 #div-trips-top {
   background-color: #cfedfe;
   padding: 0 1rem;
-  min-height: 80vh;
+  height: 100%;
 }
 
 .wrapper {

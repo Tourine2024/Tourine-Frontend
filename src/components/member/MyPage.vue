@@ -20,10 +20,7 @@
       <v-row>
         <v-col cols="6" class="side">
           <div class="imageUpload" @click="showModal = true">
-            <img
-              :src="member.memberProfilePicUrl || defaultProfile"
-              alt="Profile Image"
-            />
+            <img :src="member.memberProfilePicUrl || defaultProfile" alt="Profile Image" />
           </div>
           <v-dialog v-model="showModal" max-width="600px">
             <v-card>
@@ -40,20 +37,13 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="showModal = false"
-                  >닫기</v-btn
-                >
+                <v-btn color="primary" text @click="showModal = false">닫기</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
           <div class="inputGroup">
             <label for="joinDate">가입 날짜</label>
-            <input
-              readonly
-              type="text"
-              id="joinDate"
-              v-model="member.memberJoinDatetime"
-            />
+            <input readonly type="text" id="joinDate" v-model="member.memberJoinDatetime" />
           </div>
         </v-col>
         <v-col cols="6" class="side">
@@ -88,6 +78,9 @@
 import { ref, onMounted } from "vue";
 import { getMemberInfo, updateMember, deleteMember } from "@/api/member.js";
 import { dateFormatter } from "@/util/date/dateFormat.js";
+import { useUserStore } from "@/stores/menu";
+
+const userStore = useUserStore();
 
 const member = ref({
   memberProfilePicUrl: "",
@@ -100,10 +93,7 @@ const member = ref({
 const showModal = ref(false);
 const defaultProfile = "src/assets/image/profile/profile_1.svg";
 const profileImages = ref(
-  Array.from(
-    { length: 20 },
-    (v, i) => `src/assets/image/profile/profile_${i + 1}.svg`
-  )
+  Array.from({ length: 20 }, (v, i) => `src/assets/image/profile/profile_${i + 1}.svg`)
 );
 
 onMounted(async () => {
@@ -125,6 +115,8 @@ const selectProfile = (image) => {
 
 const updateProfile = async () => {
   try {
+    userStore.updateMemberInfo(member.value);
+
     await updateMember(member.value);
   } catch (error) {
     console.error("Update failed:", error);

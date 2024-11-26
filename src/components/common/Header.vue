@@ -14,13 +14,11 @@
           @mouseleave="hideOverlay($event)"
           class="profile-menu"
         >
-          <img :src="memberProfile.memberProfilePicUrl" />
-          <span>{{ memberProfile.memberNickname }} 님</span>
+          <img :src="userStore.memberProfile.memberProfilePicUrl" />
+          <span>{{ userStore.memberProfile.memberNickname }} 님</span>
           <div v-if="showMenu" class="overlay">
             <RouterLink :to="{ name: 'mypage' }">마이 페이지</RouterLink>
-            <RouterLink :to="{ name: 'landing' }" @click="logoutProcess"
-              >로그아웃</RouterLink
-            >
+            <RouterLink :to="{ name: 'landing' }" @click="logoutProcess">로그아웃</RouterLink>
           </div>
         </div>
       </nav>
@@ -29,11 +27,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import HomeLogo from "@/components/common/HomeLogo.vue";
 import { useRouter } from "vue-router";
 import { getMemberInfo } from "@/api/member";
+import { useUserStore } from "@/stores/menu";
 
+const userStore = useUserStore();
 const router = useRouter();
 const showMenu = ref(false);
 
@@ -46,14 +46,26 @@ const memberProfile = ref({
 onMounted(async () => {
   try {
     const data = await getMemberInfo();
-    // console.log("member info:", data);
-    memberProfile.value = {
-      ...data,
-    };
+    userStore.updateMemberInfo(data);
+    // memberProfile.value = {
+    //   ...data,
+    // };
   } catch (error) {
     console.error("Failed to load member info:", error);
   }
 });
+
+// memberProfile의 memberNickname과 memberProfilePicUrl을 감시
+watch(
+  () => [memberProfile.value.memberNickname, memberProfile.value.memberProfilePicUrl],
+  (newValues, oldValues) => {
+    console.log("Nickname or Profile Picture changed from", oldValues, "to", newValues);
+    // 필요한 경우 여기에 추가 로직을 구현할 수 있습니다.
+  },
+  {
+    deep: true, // 객체 내부의 변화까지 감지하도록 설정
+  }
+);
 
 const showOverlay = (event) => {
   event.stopPropagation();
