@@ -16,12 +16,17 @@
         </v-btn>
       </v-row>
 
-      <!-- 여행 리스트 -->
-      <div v-for="(trip, key) in trips" :key="key">
-        <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
-          <TripItem :trip="trip" />
-        </RouterLink>
-      </div>
+      <template v-if="trips.length > 0">
+        <!-- 여행 리스트 -->
+        <div v-for="(trip, key) in trips" :key="key">
+          <RouterLink :to="{ name: 'tripDetail', params: { tripNo: trip.tripNo } }">
+            <TripItem :trip="trip" />
+          </RouterLink>
+        </div>
+      </template>
+      <template v-else>
+        <div class="text-center" style="font-size: 25px">여행이 없습니다.</div>
+      </template>
 
       <!-- 더 보기 버튼 -->
       <div id="div-more-btn">
