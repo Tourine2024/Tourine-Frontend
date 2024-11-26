@@ -9,8 +9,8 @@
         <v-btn class="mx-1" :to="{
           name: 'diaryUpdate',
           params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
-        }">수정</v-btn>
-        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true">삭제</v-btn>
+        }" style="font-size: 18px">수정</v-btn>
+        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true" style="font-size: 18px">삭제</v-btn>
       </div>
     </div>
     <div class="wrapper">
@@ -18,7 +18,7 @@
       <div class="mx-1">
         <v-col>
           <h1 class="font-weight-bold mb-3">{{ diary.diaryTitle }}</h1>
-          <div class="text-subtitle-1 mb-3">
+          <div class="text-subtitle-1 mb-3" style="font-size: 18px">
             {{ diary.diaryDate }} {{ diary.diaryTime }}
           </div>
           <div class="d-flex">
@@ -61,8 +61,8 @@
           <v-card-title class="headline">삭제 확인</v-card-title>
           <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
           <v-card-actions>
-            <v-btn color="red" text @click="deleteDiaryReq">삭제</v-btn>
-            <v-btn color="grey" text @click="showDeleteDialog = false">취소</v-btn>
+            <v-btn color="red" text @click="deleteDiaryReq" style="font-size: 18px">삭제</v-btn>
+            <v-btn color="grey" text @click="showDeleteDialog = false" style="font-size: 18px">취소</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -75,7 +75,7 @@
             <MapItem :center="mapCenter" :markers="[mapCenter]" />
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" text @click="showMapDialog = false">닫기</v-btn>
+            <v-btn color="primary" text @click="showMapDialog = false" style="font-size: 18px">닫기</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

@@ -15,7 +15,7 @@
             <img src="@/assets/icon/button/kakao_login.png" />
           </button>
 
-          <span>or</span>
+          <span style="font-size: 18px">or</span>
 
           <v-text-field
             v-model="id"
@@ -104,7 +104,8 @@ function kakaoLogin() {
 }
 
 .register {
-  min-width: 400px; /*화면 최소 크기 유지*/
+  min-width: 400px;
+  /*화면 최소 크기 유지*/
   flex: 3;
   justify-self: center;
   box-shadow: none;
@@ -123,7 +124,7 @@ function kakaoLogin() {
   margin-bottom: 2rem;
 }
 
-.card-title > span {
+.card-title>span {
   font-size: 30px;
   font-weight: bold;
 }
@@ -163,5 +164,9 @@ function kakaoLogin() {
   margin-bottom: 1rem;
   border-radius: 15px;
   width: 100%;
+}
+
+.v-text-field:deep(input) {
+  font-size: 18px;
 }
 </style>

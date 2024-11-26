@@ -82,11 +82,10 @@
               <ToastUIEditor
                 ref="editorRef"
                 v-model="formData.diaryContent"
-                @updateContent="
-                  (mdContent) => {
-                    formData.diaryContent = mdContent;
-                  }
-                "
+                @updateContent="(mdContent) => {
+                  formData.diaryContent = mdContent;
+                }
+                  "
                 label="내용"
                 outlined
                 auto-grow
@@ -98,9 +97,9 @@
 
           <!-- 저장 버튼 -->
           <v-row justify="center" class="mt-5 mb-0">
-            <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
-            <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-            <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
+            <v-btn color="primary" class="mx-2" @click="submitForm" style="font-size: 18px">저장</v-btn>
+            <v-btn color="grey" class="mx-2" @click="clearForm" style="font-size: 18px">초기화</v-btn>
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)" style="font-size: 18px">취소</v-btn>
           </v-row>
         </v-form>
       </v-sheet>
@@ -232,5 +231,11 @@ h1 {
   border-radius: 10px;
   width: 85%;
   margin: 0 auto;
+}
+
+.v-text-field:deep(input),
+.v-radio-group:deep(label),
+.v-combobox:deep(input) {
+  font-size: 18px;
 }
 </style>

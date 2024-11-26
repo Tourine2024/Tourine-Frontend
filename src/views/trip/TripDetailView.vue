@@ -29,6 +29,7 @@
                   :color="showPath ? 'blue' : 'white'"
                   @click="showPath = true"
                   block
+                  style="font-size: 18px"
                 >
                   동선 보이기
                 </v-btn>
@@ -39,6 +40,7 @@
                   :color="!showPath ? 'blue' : 'white'"
                   @click="showPath = false"
                   block
+                  style="font-size: 18px"
                 >
                   동선 숨기기
                 </v-btn>
@@ -46,14 +48,14 @@
             </v-row>
             <v-row>
               <v-col cols="12" class="py-0" >
-                <v-btn v-if="selectedDate" @click="resetDate" block>
+                <v-btn v-if="selectedDate" @click="resetDate" block style="font-size: 18px">
                   모든 날짜 보기
                 </v-btn>
               </v-col>
             </v-row>
             <v-row>
               <v-col col="12">
-                <v-btn v-if="selectedDate" @click="setDiaryData" block>
+                <v-btn v-if="selectedDate" @click="setDiaryData" block style="font-size: 18px">
                   기록 추가하기
                 </v-btn>
               </v-col>

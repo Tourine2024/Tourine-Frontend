@@ -79,4 +79,8 @@ h3 {
 .item-row {
   cursor: pointer;
 }
+
+.v-data-table {
+  font-size: 15px;
+}
 </style>

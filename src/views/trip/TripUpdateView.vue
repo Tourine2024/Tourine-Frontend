@@ -76,9 +76,9 @@
 
         <!-- 저장 버튼 -->
         <v-row class="mb-5 mp-5" justify="center">
-          <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
-          <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-          <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
+          <v-btn color="primary" class="mx-2" @click="submitForm" style="font-size: 18px">저장</v-btn>
+          <v-btn color="grey" class="mx-2" @click="clearForm" style="font-size: 18px">초기화</v-btn>
+          <v-btn color="grey" class="mx-2" @click="$router.go(-1)" style="font-size: 18px">취소</v-btn>
         </v-row>
       </v-form>
     </v-sheet>
@@ -207,5 +207,10 @@ h1 {
   border-radius: 10px;
   max-width: 800px;
   margin: 0 auto;
+}
+
+.v-text-field:deep(input),
+.v-textarea:deep(textarea) {
+  font-size: 18px;
 }
 </style>

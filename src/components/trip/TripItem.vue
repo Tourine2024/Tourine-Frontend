@@ -3,16 +3,21 @@
     <v-card class="px-5 py-5">
       <v-row align="start">
         <v-col cols="3">
-          <v-img :src="trip.tripThumbnailUrl" class="md-2" height="150px" cover>
-            <template v-slot:error>
-              <v-img :src="DEFAULT_IMAGE_PATH" class="md-2" height="150px" cover></v-img>
-            </template>
-          </v-img>
+          <template v-if="trip.tripThumbnailUrl">
+            <v-img :src="trip.tripThumbnailUrl" class="md-2" height="150px" cover>
+              <template v-slot:error>
+                <v-img :src="DEFAULT_IMAGE_PATH" class="md-2" height="150px" cover></v-img>
+              </template>
+            </v-img>
+          </template>
+          <template v-else>
+            <v-img :src="DEFAULT_IMAGE_PATH" class="md-2" height="150px" cover></v-img>
+          </template>
         </v-col>
         <v-col>
-          <v-card-title>{{ trip.tripName }}</v-card-title>
-          <v-card-subtitle>{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle>
-          <v-card-text>{{ trip.tripSummary }}</v-card-text>
+          <v-card-title style="font-size: 25px">{{ trip.tripName }}</v-card-title>
+          <v-card-subtitle style="font-size: 18px">{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle>
+          <v-card-text style="font-size: 18px">{{ trip.tripSummary }}</v-card-text>
         </v-col>
       </v-row>
     </v-card>
