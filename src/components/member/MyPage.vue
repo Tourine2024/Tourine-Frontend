@@ -76,9 +76,9 @@
         </v-col>
       </v-row>
       <div class="actions">
-        <v-btn color="primary" @click="updateProfile">수정하기</v-btn>
-        <v-btn color="grey" @click="cancelUpdate">취소</v-btn>
-        <v-btn @click="withdrawMember" color="red">회원 탈퇴</v-btn>
+        <v-btn color="primary" @click="updateProfile" style="font-size: 18px">수정하기</v-btn>
+        <v-btn color="grey" @click="cancelUpdate" style="font-size: 18px">취소</v-btn>
+        <v-btn @click="withdrawMember" color="red" style="font-size: 18px">회원 탈퇴</v-btn>
       </div>
     </div>
   </div>

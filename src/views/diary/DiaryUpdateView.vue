@@ -44,7 +44,7 @@
                 @update:menu="menuOpen = true" @blur="menuOpen = false">
                 <template v-slot:item="{ item }">
                   <v-list-item @mouseover="updateMapCenter(item.raw.latLng)" @click="selectLocation(item.raw)">
-                    <v-list-item-title>{{ item.raw.displayName }}</v-list-item-title>
+                    <v-list-item-title style="font-size: 18px">{{ item.raw.displayName }}</v-list-item-title>
                     <v-list-item-subtitle>{{
                       item.raw.formattedAddress
                     }}</v-list-item-subtitle>
@@ -60,17 +60,17 @@
             <v-col cols="12">
               <ToastUIEditor ref="editorRef" v-model="formData.diaryContent" :content="formData.diaryContent"
                 @updateContent="(mdContent) => {
-                    formData.diaryContent = mdContent;
-                  }
+                  formData.diaryContent = mdContent;
+                }
                   " label="diaryContent" outlined auto-grow rows="5" clearable />
             </v-col>
           </v-row>
 
           <!-- 수정 버튼 -->
           <v-row justify="center" class="mt-5 mb-0">
-            <v-btn color="primary" class="mx-2" @click="submitForm">수정하기</v-btn>
-            <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-            <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
+            <v-btn color="primary" class="mx-2" @click="submitForm" style="font-size: 18px">수정하기</v-btn>
+            <v-btn color="grey" class="mx-2" @click="clearForm" style="font-size: 18px">초기화</v-btn>
+            <v-btn color="grey" class="mx-2" @click="$router.go(-1)" style="font-size: 18px">취소</v-btn>
           </v-row>
         </v-form>
       </v-sheet>
@@ -251,5 +251,11 @@ h1 {
   border-radius: 10px;
   width: 85%;
   margin: 0 auto;
+}
+
+.v-text-field:deep(input),
+.v-radio-group:deep(label),
+.v-combobox:deep(input) {
+  font-size: 18px;
 }
 </style>

@@ -10,6 +10,7 @@
           color="blue-darken-2"
           rounded="lg"
           :to="{ name: 'tripNew' }"
+           style="font-size: 18px;"
         >
           새 여행 만들기
         </v-btn>

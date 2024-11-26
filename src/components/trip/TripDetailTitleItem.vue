@@ -3,16 +3,17 @@
     <v-row align="center">
       <v-col cols="6">
         <v-card variant="text">
-          <v-card-subtitle
+          <v-card-subtitle style="font-size: 18px"
             >{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle
           >
           <h1 class="font-weight-black ml-4">{{ trip.tripName }}</h1>
-          <v-card-text>{{ trip.tripSummary }}</v-card-text>
+          <v-card-text style="font-size: 20px">{{ trip.tripSummary }}</v-card-text>
           <template v-if="showButtons">
             <v-btn
               @click="summarize(trip.tripNo)"
               class="md-3 ml-4"
               color="teal-lighten-1"
+              style="font-size: 18px"
             >
               AI 요약하기 ✏️
             </v-btn>
@@ -20,6 +21,7 @@
               @click="createStamp(trip.tripNo)"
               class="md-3 ml-4"
               color="light-green-lighten-1"
+              style="font-size: 18px"
             >
               우표 만들기 📮
             </v-btn>
@@ -28,10 +30,11 @@
             class="md-3 ml-4"
             color="blue-darken-3"
             :to="{ name: 'tripModify', params: { tripNo: trip.tripNo } }"
+            style="font-size: 18px"
           >
             수정
           </v-btn>
-          <v-btn class="md-3 ml-4" color="red" @click="showDeleteDialog = true">
+          <v-btn class="md-3 ml-4" color="red" @click="showDeleteDialog = true" style="font-size: 18px">
             삭제
           </v-btn>
         </v-card>
@@ -100,10 +103,10 @@
         <v-card-title class="headline">삭제 확인</v-card-title>
         <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
         <v-card-actions>
-          <v-btn color="red" text @click="deleteTrip($route.params.tripNo)"
+          <v-btn color="red" text @click="deleteTrip($route.params.tripNo)" style="font-size: 18px"
             >삭제</v-btn
           >
-          <v-btn color="grey" text @click="showDeleteDialog = false"
+          <v-btn color="grey" text @click="showDeleteDialog = false" style="font-size: 18px"
             >취소</v-btn
           >
         </v-card-actions>

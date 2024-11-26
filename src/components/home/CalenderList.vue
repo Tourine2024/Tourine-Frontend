@@ -20,7 +20,7 @@
         <template v-else>
           <img src="@/assets/icon/etc.svg" />
         </template>
-        <p>{{ diary.diaryTitle }}</p>
+        <p style="font-size: 20px">{{ diary.diaryTitle }}</p>
       </v-card>
     </div>
   </div>
@@ -142,5 +142,9 @@ p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.v-date-picker * {
+  font-size: 18px;
 }
 </style>
