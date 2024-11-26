@@ -8,13 +8,25 @@
       item-key="diaryTitle"
       height="450px"
       hide-default-footer
-    ></v-data-table>
+    >
+      <template #item="{ item }">
+        <tr class="item-row" @click="goToDiaryDetail(item)">
+          <td>{{ item.diaryDate }}</td>
+          <td>{{ item.tripName }}</td>
+          <td>{{ item.diaryTitle }}</td>
+          <td>{{ item.locationName }}</td>
+        </tr>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { getAllDiarys } from "@/api/home";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const diaries = ref([]);
 
@@ -41,6 +53,10 @@ async function getDiaries() {
     console.error("Failed to load diaries:", error);
   }
 }
+
+function goToDiaryDetail(item) {
+  router.push({ name: "diaryDetail", params: { tripNo: item.tripNo, diaryNo: item.diaryNo } });
+}
 </script>
 
 <style scoped>
@@ -60,9 +76,8 @@ h3 {
   margin-bottom: 1rem;
 }
 
-.v-btn {
-  width: 100%;
-  margin-top: 1rem;
+.item-row {
+  cursor: pointer;
 }
 
 .v-data-table {

@@ -36,7 +36,7 @@ const diaries = ref([]);
 const selectedDate = ref(null);
 const memberNo = localStorage.getItem("memberNo");
 
-const diaryDates = new Set();
+const diaryDates = ref(new Set());
 
 onMounted(async () => {
   await getDiaries();
@@ -48,7 +48,7 @@ async function getDiaries() {
     diaries.value = response;
     console.log("Diaries loaded:", diaries.value);
     response.forEach((diary) => {
-      diaryDates.add(diary.diaryDate.replace(/-/g, ".")); // 날짜 부분만 추출
+      diaryDates.value.add(dateFormatter(new Date(diary.diaryDate)));
     });
   } catch (error) {
     console.error("Failed to load diaries:", error);
@@ -57,7 +57,7 @@ async function getDiaries() {
 
 const allowedDates = (date) => {
   const formattedDate = dateFormatter(date);
-  return diaryDates.has(formattedDate);
+  return diaryDates.value.has(formattedDate);
 };
 
 const filteredDiaries = computed(() => {

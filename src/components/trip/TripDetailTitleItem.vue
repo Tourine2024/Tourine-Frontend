@@ -81,8 +81,9 @@
                 indeterminate
                 color="primary"
               ></v-progress-circular>
+              <!-- 이미지 로드 완료 시 보여줄 이미지 -->
               <v-img
-                v-if="!loading"
+                v-if="!loading && stampImageUrl"
                 :src="stampImageUrl"
                 aspect-ratio="1"
                 contain
@@ -92,9 +93,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="closeImageDialog"
-            >닫기</v-btn
-          >
+          <v-btn color="blue" text @click="createStamp($route.params.tripNo)">다시 만들기</v-btn>
+          <v-btn color="green" text @click="addToCollection(stampImageUrl)">컬렉션에 추가</v-btn>
+          <v-btn color="red darken-1" text @click="closeImageDialog">닫기</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -123,6 +124,7 @@ import { useRouter } from "vue-router";
 import { deleteTripInfo, updateTripInfo } from "@/api/trip";
 import { drawPostCard, summarizeTrip } from "@/api/openAI.js";
 import { DEFAULT_IMAGE_PATH } from "@/api/image";
+import { postNewStamp } from "@/api/collection";
 
 const props = defineProps({
   trip: Object,
@@ -148,13 +150,24 @@ const createStamp = async (tripNo) => {
   loading.value = true;
   showImageDialog.value = true;
   try {
-    stampImageUrl.value = await drawPostCard(tripNo);
+    const imageUrl = await drawPostCard(tripNo);
+    stampImageUrl.value = imageUrl;
+    loading.value = false; // 로딩 완료
   } catch (error) {
     console.error("Error generating stamp:", error);
     alert("우표 이미지를 생성하는 데 실패했습니다. 다시 시도해주세요.");
-  } finally {
-    loading.value = false;
-    showImageDialog.value = false; // 모달 창 닫기
+    loading.value = false; // 에러 시 로딩 중지
+  }
+};
+
+const addToCollection = async (imageUrl) => {
+  try {
+    await postNewStamp(imageUrl); // 컬렉션에 이미지 추가
+    alert("컬렉션에 추가되었습니다.");
+    closeImageDialog();
+  } catch (error) {
+    console.error("Error adding stamp to collection:", error);
+    alert("컬렉션에 추가하는 데 실패했습니다.");
   }
 };
 
