@@ -5,7 +5,7 @@
     <div class="content" @click="routeDetail(currentTrip.tripNo)">
       <h1>최근 여행</h1>
       <h3>{{ currentTrip.tripName }}</h3>
-      <p>{{ currentTrip.tripStartDate }} - {{ currentTrip.tripEndDate }}</p>
+      <p style="font-size: 18px">{{ currentTrip.tripStartDate }} - {{ currentTrip.tripEndDate }}</p>
       <div class="btn-group">
         <button :class="{
           'button-visible': showPrevButton,

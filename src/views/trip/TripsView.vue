@@ -4,7 +4,7 @@
       <!-- 제목 섹션 -->
       <v-row align="center" justify="space-between" class="mx-5">
         <h1 class="title">나의 여행</h1>
-        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }">
+        <v-btn prepend-icon="mdi-plus" color="green" rounded="lg" :to="{ name: 'tripNew' }" style="font-size: 18px;">
           새 여행 만들기
         </v-btn>
       </v-row>

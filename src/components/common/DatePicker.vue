@@ -3,4 +3,8 @@
   <v-date-picker show-adjacent-months :hide-header="true"></v-date-picker>
 </template>
 
-<style scoped></style>
+<style scoped>
+.v-date-picker * {
+  font-size: 18px;
+}
+</style>

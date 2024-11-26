@@ -18,6 +18,7 @@
               outlined
               clearable
               :rules="[rules.required]"
+              style="font-size: 18px"
             />
           </v-col>
 
@@ -31,6 +32,7 @@
               rows="5"
               placeholder="여행에 대한 간략한 설명을 적어주세요..."
               clearable
+              style="font-size: 18px"
             />
           </v-col>
 
@@ -76,9 +78,9 @@
 
         <!-- 저장 버튼 -->
         <v-row class="mb-5 mp-5" justify="center">
-          <v-btn color="primary" class="mx-2" @click="submitForm">저장</v-btn>
-          <v-btn color="grey" class="mx-2" @click="clearForm">초기화</v-btn>
-          <v-btn color="grey" class="mx-2" @click="$router.go(-1)">취소</v-btn>
+          <v-btn color="primary" class="mx-2" @click="submitForm" style="font-size: 18px">저장</v-btn>
+          <v-btn color="grey" class="mx-2" @click="clearForm" style="font-size: 18px">초기화</v-btn>
+          <v-btn color="grey" class="mx-2" @click="$router.go(-1)" style="font-size: 18px">취소</v-btn>
         </v-row>
       </v-form>
     </v-sheet>

@@ -5,7 +5,6 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
-import ko from "vuetify/lib/locale/ko";
 
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 
@@ -13,6 +12,7 @@ import App from "./App.vue";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createVuetify } from "vuetify";
+import ko from "vuetify/lib/locale/ko";
 import router from "./router";
 
 // Vuetify

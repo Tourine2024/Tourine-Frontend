@@ -64,4 +64,8 @@ h3 {
   width: 100%;
   margin-top: 1rem;
 }
+
+.v-data-table {
+  font-size: 15px;
+}
 </style>
