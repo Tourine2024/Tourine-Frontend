@@ -1,16 +1,27 @@
 <template>
   <div class="container">
     <!-- 상단 버튼 섹션 -->
-    <div class="button-row" justify="space-between" align="center">
-      <v-btn prepend-icon="mdi-arrow-u-left-top" :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }">
+    <div class="button-row">
+      <v-btn
+        color="blue-lighten-5"
+        prepend-icon="mdi-arrow-u-left-top"
+        :to="{ name: 'tripDetail', params: { tripNo: diary.tripNo } }"
+      >
         여행으로 돌아가기
       </v-btn>
       <div>
-        <v-btn class="mx-1" :to="{
-          name: 'diaryUpdate',
-          params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
-        }">수정</v-btn>
-        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true">삭제</v-btn>
+        <v-btn
+          class="mx-1"
+          :to="{
+            name: 'diaryUpdate',
+            params: { tripNo: diary.tripNo, diaryNo: diary.diaryNo },
+          }"
+          color="blue-darken-3"
+          >수정</v-btn
+        >
+        <v-btn class="mx-1" color="red" @click="showDeleteDialog = true"
+          >삭제</v-btn
+        >
       </div>
     </div>
     <div class="wrapper">
@@ -22,7 +33,10 @@
             {{ diary.diaryDate }} {{ diary.diaryTime }}
           </div>
           <div class="d-flex">
-            <span class="px-2 mr-3 rounded-lg d-inline-flex align-center" :class="getClassByCategory(diary)">
+            <span
+              class="px-2 mr-3 rounded-lg d-inline-flex align-center"
+              :class="getClassByCategory(diary)"
+            >
               <template v-if="diary.diaryCategory === 1">
                 <img src="@/assets/icon/luggage.svg" class="mr-1" />
                 <span>관광</span>
@@ -62,7 +76,9 @@
           <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
           <v-card-actions>
             <v-btn color="red" text @click="deleteDiaryReq">삭제</v-btn>
-            <v-btn color="grey" text @click="showDeleteDialog = false">취소</v-btn>
+            <v-btn color="grey" text @click="showDeleteDialog = false"
+              >취소</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -75,7 +91,9 @@
             <MapItem :center="mapCenter" :markers="[mapCenter]" />
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" text @click="showMapDialog = false">닫기</v-btn>
+            <v-btn color="primary" text @click="showMapDialog = false"
+              >닫기</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -167,16 +185,13 @@ const getDiary = async () => {
 
 const getClassByCategory = (diary) => {
   if (diary.diaryCategory === 1) {
-    return 'bg-green-lighten-4';
-  }
-  else if (diary.diaryCategory === 2) {
-    return 'bg-amber-lighten-4';
-  }
-  else if (diary.diaryCategory === 3) {
-    return 'bg-purple-lighten-4';
-  }
-  else {
-    return 'bg-blue-lighten-4';
+    return "bg-green-lighten-4";
+  } else if (diary.diaryCategory === 2) {
+    return "bg-amber-lighten-4";
+  } else if (diary.diaryCategory === 3) {
+    return "bg-purple-lighten-4";
+  } else {
+    return "bg-blue-lighten-4";
   }
 };
 
@@ -232,6 +247,7 @@ const deleteDiaryReq = async () => {
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #cfedfe;
 
   padding: 0 2rem;
@@ -251,7 +267,14 @@ const deleteDiaryReq = async () => {
   height: fit-content;
 }
 
+.v-btn {
+  margin-bottom: 1rem;
+  font-size: 20px;
+  font-weight: 700;
+}
+
 .button-row {
+  width: 90%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

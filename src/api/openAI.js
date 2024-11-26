@@ -15,7 +15,6 @@ export const summarizeTrip = async (tripNo) => {
 export const drawPostCard = async (tripNo) => {
   try {
     const { data } = await localAxios.post(`/postcard/${tripNo}`);
-    console.log(data);
     return data;
   } catch (err) {
     alert("우표 이미지를 생성하는 데 실패했습니다. 다시 시도해주세요.");

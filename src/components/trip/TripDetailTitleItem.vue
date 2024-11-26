@@ -1,28 +1,37 @@
 <template>
   <div>
-    <v-row align="start">
+    <v-row align="center">
       <v-col cols="6">
         <v-card variant="text">
-          <v-card-subtitle>{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle>
+          <v-card-subtitle
+            >{{ trip.tripStartDate }} - {{ trip.tripEndDate }}</v-card-subtitle
+          >
           <h1 class="font-weight-black ml-4">{{ trip.tripName }}</h1>
           <v-card-text>{{ trip.tripSummary }}</v-card-text>
           <template v-if="showButtons">
-            <v-btn @click="summarize(trip.tripNo)" class="md-3 ml-4" rounded="xl" color="blue">
-              AI 요약하기+
+            <v-btn
+              @click="summarize(trip.tripNo)"
+              class="md-3 ml-4"
+              color="teal-lighten-1"
+            >
+              AI 요약하기 ✏️
             </v-btn>
-            <v-btn @click="createStamp(trip.tripNo)" class="md-3 ml-4" rounded="xl" color="green">
+            <v-btn
+              @click="createStamp(trip.tripNo)"
+              class="md-3 ml-4"
+              color="light-green-lighten-1"
+            >
               우표 만들기 📮
             </v-btn>
           </template>
           <v-btn
             class="md-3 ml-4"
-            rounded="xl"
-            color="blue"
+            color="blue-darken-3"
             :to="{ name: 'tripModify', params: { tripNo: trip.tripNo } }"
           >
             수정
           </v-btn>
-          <v-btn class="md-3 ml-4" rounded="xl" color="red" @click="showDeleteDialog = true">
+          <v-btn class="md-3 ml-4" color="red" @click="showDeleteDialog = true">
             삭제
           </v-btn>
         </v-card>
@@ -72,9 +81,15 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue" text @click="createStamp($route.params.tripNo)">다시 만들기</v-btn>
-          <v-btn color="green" text @click="addToCollection(stampImageUrl)">컬렉션에 추가</v-btn>
-          <v-btn color="red darken-1" text @click="closeImageDialog">닫기</v-btn>
+          <v-btn color="blue" text @click="createStamp($route.params.tripNo)"
+            >다시 만들기</v-btn
+          >
+          <v-btn color="green" text @click="addToCollection(stampImageUrl)"
+            >컬렉션에 추가</v-btn
+          >
+          <v-btn color="red darken-1" text @click="closeImageDialog"
+            >닫기</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -85,8 +100,12 @@
         <v-card-title class="headline">삭제 확인</v-card-title>
         <v-card-text>정말로 삭제하시겠습니까?</v-card-text>
         <v-card-actions>
-          <v-btn color="red" text @click="deleteTrip($route.params.tripNo)">삭제</v-btn>
-          <v-btn color="grey" text @click="showDeleteDialog = false">취소</v-btn>
+          <v-btn color="red" text @click="deleteTrip($route.params.tripNo)"
+            >삭제</v-btn
+          >
+          <v-btn color="grey" text @click="showDeleteDialog = false"
+            >취소</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -159,4 +178,13 @@ const deleteTrip = async (tripNo) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.v-btn {
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 16px;
+  min-width: 5rem;
+  padding: 0.7rem 1rem;
+  height: fit-content;
+}
+</style>
